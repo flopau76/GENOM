@@ -1,0 +1,5 @@
+.register
+data/
+logs/
+
+**/__pycache__/
