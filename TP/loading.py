@@ -1,10 +1,11 @@
 import gzip
 from os import listdir, path
 
-from TP.kmers import filter_smallest, stream_kmers_file
+from typing import Generator, Tuple, List, Dict
+from io import TextIOWrapper
 
 
-def load_fasta(file_pointer):
+def load_fasta(file_pointer:TextIOWrapper) -> List[str]:
     """ Loads a fasta formated file into a list of sequences.
     :param file_pointer: The stream of the fasta file to load.
     :return Array: An array of strings where each string is a sequence from the fasta
@@ -25,7 +26,7 @@ def load_fasta(file_pointer):
     return texts
 
 
-def load_directory(directory):
+def load_directory(directory:str) -> Dict[str, List[str]]:
     """ Loads all the fasta files from a data directory into a dictionary.
     Each subdirectory in data is considered as a different sample.
     Fatsta files (even gzipped) are loaded.
@@ -53,38 +54,16 @@ def load_directory(directory):
     
     return sequence_dict
 
-
-def load_directory_kmers(directory, k, s, hash=lambda x: x):
-    """ Loads all the fasta files from a data directory into a dictionary.
-    Instead of keeping all sequences in memory, we directly compute the kmers and minhash them
-    :param str directory: Path to the data directory to load.
-    :param int k: Size of kmers to compute
-    :param int s: Number of kmers to keep per sample
-    :param function hash: Hash function to use on kmers
-    :return dict: A dict containing pairs (sample, [minhashed kmer list]).
-    """
-    kmers_dict = {}
+def load_directory_as_pointers(directory:str) -> Generator[Tuple[str, TextIOWrapper], None, None]:
+    """ Creates a generator that yields the name of the sample and a file pointer to the fasta file. """
     for name in listdir(directory):
         subpath = path.join(directory, name)
-        # Look for sample directories
         if path.isdir(subpath):
-            # Creates one list of sequence per sample
-            kmers_lst = None
             for filename in listdir(subpath):
-                # Load raw fasta files
-                file_pointer = None
                 if filename.endswith(".fa") or filename.endswith(".fasta"):
-                    file_pointer = open(path.join(subpath, filename))
-                # Load gzipped fasta files
+                    yield (name, open(path.join(subpath, filename)))
                 elif filename.endswith(".fa.gz") or filename.endswith(".fasta.gz"):
-                    file_pointer = gzip.open(path.join(subpath, filename), 'rt')
-                if file_pointer is not None:
-                    kmers_lst = filter_smallest(stream_kmers_file(file_pointer, k), s, hash, kmers_lst)
-                    file_pointer.close()
-            kmers_dict[name] = kmers_lst
-            print("Loaded", name)
-    
-    return kmers_dict
+                    yield (name, gzip.open(path.join(subpath, filename), 'rt'))
 
 
 if __name__ == "__main__":

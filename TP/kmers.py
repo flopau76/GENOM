@@ -1,17 +1,18 @@
 import numpy as np
 
-def encode_nucl(letter):
-    """ Encodes a nucleotide on two bits
-    using the ascii code"""
+from typing import List, Dict, Tuple, Generator
+from io import TextIOWrapper
+
+def encode_nucl(letter:str) -> int:
+    """ Encodes a nucleotide on two bits using the ascii code"""
     # encode = {'A': 0b00, 'C': 0b01, 'T': 0b10, 'G': 0b11}
     return (ord(letter) >> 1) & 0b11
 
-def encode_nucl_rev(letter):
-    """ Encodes the complementary of a nucleotide on two bits
-    using the ascii code"""
+def encode_nucl_rev(letter:str) -> int:
+    """ Encodes the complementary of a nucleotide on two bits using the ascii code"""
     return encode_nucl(letter) ^ 0b10
 
-def encode_kmer(seq, k):
+def encode_kmer(seq:str, k:int) -> Tuple[int, int]:
     """ Encodes the first kmer, and its reverse complementary """
     kmer = 0
     rev_kmer = 0
@@ -22,9 +23,8 @@ def encode_kmer(seq, k):
         rev_kmer |= encode_nucl_rev(letter) << (2*(k-1))
     return kmer, rev_kmer
 
-def stream_kmers(file, k):
-    """ Enumerates all kmers present in file (list of sequences)
-    Note: we keep only the lowest value of each kmer and its reverse complementary """
+def stream_kmers(file:List[str], k:int) -> Generator[int, None, None]:
+    """ Enumerates all canonical kmers present in file """
     for seq in file:
         mask = (1 << (2*k)) - 1 # to keep only the k rightmost nucleotides
         kmer, rev_kmer  = encode_kmer(seq, k)
@@ -37,10 +37,8 @@ def stream_kmers(file, k):
             rev_kmer |= encode_nucl_rev(seq[i+k]) << (2*(k-1))
             yield min(kmer, rev_kmer)
 
-def stream_kmers_file(file_pointer, k):
-    """ Enumerates all canonical kmers present in a fasta file
-    :param file_pointer: The stream of the fasta file to load.
-    """
+def stream_kmers_file(file_pointer:TextIOWrapper, k:int) -> Generator[int, None, None]:
+    """ Enumerates all canonical kmers present in a file """
     mask = (1 << (2*k)) - 1
     for line in file_pointer:
         if line[0] == '>':
@@ -61,6 +59,14 @@ def stream_kmers_file(file_pointer, k):
                     len_kmer = min(len_kmer, k)
                     if len_kmer == k:
                         yield min(kmer, rev_kmer)
+    file_pointer.close()
+
+def stream_to_dict(iterator) -> Dict[int, int]:
+    """ Converts a stream of kmers into a dictionary of counts """
+    d = {}
+    for kmer in iterator:
+        d[kmer] = d.get(kmer, 0) + 1
+    return d
 
 def filter_smallest(iterator, s, hash=lambda x: x, lst=None):
     """ Filters the s smallest elements from an iterator, after applying a hash function.
