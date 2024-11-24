@@ -1,6 +1,6 @@
 import numpy as np
 
-from typing import List, Dict, Tuple, Generator
+from typing import List, Dict, Tuple, Iterator
 from io import TextIOWrapper
 
 def encode_nucl(letter:str) -> int:
@@ -23,7 +23,7 @@ def encode_kmer(seq:str, k:int) -> Tuple[int, int]:
         rev_kmer |= encode_nucl_rev(letter) << (2*(k-1))
     return kmer, rev_kmer
 
-def stream_kmers(file:List[str], k:int) -> Generator[int, None, None]:
+def stream_kmers(file:List[str], k:int) -> Iterator[int]:
     """ Enumerates all canonical kmers present in file """
     for seq in file:
         mask = (1 << (2*k)) - 1 # to keep only the k rightmost nucleotides
@@ -37,7 +37,7 @@ def stream_kmers(file:List[str], k:int) -> Generator[int, None, None]:
             rev_kmer |= encode_nucl_rev(seq[i+k]) << (2*(k-1))
             yield min(kmer, rev_kmer)
 
-def stream_kmers_file(file_pointer:TextIOWrapper, k:int) -> Generator[int, None, None]:
+def stream_kmers_file(file_pointer:TextIOWrapper, k:int) -> Iterator[int]:
     """ Enumerates all canonical kmers present in a file """
     mask = (1 << (2*k)) - 1
     for line in file_pointer:

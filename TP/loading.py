@@ -1,7 +1,7 @@
 import gzip
 from os import listdir, path
 
-from typing import Generator, Tuple, List, Dict
+from typing import Iterator, Tuple, List, Dict
 from io import TextIOWrapper
 
 
@@ -54,7 +54,7 @@ def load_directory(directory:str) -> Dict[str, List[str]]:
     
     return sequence_dict
 
-def load_directory_as_pointers(directory:str) -> Generator[Tuple[str, TextIOWrapper], None, None]:
+def load_directory_as_pointers(directory:str) -> Iterator[Tuple[str, TextIOWrapper]]:
     """ Creates a generator that yields the name of the sample and a file pointer to the fasta file. """
     for name in listdir(directory):
         subpath = path.join(directory, name)
