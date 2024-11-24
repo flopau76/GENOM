@@ -13,12 +13,10 @@ def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', prin
         print()
 
 def getter(taxon, index):
-    os.chdir(index)
     test = subprocess.run(
-            f"bio fetch {taxon} -t DNA -f fasta > genome_{taxon}.fasta",
+            f'bio fetch {taxon} -t DNA -f fasta > "{index}/genome_{taxon}.fasta"',
             capture_output=True, shell=True
         )
-
     return 0
 
 def load_taxid(taxon_file : str):

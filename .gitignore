@@ -1,5 +1,4 @@
-.register
-data/
-logs/
-
 **/__pycache__/
+
+data**
+**/taxdump.tar.gz
