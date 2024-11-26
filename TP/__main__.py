@@ -1,6 +1,9 @@
 from TP.loading import load_directory, load_directory_as_pointers
 from TP.kmers import stream_kmers, stream_kmers_file
-from time import time
+import numpy as np
+from typing import Dict, List
+
+from TP.km_stats import load_as_matrix
 
 def dict_intersection(dictA, dictB):
     """ Computes the intersection of two dictionaries
@@ -36,50 +39,48 @@ def xorshift(val):
     val &= 0xFFFFFFFFFFFFFFFF
     return val
 
-
-if __name__ == "__main1__":
-
-    k = 21
-    folder = "data"
-
-    # Reading the data
-    filenames = []
-    kmers_list = []
-    sequences = load_directory(folder)
-
+def compute_kmer(folder : str, k : int):
     # Computing the kmers
-    print("  Computing the kmers")
-    for sample, seqs in sequences.items():
-        print("Processing", sample)
-        filenames.append(sample)
-        kmers_list.append(sorted(list(stream_kmers(seqs, k))))
-
-    # Computing the Jaccard index
-    print("  Computing the pairwise similarities")
-    for i in range(len(filenames)):
-        for j in range(i+1, len(filenames)):
-            intersection = list_intersection(kmers_list[i], kmers_list[j])
-            dist_j = intersection / (len(kmers_list[i]) + len(kmers_list[j]) - intersection)
-            print(filenames[i], filenames[j], dist_j)
-
-if __name__ == "__main__":
-
-    k = 21
-    folder = "data"
-
-    # Computing the kmers
-    filenames = []
-    kmers_list = []
     print("  Computing the kmers")
     for sample, file_pointer in load_directory_as_pointers(folder):
-        print("Processing", sample)
-        filenames.append(sample)
-        kmers_list.append(sorted(list(stream_kmers_file(file_pointer, k))))
+        kmers_list = []
+        dico = {}
 
+        print("Processing", sample)
+        size = len(file_pointer.read())
+        file_pointer.seek(0)
+
+        threshold = 50#round(np.log2(size))
+        kmers_list.append(list(stream_kmers_file(file_pointer, k)))
+
+        kmer_split_list = np.array_split(*kmers_list, threshold)
+        dico = dict(zip([f"{sample}_{i}" for i in range(threshold)], kmer_split_list))
+
+        yield dico, threshold
+
+def compute_jaccard(dico : Dict[str, List[int]]):
     # Computing the Jaccard index
     print("  Computing the pairwise similarities")
+    filenames = list(dico.keys())
+    list_tuple_jac = []
+
     for i in range(len(filenames)):
         for j in range(i+1, len(filenames)):
-            intersection = list_intersection(kmers_list[i], kmers_list[j])
-            dist_j = intersection / (len(kmers_list[i]) + len(kmers_list[j]) - intersection)
-            print(filenames[i], filenames[j], dist_j)
+            intersection = list_intersection(sorted(dico[filenames[i]].tolist()), sorted(dico[filenames[j]].tolist()))
+            dist_j = intersection / (len(dico[filenames[i]]) + len(dico[filenames[j]]) - intersection)
+            #print(f"{'==='*20}\n{filenames[i]} | {filenames[j]} | {dist_j}")
+
+            list_tuple_jac.append((filenames[i], filenames[j], dist_j))
+
+    return list_tuple_jac
+
+# Faire rapport statistic global 
+
+if __name__ == "__main__":
+    k = 8
+    folder = "data_test"
+
+    for dico_strain, threshold in compute_kmer(folder, k):
+        liste_jac = compute_jaccard(dico_strain)
+        print(load_as_matrix(liste_jac, threshold))
+        break
