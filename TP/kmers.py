@@ -84,19 +84,44 @@ def filter_smallest(iterator, s, hash=lambda x: x, lst=None):
             max_elmt = lst[max_id]
     return np.sort(lst)
 
+def update_start(buffer_1:dict,buffer_2:dict,start:int)->Tuple[int,int]:
+    n1 =  buffer_1.get(start,0)
+    buffer_1[start] = n1 + 1
+    if n1 >= buffer_2[start]:
+        return 1,0
+    else:
+        return 0,1
+
+def update_end(buffer_1:Dict[int,int],buffer_2:Dict[int,int],end:int)->Tuple[int,int]:
+    n1 =  buffer_1.get(end,0)
+    if n1 == 0:
+        error(f"removing a non existing kmer {end}")
+    elif n1 == 1:
+        del buffer[end]
+    else:
+        buffer_1[end] = n1 - 1
+
+    if n1 > buffer_2[start]:
+        return -1,0
+    else:
+        return 0,-1
+
+def update(buffer_1:Dict[int,int],buffer_2:Dict[int,int],start:int,end:int)->Tuple[int,int]:
+    delta_union_1,delta_inter_1  = update_start(buffer_1,buffer_2,start)
+    delta_union_2,delta_inter_2  = update_end(buffer_1,buffer_2,start)
+    return delta_union_1 + delta_union_2 ,delta_inter_1 + delta_inter_2
+    
 def multiple_comparaison(a_stream:Iterator,b_stream:Iterator,a_start,b_start):
     nb_union,nb_inter = nb_union_inter(a_start,b_start)
     a_buffer = copy(a_start)
     b_buffer = copy(b_start)
     yield (nb_union,nb_inter)
     for a_s,a_e in a_stream:
-        nb_union += update_union_s(a_buffer,b_buffer,a_s)
-        nb_inter += update_inter_s(a_buffer,b_buffer,a_s)
-        nb_union += update_union_e(a_buffer,b_buffer,a_s)
-        nb_inter += update_inter_e(a_buffer,b_buffer,a_s)
+        delta_union, delta_inter = update(a_buffer,b_buffer,a_s,a_e)
+        nb_union += delta_union
+        nb_inter += delta_inter
         for b_s,b_e in b_stream:
-            nb_union += update_union_s(b_buffer,a_buffer,a_s)
-            nb_inter += update_inter_s(b_buffer,a_buffer,a_s)
-            nb_union += update_union_e(b_buffer,a_buffer,a_s)
-            nb_inter += update_inter_e(b_buffer,a_buffer,a_s)
+            delta_union,delta_inter = update(b_buffer,a_buffer,b_s,b_e)
+            nb_union += delta_union
+            nb_inter += delta_inter
             yield (nb_union,nb_inter)
