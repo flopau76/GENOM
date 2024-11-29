@@ -83,3 +83,20 @@ def filter_smallest(iterator, s, hash=lambda x: x, lst=None):
             max_id = lst.argmax()
             max_elmt = lst[max_id]
     return np.sort(lst)
+
+def multiple_comparaison(a_stream:Iterator,b_stream:Iterator,a_start,b_start):
+    nb_union,nb_inter = nb_union_inter(a_start,b_start)
+    a_buffer = copy(a_start)
+    b_buffer = copy(b_start)
+    yield (nb_union,nb_inter)
+    for a_s,a_e in a_stream:
+        nb_union += update_union_s(a_buffer,b_buffer,a_s)
+        nb_inter += update_inter_s(a_buffer,b_buffer,a_s)
+        nb_union += update_union_e(a_buffer,b_buffer,a_s)
+        nb_inter += update_inter_e(a_buffer,b_buffer,a_s)
+        for b_s,b_e in b_stream:
+            nb_union += update_union_s(b_buffer,a_buffer,a_s)
+            nb_inter += update_inter_s(b_buffer,a_buffer,a_s)
+            nb_union += update_union_e(b_buffer,a_buffer,a_s)
+            nb_inter += update_inter_e(b_buffer,a_buffer,a_s)
+            yield (nb_union,nb_inter)
