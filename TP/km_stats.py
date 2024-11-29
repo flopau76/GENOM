@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 
+import heapq, math
 from typing import List, Tuple
 from collections import Counter, deque
     
@@ -39,12 +40,21 @@ def whole_genome_signature(kmers_list : list) -> Counter :
 
 
 def window_slider(kmers_list : list[int], signature_km_freq : dict, width : int = 200) -> float:
+    heap = [0 for _ in range(round(np.log2(len(kmers_list))))]
+    positions = [0 for _ in range(len(heap))]
     window = deque([signature_km_freq[i] for i in kmers_list[0:width]])
     all_avg = [np.log10(sum(window)/width)]
+
     for i in range(width,len(kmers_list)-width+1):
         window.popleft()
         window.append(signature_km_freq[kmers_list[i]])
 
-        all_avg.append(np.log10(sum(window)/width))
+        val = np.log10(sum(window)/width)
+        all_avg.append(val)
 
-    return all_avg
+        if heap[0] < -val:
+            heapq.heappushpop(heap, -val)
+            heapq.heappushpop(positions, i)
+
+    res = dict(zip(positions, heap))
+    return res, all_avg

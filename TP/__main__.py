@@ -4,6 +4,7 @@ import numpy as np
 from typing import Dict, List
 from time import time
 from collections import Counter
+import os, json
 
 import TP.km_stats as km_stats
 import TP.display as disp
@@ -60,7 +61,7 @@ def compute_kmer(folder : str, k : int):
         kmer_split_list = np.array_split(*kmers_list, threshold)
         dico = dict(zip([f"{sample}_{i}" for i in range(threshold)], kmer_split_list))
 
-        yield dico, kmers_list[0]
+        yield dico, kmers_list[0], sample
 
 
 def compute_jaccard(dico : Dict[str, List[int]]):
@@ -82,9 +83,14 @@ def compute_jaccard(dico : Dict[str, List[int]]):
 
 if __name__ == "__main__":
     k = 8
-    folder = "toy_transfer"
+    folder = "data_test"
     st = time()
-    for dico_strain, kmers_list in compute_kmer(folder, k):
+
+    out_dic = {}
+    dir_path = '\\'.join(os.path.dirname(os.path.realpath(__file__)).split('\\')[:-1])
+
+    
+    for dico_strain, kmers_list, sample in compute_kmer(folder, k):
         liste_jac = compute_jaccard(dico_strain)
         df = km_stats.load_as_matrix(liste_jac)
 
@@ -93,8 +99,11 @@ if __name__ == "__main__":
 
         #disp.display_appearance_freq(dico_km)
 
-        freq_avg_km = km_stats.window_slider(kmers_list, freq_dico_km)
+        hits, freq_avg_km = km_stats.window_slider(kmers_list, freq_dico_km)
         print(round((time()-st)))
 
-        disp.display_freq(freq_avg_km)
+        out_dic[sample] = hits
 
+    
+    with open(os.path.join(dir_path,"transfer_summary.json"), 'w') as outjson:
+        json.dump(out_dic, outjson)
