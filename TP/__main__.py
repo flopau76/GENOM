@@ -1,9 +1,12 @@
-from TP.loading import load_directory, load_directory_as_pointers
-from TP.kmers import stream_kmers, stream_kmers_file
+from TP.loading import load_directory_as_pointers
+from TP.kmers import stream_kmers_file
 import numpy as np
 from typing import Dict, List
+from time import time
+from collections import Counter
 
-from TP.km_stats import load_as_matrix
+import TP.km_stats as km_stats
+import TP.display as disp
 
 def dict_intersection(dictA, dictB):
     """ Computes the intersection of two dictionaries
@@ -50,13 +53,15 @@ def compute_kmer(folder : str, k : int):
         size = len(file_pointer.read())
         file_pointer.seek(0)
 
-        threshold = 50#round(np.log2(size))
+        threshold = round(np.log2(size))
+        
         kmers_list.append(list(stream_kmers_file(file_pointer, k)))
 
         kmer_split_list = np.array_split(*kmers_list, threshold)
         dico = dict(zip([f"{sample}_{i}" for i in range(threshold)], kmer_split_list))
 
-        yield dico, threshold
+        yield dico, kmers_list[0]
+
 
 def compute_jaccard(dico : Dict[str, List[int]]):
     # Computing the Jaccard index
@@ -74,13 +79,22 @@ def compute_jaccard(dico : Dict[str, List[int]]):
 
     return list_tuple_jac
 
-# Faire rapport statistic global 
 
 if __name__ == "__main__":
     k = 8
-    folder = "data_test"
-
-    for dico_strain, threshold in compute_kmer(folder, k):
+    folder = "toy_transfer"
+    st = time()
+    for dico_strain, kmers_list in compute_kmer(folder, k):
         liste_jac = compute_jaccard(dico_strain)
-        print(load_as_matrix(liste_jac, threshold))
-        break
+        df = km_stats.load_as_matrix(liste_jac)
+
+        dico_km = Counter(kmers_list)
+        freq_dico_km = {key:n/sum(list(dico_km.values())) for key, n in Counter(kmers_list).items()}
+
+        #disp.display_appearance_freq(dico_km)
+
+        freq_avg_km = km_stats.window_slider(kmers_list, freq_dico_km)
+        print(round((time()-st)))
+
+        disp.display_freq(freq_avg_km)
+
