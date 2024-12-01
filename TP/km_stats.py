@@ -39,22 +39,20 @@ def whole_genome_signature(kmers_list : list) -> Counter :
     return Counter(kmers_list)
 
 
-def window_slider(kmers_list : list[int], signature_km_freq : dict, width : int = 200) -> float:
-    heap = [0 for _ in range(round(np.log2(len(kmers_list))))]
-    positions = [0 for _ in range(len(heap))]
+def window_slider(kmers_list : list[int], signature_km_freq : dict, width : int = 2000, heap_size : int = 50) -> float:
+    heap = [(0, 0) for _ in range(heap_size)]
     window = deque([signature_km_freq[i] for i in kmers_list[0:width]])
-    all_avg = [np.log10(sum(window)/width)]
+    all_avg = [-np.log10(sum(window)/width)]
 
+    last_add = 0
     for i in range(width,len(kmers_list)-width+1):
         window.popleft()
         window.append(signature_km_freq[kmers_list[i]])
 
-        val = np.log10(sum(window)/width)
+        val = -np.log10(sum(window)/width)
         all_avg.append(val)
 
-        if heap[0] < -val:
-            heapq.heappushpop(heap, -val)
-            heapq.heappushpop(positions, i)
+        heapq.heappushpop(heap, (val, i))
 
-    res = dict(zip(positions, heap))
+    res = {key:val for val, key in heap}
     return res, all_avg

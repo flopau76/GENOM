@@ -84,26 +84,30 @@ def compute_jaccard(dico : Dict[str, List[int]]):
 if __name__ == "__main__":
     k = 8
     folder = "data_test"
-    st = time()
-
+    
+    time_ = []
     out_dic = {}
     dir_path = '\\'.join(os.path.dirname(os.path.realpath(__file__)).split('\\')[:-1])
 
     
     for dico_strain, kmers_list, sample in compute_kmer(folder, k):
+        st = time()
         liste_jac = compute_jaccard(dico_strain)
         df = km_stats.load_as_matrix(liste_jac)
 
+        print("  Starting frequence profile comparison")
         dico_km = Counter(kmers_list)
         freq_dico_km = {key:n/sum(list(dico_km.values())) for key, n in Counter(kmers_list).items()}
 
-        #disp.display_appearance_freq(dico_km)
-
         hits, freq_avg_km = km_stats.window_slider(kmers_list, freq_dico_km)
-        print(round((time()-st)))
+        time_.append(time()-st)
 
         out_dic[sample] = hits
+        #disp.display_freq(freq_avg_km)
 
-    
     with open(os.path.join(dir_path,"transfer_summary.json"), 'w') as outjson:
         json.dump(out_dic, outjson)
+    
+    print("Average runtime per genome", np.average(time_[1:]))
+    print("Total Runtime", round(sum(time()-st)))
+    
