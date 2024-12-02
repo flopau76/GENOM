@@ -1,0 +1,78 @@
+<p><!--
+QBlastInfoBegin
+	Status=READY
+QBlastInfoEnd
+--><p>
+<PRE>
+
+BLASTN 2.16.1+
+Reference: Stephen F. Altschul, Thomas L. Madden, Alejandro
+A. Schaffer, Jinghui Zhang, Zheng Zhang, Webb Miller, and
+David J. Lipman (1997), "Gapped BLAST and PSI-BLAST: a new
+generation of protein database search programs", Nucleic
+Acids Res. 25:3389-3402.
+
+
+RID: MSXB6CSJ016
+
+
+Database: Core nucleotide BLAST database
+           110,962,326 sequences; 815,054,304,494 total letters
+Query= 
+Length=2130
+
+
+                                                                   Score     E     Max
+Sequences producing significant alignments:                       (Bits)  Value  Ident
+
+CP001472.1 Acidobacterium capsulatum ATCC 51196, complete genome   3836    0.0    100%      
+CP085323.1 Acidobacteriaceae bacterium ZG23-2 chromosome, comp...  1477    0.0    89%       
+CP030840.1 Acidisarcina polymorpha strain SBC82 chromosome, co...  1365    0.0    86%       
+NR_076636.1 Acidobacterium capsulatum strain 161 23S ribosomal...  1331    0.0    100%      
+OY843586.1 Acidobacteriaceae bacterium isolate 6f8c9a11-1c30-4...  1321    0.0    85%       
+AM180893.1 Acidobacterium capsulatum partial 23S rRNA gene, st...  1306    0.0    99%       
+CP060394.1 Alloacidobacterium dinghuense strain 4Y35 chromosom...  1261    0.0    95%       
+CP121196.1 Telmatobacter sp. DSM 110680 chromosome, complete g...  1246    0.0    96%       
+CP093313.1 Occallatibacter riparius strain DSM 25168 chromosom...  1232    0.0    96%       
+CP042596.1 Granulicella sp. WH15 chromosome, complete genome       1196    0.0    94%       
+CP003130.1 Granulicella mallensis MP5ACTX8 chromosome, complet...  1169    0.0    93%       
+CP048114.1 Edaphobacter sp. 12200R-103 chromosome, complete ge...  1169    0.0    93%       
+OY843766.1 uncultured Granulicella sp. isolate e6d70442-04f8-4...  1165    0.0    93%       
+CP046444.1 Granulicella sp. 5B5 chromosome, complete genome        1165    0.0    93%       
+CP060393.1 Edaphobacter sp. 4G125 chromosome, complete genome      1165    0.0    93%       
+CP121195.1 Edaphobacter paludis strain DSM 109920 chromosome, ...  1164    0.0    93%       
+CP121194.1 Edaphobacter paludis strain DSM 109919 chromosome, ...  1164    0.0    93%       
+CP002467.1 Terriglobus saanensis SP1PR4, complete genome           1160    0.0    93%       
+GU260699.1 Uncultured bacterium 282 genomic sequence               1159    0.0    93%       
+CP073697.1 Edaphobacter flagellatus strain HZ411 chromosome, c...  1157    0.0    93%       
+CP002480.1 Granulicella tundricola MP5ACTX9, complete genome       1156    0.0    93%       
+OY843601.1 uncultured Granulicella sp. isolate 3a57bfe8-2853-4...  1151    0.0    93%       
+CP132938.1 Tunturibacter gelidoferens strain M8UP39 chromosome     1150    0.0    93%       
+CP132942.1 Tunturibacter psychrotolerans strain X5P6 chromosome    1150    0.0    92%       
+CP073696.1 Edaphobacter lichenicola strain DSM 104462 chromoso...  1145    0.0    92%       
+NR_076933.1 Granulicella mallensis strain MP5ACTX8 23S ribosom...  1143    0.0    93%       
+OZ196148.1 uncultured Granulicella sp. isolate 9057d4d9-b77b-4...  1142    0.0    93%       
+CP042806.1 Terriglobus albidus strain ORNL chromosome, complet...  1141    0.0    93%       
+CP132932.1 Tunturibacter empetritectus strain M8UP23 chromosome    1137    0.0    92%       
+OY843771.1 uncultured Granulicella sp. isolate 41850050-34d7-4...  1133    0.0    92%       
+NR_076837.1 Terriglobus saanensis strain SP1PR4 23S ribosomal ...  1132    0.0    93%       
+NR_076839.1 Granulicella tundricola strain MP5ACTX9 23S riboso...  1126    0.0    93%       
+GU260714.1 Uncultured bacterium 162 genomic sequence               1125    0.0    92%       
+OZ196157.1 uncultured Granulicella sp. isolate 532c3363-cb9a-4...  1124    0.0    92%       
+LT629690.1 Terriglobus roseus strain GAS232 genome assembly, c...  1122    0.0    92%       
+CP003379.1 Terriglobus roseus DSM 18391, complete genome           1116    0.0    92%       
+CP000360.1 Candidatus Koribacter versatilis Ellin345, complete...  1083    0.0    91%       
+NR_076424.1 Candidatus Koribacter versatilis strain Ellin345 2...  1068    0.0    91%       
+GU260703.1 Uncultured bacterium 246 genomic sequence               1027    0.0    89%       
+OY764903.1 Bryobacteraceae bacterium isolate d7944118-f527-4ba...  925     0.0    87%       
+CP063849.1 Paludibaculum fermentans strain P105 chromosome, co...  902     0.0    86%       
+AP025252.1 Bryobacterales bacterium F-183 DNA, nearly complete...  891     0.0    86%       
+OY760650.2 Terriglobia bacterium isolate 5d79d33f-5ea2-468b-94...  881     0.0    86%       
+OY762429.1 Terriglobia bacterium isolate aa40cff0-ace7-4b53-80...  881     0.0    86%       
+OX638355.1 Terriglobia bacterium isolate 290eebee-5386-4bec-b8...  876     0.0    86%       
+NR_076103.1 Candidatus Solibacter usitatus strain Ellin6076 23...  871     0.0    86%       
+OY764148.2 Bryobacterales bacterium isolate b6043546-425d-4966...  862     0.0    86%       
+GU260698.1 Uncultured bacterium 293 genomic sequence               842     0.0    85%       
+OY761158.1 Thermoanaerobaculia bacterium isolate 1b26a83f-5f0d...  826     0.0    85%       
+AY281353.1 Uncultured Acidobacteria bacterium clone 32d1 genom...  812     0.0    84%       
+
