@@ -2,6 +2,7 @@ import numpy as np
 
 from typing import List, Dict, Tuple, Iterator
 from io import TextIOWrapper
+from .circularBuffer import CircularBuffer 
 
 def encode_nucl(letter:str) -> int:
     """ Encodes a nucleotide on two bits using the ascii code"""
@@ -85,10 +86,10 @@ def filter_smallest(iterator, s, hash=lambda x: x, lst=None):
     return np.sort(lst)
 
 def stream_slidinw_windows_kmers(stream:Iterator[int],l:int):
-    buffer = circular_buffer(first(l,stream))
-    yield circular_buffer_as_dict(buffer)
+    buffer = CircularBuffer(islice(stream,l))
+    yield list(stream_to_dict(buffer.buffer))
     for first in buffer:
-        last = buffer.circle(first)
+        last = buffer.peak()
         yield first,last
 
 def update_start(buffer_1:dict,buffer_2:dict,start:int)->Tuple[int,int]:
