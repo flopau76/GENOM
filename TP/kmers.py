@@ -84,6 +84,13 @@ def filter_smallest(iterator, s, hash=lambda x: x, lst=None):
             max_elmt = lst[max_id]
     return np.sort(lst)
 
+def stream_slidinw_windows_kmers(stream:Iterator[int],l:int):
+    buffer = circular_buffer(first(l,stream))
+    yield circular_buffer_as_dict(buffer)
+    for first in buffer:
+        last = buffer.circle(first)
+        yield first,last
+
 def update_start(buffer_1:dict,buffer_2:dict,start:int)->Tuple[int,int]:
     n1 =  buffer_1.get(start,0)
     buffer_1[start] = n1 + 1
@@ -110,11 +117,26 @@ def update(buffer_1:Dict[int,int],buffer_2:Dict[int,int],start:int,end:int)->Tup
     delta_union_1,delta_inter_1  = update_start(buffer_1,buffer_2,start)
     delta_union_2,delta_inter_2  = update_end(buffer_1,buffer_2,start)
     return delta_union_1 + delta_union_2 ,delta_inter_1 + delta_inter_2
-    
-def multiple_comparaison(a_stream:Iterator,b_stream:Iterator,a_start,b_start):
+
+def nb_union_inter(buffer_1:Dict[int,int],buffer_2:Dict[int,int],):
+    nb_union,nb_inter = 0,0
+    for k1 in buffer_1.keys():
+        if k1 in buffer_2.keys():
+            nb_union += max(buffer_1[k1],buffer_2[k1]) 
+            nb_inter += min(buffer_1[k1],buffer_2[k1]) 
+        else:
+            nb_union += buffer_1[k1]
+            nb_inter += buffer_1[k1]
+    for k2 in buffer_2.keys():
+        if k2 not in buffer_1.keys():
+            nb_union += buffer_1[k1]
+            nb_inter += buffer_1[k1]
+    return nb_union,nb_inter
+
+def multiple_comparaison(a_stream:Iterator,b_stream:Iterator):
     nb_union,nb_inter = nb_union_inter(a_start,b_start)
-    a_buffer = copy(a_start)
-    b_buffer = copy(b_start)
+    a_buffer = next(a_stream)
+    b_buffer = next(b_stream)
     yield (nb_union,nb_inter)
     for a_s,a_e in a_stream:
         delta_union, delta_inter = update(a_buffer,b_buffer,a_s,a_e)
