@@ -5,7 +5,7 @@ from typing import List
 
 
 def blast_seq(transfer_elt : HorizontalTransfer) -> str:
-    result_handle = NCBIWWW.qblast("blastn", "nt", transfer_elt.seq, format_type="Text")
+    result_handle = NCBIWWW.qblast("blastn", "nt", transfer_elt.seq, format_type="Text", )
     text = result_handle.read().split("ALIGNMENTS")[0]
     return text
 
