@@ -3,6 +3,7 @@ import numpy as np
 from typing import List, Dict, Tuple, Iterator
 from io import TextIOWrapper
 from .circularBuffer import CircularBuffer 
+from itertools import islice
 
 def encode_nucl(letter:str) -> int:
     """ Encodes a nucleotide on two bits using the ascii code"""
@@ -85,66 +86,60 @@ def filter_smallest(iterator, s, hash=lambda x: x, lst=None):
             max_elmt = lst[max_id]
     return np.sort(lst)
 
-def stream_slidinw_windows_kmers(stream:Iterator[int],l:int):
+def stream_sliding_windows_kmers(stream:Iterator[int],l:int):
     buffer = CircularBuffer(islice(stream,l))
-    yield list(stream_to_dict(buffer.buffer))
-    for first in buffer:
-        last = buffer.peak()
+    yield stream_to_dict(buffer.buffer)
+    for first in stream:
+        last = buffer.peek()
+        buffer.enqueue(first)
         yield first,last
 
 def update_start(buffer_1:dict,buffer_2:dict,start:int)->Tuple[int,int]:
     n1 =  buffer_1.get(start,0)
     buffer_1[start] = n1 + 1
-    if n1 >= buffer_2[start]:
-        return 1,0
+    if n1 >= buffer_2.get(start,0):
+        return 0
     else:
-        return 0,1
+        return 1
 
 def update_end(buffer_1:Dict[int,int],buffer_2:Dict[int,int],end:int)->Tuple[int,int]:
     n1 =  buffer_1.get(end,0)
     if n1 == 0:
         error(f"removing a non existing kmer {end}")
     elif n1 == 1:
-        del buffer[end]
+        del buffer_1[end]
     else:
         buffer_1[end] = n1 - 1
 
-    if n1 > buffer_2[start]:
-        return -1,0
+    if n1 > buffer_2.get(end,0):
+        return 0
     else:
-        return 0,-1
+        return -1
 
 def update(buffer_1:Dict[int,int],buffer_2:Dict[int,int],start:int,end:int)->Tuple[int,int]:
-    delta_union_1,delta_inter_1  = update_start(buffer_1,buffer_2,start)
-    delta_union_2,delta_inter_2  = update_end(buffer_1,buffer_2,start)
-    return delta_union_1 + delta_union_2 ,delta_inter_1 + delta_inter_2
+    delta_inter_1  = update_start(buffer_1,buffer_2,start)
+    delta_inter_2  = update_end(buffer_1,buffer_2,end)
+    return delta_inter_1 + delta_inter_2
 
-def nb_union_inter(buffer_1:Dict[int,int],buffer_2:Dict[int,int],):
-    nb_union,nb_inter = 0,0
+def nb_union_inter(buffer_1:Dict[int,int],buffer_2:Dict[int,int]):
+    nb_inter = 0
     for k1 in buffer_1.keys():
         if k1 in buffer_2.keys():
-            nb_union += max(buffer_1[k1],buffer_2[k1]) 
             nb_inter += min(buffer_1[k1],buffer_2[k1]) 
-        else:
-            nb_union += buffer_1[k1]
-            nb_inter += buffer_1[k1]
-    for k2 in buffer_2.keys():
-        if k2 not in buffer_1.keys():
-            nb_union += buffer_1[k1]
-            nb_inter += buffer_1[k1]
-    return nb_union,nb_inter
+    return nb_inter
 
 def multiple_comparaison(a_stream:Iterator,b_stream:Iterator):
-    nb_union,nb_inter = nb_union_inter(a_start,b_start)
     a_buffer = next(a_stream)
     b_buffer = next(b_stream)
-    yield (nb_union,nb_inter)
+    nb_inter = nb_union_inter(a_buffer,b_buffer)
+    yield nb_inter
     for a_s,a_e in a_stream:
-        delta_union, delta_inter = update(a_buffer,b_buffer,a_s,a_e)
-        nb_union += delta_union
-        nb_inter += delta_inter
+        nb_inter += update(a_buffer,b_buffer,a_s,a_e)
         for b_s,b_e in b_stream:
-            delta_union,delta_inter = update(b_buffer,a_buffer,b_s,b_e)
-            nb_union += delta_union
-            nb_inter += delta_inter
-            yield (nb_union,nb_inter)
+            nb_inter += update(b_buffer,a_buffer,b_s,b_e)
+            yield nb_inter
+
+def list_intersection_fast(seq_a,seq_b,k:int,l:int):
+    return list(multiple_comparaison(
+            stream_sliding_windows_kmers(stream_kmers_file(seq_a,k),l),
+            stream_sliding_windows_kmers(stream_kmers_file(seq_b,k),l)))

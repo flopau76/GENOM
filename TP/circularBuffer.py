@@ -18,7 +18,7 @@ class CircularBuffer:
         Add an item to the buffer.      
         :param item: Element to be added
         """
-        self.buffer[self.head] = ret
+        self.buffer[self.head] = item
         self.head = (self.head +1)%len(self)
 
     def peek(self):
@@ -35,7 +35,7 @@ class CircularBuffer:
         
         :return: Current size of the buffer
         """
-        return len(self.elements)
+        return len(self.buffer)
 
     def __str__(self):
         """

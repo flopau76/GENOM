@@ -1,10 +1,11 @@
-from TP.loading import load_directory_as_pointers
-from TP.kmers import stream_kmers_file
+from TP.loading import load_directory_as_pointers,iter_directory,open_genome
+from TP.kmers import stream_kmers_file,list_intersection_fast
 import numpy as np
 from typing import Dict, List
 from time import time
 from collections import Counter
 import os, json
+from itertools import product
 
 import TP.km_stats as km_stats
 import TP.display as disp
@@ -72,7 +73,7 @@ def compute_jaccard(dico : Dict[str, List[int]]):
 
     for i in range(len(filenames)):
         for j in range(i+1, len(filenames)):
-            intersection = list_intersection(sorted(dico[filenames[i]].tolist()), sorted(dico[filenames[j]].tolist()))
+            intersection = list_intersection(sorted(dico[filenames[i]].tolist()), sorted(dico[filenames[j]].tolist()),k=8,l=16)
             dist_j = intersection / (len(dico[filenames[i]]) + len(dico[filenames[j]]) - intersection)
             #print(f"{'==='*20}\n{filenames[i]} | {filenames[j]} | {dist_j}")
 
@@ -83,11 +84,12 @@ def compute_jaccard(dico : Dict[str, List[int]]):
 
 if __name__ == "__main__1":
     k = 8
-    folder = "data_test"
+    folder = "toy_transfer"
     
     time_ = []
     out_dic = {}
-    dir_path = '\\'.join(os.path.dirname(os.path.realpath(__file__)).split('\\')[:-1])
+    dir_path = os.path.dirname(os.path.realpath(__file__)).split('/')[:-1]
+    dir_path = '/'.join(dir_path)
 
     
     for dico_strain, kmers_list, sample in compute_kmer(folder, k):
@@ -110,3 +112,19 @@ if __name__ == "__main__1":
     
     print("Average runtime per genome", np.average(time_[1:]))
     print("Total Runtime", round(sum(time()-st)))
+
+if __name__ == "__main__":
+    k = 2
+    l = 128
+    folder = "toy_transfer"
+    
+    dir_path = os.path.dirname(os.path.realpath(__file__)).split('/')[:-1]
+    dir_path = '/'.join(dir_path)
+
+    
+    for name_a,name_b in product(iter_directory(folder),iter_directory(folder)):
+        with open_genome(name_a) as file_a,open_genome(name_b) as file_b:
+            for inter in list_intersection_fast(file_a,file_b,k,l):
+                print(inter)
+                input()
+
