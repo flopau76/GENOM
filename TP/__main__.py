@@ -87,7 +87,8 @@ if __name__ == "__main__1":
     
     time_ = []
     out_dic = {}
-    dir_path = '\\'.join(os.path.dirname(os.path.realpath(__file__)).split('\\')[:-1])
+    # dir_path = '\\'.join(os.path.dirname(os.path.realpath(__file__)).split('\\')[:-1])
+    dir_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
     
     for dico_strain, kmers_list, sample in compute_kmer(folder, k):
