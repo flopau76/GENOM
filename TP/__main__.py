@@ -81,7 +81,7 @@ def compute_jaccard(dico : Dict[str, List[int]]):
     return list_tuple_jac
 
 
-if __name__ == "__main__":
+if __name__ == "__main__1":
     k = 8
     folder = "data_test"
     
