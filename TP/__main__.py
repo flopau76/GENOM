@@ -1,113 +1,51 @@
 from TP.loading import load_directory_as_pointers
 from TP.kmers import stream_kmers_file
+import TP.signatures as signatures
 import numpy as np
-from typing import Dict, List
+import matplotlib.pyplot as plt
 from time import time
 from collections import Counter
 import os, json
 
-import TP.km_stats as km_stats
-import TP.display as disp
-
-def dict_intersection(dictA, dictB):
-    """ Computes the intersection of two dictionaries
-    :param dict dictA, dictB: dictionaries to compare"""
-    intersection = 0
-    for key, val in dictA:
-        intersection += min(val, dictB.get(key, 0))
-    return intersection
-
-def list_intersection(listA, listB):
-    """ Computes the intersection of two sorted lists
-    :param np.array listA, listB: sorted np.array to compare"""
-    intersection = 0
-    idxA = 0
-    idxB = 0
-    while idxA < len(listA) and idxB < len(listB):
-        if listA[idxA] == listB[idxB]:
-            intersection += 1
-            idxA += 1
-            idxB += 1
-        elif listA[idxA] < listB[idxB]:
-            idxA += 1
-        else:
-            idxB += 1
-    return intersection
-
-def xorshift(val):
-    """ Hash function using the xorshift algorithm """
-    val ^= val << 13
-    val &= 0xFFFFFFFFFFFFFFFF
-    val ^= val >> 7
-    val ^= val << 17
-    val &= 0xFFFFFFFFFFFFFFFF
-    return val
-
-def compute_kmer(folder : str, k : int):
-    # Computing the kmers
-    print("  Computing the kmers")
-    for sample, file_pointer in load_directory_as_pointers(folder):
-        kmers_list = []
-        dico = {}
-
-        print("Processing", sample)
-        size = len(file_pointer.read())
-        file_pointer.seek(0)
-
-        threshold = round(np.log2(size))
-        
-        kmers_list.append(list(stream_kmers_file(file_pointer, k)))
-
-        kmer_split_list = np.array_split(*kmers_list, threshold)
-        dico = dict(zip([f"{sample}_{i}" for i in range(threshold)], kmer_split_list))
-
-        yield dico, kmers_list[0], sample
+from typing import Dict, List
 
 
-def compute_jaccard(dico : Dict[str, List[int]]):
-    # Computing the Jaccard index
-    print("  Computing the pairwise similarities")
-    filenames = list(dico.keys())
-    list_tuple_jac = []
-
-    for i in range(len(filenames)):
-        for j in range(i+1, len(filenames)):
-            intersection = list_intersection(sorted(dico[filenames[i]].tolist()), sorted(dico[filenames[j]].tolist()))
-            dist_j = intersection / (len(dico[filenames[i]]) + len(dico[filenames[j]]) - intersection)
-            #print(f"{'==='*20}\n{filenames[i]} | {filenames[j]} | {dist_j}")
-
-            list_tuple_jac.append((filenames[i], filenames[j], dist_j))
-
-    return list_tuple_jac
-
-
-if __name__ == "__main1__":
+if __name__ == "__main__":
     k = 8
-    folder = "data_test"
+    input_folder = "data_test"
+    output_path = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), f"transfer_summary_{input_folder}.json")
     
-    time_ = []
-    out_dic = {}
-    dir_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+    nb_hits = 10
+    best_hits = {}
 
-    
-    for dico_strain, kmers_list, sample in compute_kmer(folder, k):
-        st = time()
-        liste_jac = compute_jaccard(dico_strain)
-        df = km_stats.load_as_matrix(liste_jac)
+    for sample, file_pointer in  load_directory_as_pointers(input_folder):
+        start = time()
+        print("Processing sample ", sample)
+        print("    Computing the list of kmers")
+        kmers_list = list(stream_kmers_file(file_pointer, k))
 
-        print("  Starting frequence profile comparison")
-        dico_km = Counter(kmers_list)
-        freq_dico_km = {key:n/sum(list(dico_km.values())) for key, n in Counter(kmers_list).items()}
+        print("    Starting frequence profile comparison")
+        kmers_count = Counter(kmers_list)
+        kmers_freq = {kmer:count/len(kmers_list) for kmer, count in kmers_count.items()}
 
-        hits, freq_avg_km = km_stats.window_slider(kmers_list, freq_dico_km)
-        time_.append(time()-st)
+        window_average_values = signatures.window_slider_average(kmers_list, kmers_freq)
+        window_distance = signatures.window_slider_euclidean_distance(kmers_list, kmers_freq, window_size=2000)
 
-        out_dic[sample] = hits
-        #disp.display_freq(freq_avg_km)
+        # Get the nb_hits highest values of the window_distance array along with their indices
+        # TODO: a pick spreads over several sliding windows. Instead, we should only look at local maxima
+        highest_values_indices = np.argpartition(-window_distance, nb_hits)[:nb_hits]
+        highest_values = window_distance[highest_values_indices]
+        best_hits[sample] = {int(idx):val for idx, val in zip(highest_values_indices, highest_values)}
+        print("    Done in ", round(time()-start, 4), "s")
 
-    with open(os.path.join(dir_path,"transfer_summary_test.json"), 'w') as outjson:
-        json.dump(out_dic, outjson)
-    
-    print("Average runtime per genome", np.average(time_[1:]))
-    print("Total Runtime", round(sum(time()-st)))
-    
+    #     fig, ax = plt.subplots()
+    #     ax.plot(window_distance)
+    #     ax.set_title("Sample "+sample)
+    #     ax.set_xlabel("Window start index")
+    #     ax.set_ylabel("Average kmer frequency")
+    #     plt.show(block=False)
+    #     plt.waitforbuttonpress(timeout=2)
+    # plt.waitforbuttonpress()
+
+    with open(output_path, 'w') as outjson:
+        json.dump(best_hits, outjson)

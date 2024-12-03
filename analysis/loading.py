@@ -25,7 +25,7 @@ def serialize_files(dir_path : str,
     strain_dico = load_json(json_path)
 
     for strain, position_dico in strain_dico.items():
-        directory = os.path.join(dir_path, f"db\\{strain}")
+        directory = os.path.join(dir_path, f"data/{strain}")
         file = os.listdir(directory)[0]
         for seq in SeqIO.parse(os.path.join(directory, file), 'fasta'):
             list_transfer = []
