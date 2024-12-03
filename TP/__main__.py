@@ -105,9 +105,10 @@ if __name__ == "__main__":
         out_dic[sample] = hits
         #disp.display_freq(freq_avg_km)
 
+
     with open(os.path.join(dir_path,"transfer_summary.json"), 'w') as outjson:
         json.dump(out_dic, outjson)
     
-    print("Average runtime per genome", np.average(time_[1:]))
-    print("Total Runtime", round(sum(time()-st)))
+    print("Average runtime per genome", np.average(time_))
+    print("Total Runtime", round(time()-st))
     

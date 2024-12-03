@@ -43,13 +43,15 @@ def window_slider(kmers_list : list[int], signature_km_freq : dict, width : int 
     heap = [(0, 0) for _ in range(heap_size)]
     window = deque([signature_km_freq[i] for i in kmers_list[0:width]])
     all_avg = [-np.log10(sum(window)/width)]
+    tot = sum(window)
 
-    last_add = 0
     for i in range(width,len(kmers_list)-width+1):
-        window.popleft()
-        window.append(signature_km_freq[kmers_list[i]])
+        new = signature_km_freq[kmers_list[i]] 
+        tot -= window.popleft()
+        tot += new
+        window.append(new)
 
-        val = -np.log10(sum(window)/width)
+        val = -np.log10(tot/width)
         all_avg.append(val)
 
         heapq.heappushpop(heap, (val, i))
