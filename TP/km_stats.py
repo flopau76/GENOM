@@ -55,6 +55,6 @@ def window_slider(kmers_list : list[int], signature_km_freq : dict, width : int 
         all_avg.append(val)
 
         heapq.heappushpop(heap, (val, i))
-
+    
     res = {key:val for val, key in heap}
     return res, all_avg

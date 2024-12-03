@@ -47,22 +47,8 @@ def compute_kmer(folder : str, k : int):
     # Computing the kmers
     print("  Computing the kmers")
     for sample, file_pointer in load_directory_as_pointers(folder):
-        kmers_list = []
-        dico = {}
-
-        print("Processing", sample)
-        size = len(file_pointer.read())
-        file_pointer.seek(0)
-
-        threshold = round(np.log2(size))
-        
-        kmers_list.append(list(stream_kmers_file(file_pointer, k)))
-
-        kmer_split_list = np.array_split(*kmers_list, threshold)
-        dico = dict(zip([f"{sample}_{i}" for i in range(threshold)], kmer_split_list))
-
-        yield dico, kmers_list[0], sample
-
+        print("Processing", sample)        
+        yield sample, list(stream_kmers_file(file_pointer, k))
 
 def compute_jaccard(dico : Dict[str, List[int]]):
     # Computing the Jaccard index
@@ -81,23 +67,21 @@ def compute_jaccard(dico : Dict[str, List[int]]):
     return list_tuple_jac
 
 
-if __name__ == "__main__1":
+if __name__ == "__main__":
     k = 8
     folder = "data_test"
     
     time_ = []
     out_dic = {}
     dir_path = '\\'.join(os.path.dirname(os.path.realpath(__file__)).split('\\')[:-1])
-
     
-    for dico_strain, kmers_list, sample in compute_kmer(folder, k):
+    for sample, kmers_list in compute_kmer(folder, k):
         st = time()
-        liste_jac = compute_jaccard(dico_strain)
-        df = km_stats.load_as_matrix(liste_jac)
 
         print("  Starting frequence profile comparison")
         dico_km = Counter(kmers_list)
-        freq_dico_km = {key:n/sum(list(dico_km.values())) for key, n in Counter(kmers_list).items()}
+        somme = sum(dico_km.values())
+        freq_dico_km = {key:n/somme for key, n in dico_km.items()}
 
         hits, freq_avg_km = km_stats.window_slider(kmers_list, freq_dico_km)
         time_.append(time()-st)
