@@ -88,7 +88,7 @@ if __name__ == "__main__":
         time_.append(time()-st)
 
         out_dic[sample] = hits
-        #disp.display_freq(freq_avg_km)
+        disp.display_freq(freq_avg_km)
     
     with open(os.path.join(dir_path,"transfer_summary.json"), 'w') as outjson:
         json.dump(out_dic, outjson)

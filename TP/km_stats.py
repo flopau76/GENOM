@@ -40,7 +40,7 @@ def whole_genome_signature(kmers_list : list) -> Counter :
 
 
 def window_slider(kmers_list : list[int], signature_km_freq : dict, width : int = 2000, heap_size : int = 5) -> float:
-    heap = [(0, 0) for _ in range(heap_size)]
+    heap = [(0, 0)]*heap_size
     kmers_list = [signature_km_freq[i] for i in kmers_list]
 
     all_avg = -np.log10(np.convolve(kmers_list, np.ones(width), 'valid')/width)
