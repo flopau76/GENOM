@@ -16,3 +16,4 @@ dependencies:
       - biopython==1.84
       - bio==1.7.1
       - lxml==5.3.0
+      - scipy==1.14.1
