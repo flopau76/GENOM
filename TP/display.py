@@ -17,5 +17,6 @@ def display_freq(freq_km_avg : List[float], ax : plt.Axes = None):
     plt.xlabel("Window position")
     plt.ylabel("Average frequency")
     plt.title("Average kmer frequency in the window over the genome length")
-    plt.show()
+    plt.show(block=False)
+    plt.waitforbuttonpress(timeout=2)
     return 0

@@ -8,6 +8,7 @@ from collections import Counter
 from scipy.signal import find_peaks
 from time import time
 import os, json
+from typing import Dict, List
 
 import TP.km_stats as km_stats
 import TP.display as disp
@@ -70,7 +71,8 @@ def compute_jaccard(dico : Dict[str, List[int]]):
     return list_tuple_jac
 
 
-if __name__ == "__main__":
+if __name__ == "__main__1":
+    print("showing this one")
     k = 8
     folder = "data_test"
     
@@ -91,7 +93,9 @@ if __name__ == "__main__":
         time_.append(time()-st)
 
         out_dic[sample] = hits
+        
         disp.display_freq(freq_avg_km)
+        
     
     with open(os.path.join(dir_path,"transfer_summary.json"), 'w') as outjson:
         json.dump(out_dic, outjson)
@@ -119,8 +123,16 @@ if __name__ == "__main__":
         print("    Starting frequence profile comparison")
         kmers_count = Counter(kmers_list)
         kmers_freq = {kmer:count/len(kmers_list) for kmer, count in kmers_count.items()}
+        
+        st = time()
         window_distance = signatures.window_slider_distance(kmers_list, kmers_freq, window_size=window_size)
+        print("   L2 Done in ", round(time()-st, 4), "s")
 
+        st = time()
+        kldiv = signatures.KLdivergence(kmers_list, kmers_freq)
+        print("   KL divergencce Done in ", round(time()-st, 4), "s")
+
+        # disp.display_freq(kldiv)
         # kmers_rarity = {kmer:1/freq for kmer, freq in kmers_freq.items()}
         # window_average_rarity = signatures.window_slider_average(kmers_list, kmers_rarity, window_size)
 
@@ -138,15 +150,15 @@ if __name__ == "__main__":
         print("    Done in ", round(time()-start, 4), "s")
 
     #     # Plotting
-    #     fig, ax = plt.subplots()
-    #     ax.plot(window_distance)
-    #     ax.plot(highest_values_indices, highest_values, 'r*')
-    #     ax.set_title("Sample "+sample)
-    #     ax.set_xlabel("Window start index")
-    #     ax.set_ylabel("Distance between window and average signature")
-    #     plt.show(block=False)
-    #     plt.waitforbuttonpress(timeout=2)
-    # plt.waitforbuttonpress()
-
+        """fig, ax = plt.subplots()
+        ax.plot(window_distance)
+        ax.plot(highest_values_indices, highest_values, 'r*')
+        ax.set_title("Sample "+sample)
+        ax.set_xlabel("Window start index")
+        ax.set_ylabel("Distance between window and average signature")
+        plt.show(block=False)
+        plt.waitforbuttonpress(timeout=2)
+        plt.waitforbuttonpress()"""
+        
     with open(output_path, 'w') as outjson:
         json.dump(best_hits, outjson)
