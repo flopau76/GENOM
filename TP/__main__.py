@@ -1,5 +1,5 @@
 from TP.loading import load_directory_as_pointers,iter_directory,open_genome
-from TP.kmers import stream_kmers_file,list_intersection_fast
+from TP.kmers import stream_kmers_file,jackard_matrix_file
 import numpy as np
 from typing import Dict, List
 from time import time
@@ -114,17 +114,22 @@ if __name__ == "__main__1":
     print("Total Runtime", round(sum(time()-st)))
 
 if __name__ == "__main__":
-    k = 2
-    l = 128
+    k = 8
+    l = 256
     folder = "toy_transfer"
     
     dir_path = os.path.dirname(os.path.realpath(__file__)).split('/')[:-1]
     dir_path = '/'.join(dir_path)
 
     
-    for name_a,name_b in product(iter_directory(folder),iter_directory(folder)):
-        with open_genome(name_a) as file_a,open_genome(name_b) as file_b:
-            for inter in list_intersection_fast(file_a,file_b,k,l):
-                print(inter)
-                input()
-
+    for name_a in iter_directory(folder):
+        with open_genome(name_a) as file_a:
+            m = jackard_matrix_file(file_a,file_a,k,l)
+            print(m)
+    # for name_a,name_b in product(iter_directory(folder),iter_directory(folder)):
+        # if name_a > name_b:
+            # continue
+        # print(f"comparing {name_a} and {name_b}")
+    # with open_genome(name_a) as file_a,open_genome(name_b) as file_b:
+        # m = jackard_matrix_file(file_a,file_b,k,l)
+        # print(m)

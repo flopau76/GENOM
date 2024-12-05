@@ -4,14 +4,15 @@ from typing import List, Dict, Tuple, Iterator
 from io import TextIOWrapper
 from .circularBuffer import CircularBuffer 
 from itertools import islice
+from collections import Counter
 
 def encode_nucl(letter:str) -> int:
-    """ Encodes a nucleotide on two bits using the ascii code"""
+    """ Encodes a nucleotide on tko bits using the ascii code"""
     # encode = {'A': 0b00, 'C': 0b01, 'T': 0b10, 'G': 0b11}
     return (ord(letter) >> 1) & 0b11
 
 def encode_nucl_rev(letter:str) -> int:
-    """ Encodes the complementary of a nucleotide on two bits using the ascii code"""
+    """ Encodes the complementary of a nucleotide on tko bits using the ascii code"""
     return encode_nucl(letter) ^ 0b10
 
 def encode_kmer(seq:str, k:int) -> Tuple[int, int]:
@@ -39,10 +40,18 @@ def stream_kmers(file:List[str], k:int) -> Iterator[int]:
             rev_kmer |= encode_nucl_rev(seq[i+k]) << (2*(k-1))
             yield min(kmer, rev_kmer)
 
-def stream_kmers_file(file_pointer:TextIOWrapper, k:int) -> Iterator[int]:
+def genome_length(file_pointer) -> int:
+    sm = 0
+    file_pointer.seek(0)
+    for line in file_pointer:
+        if line[0] != '>':
+            sm += len(line.strip())
+    return sm
+def stream_kmers_file(file, k:int) -> Iterator[int]:
     """ Enumerates all canonical kmers present in a file """
     mask = (1 << (2*k)) - 1
-    for line in file_pointer:
+    file.seek(0)
+    for line in file:
         if line[0] == '>':
             kmer, rev_kmer = 0, 0
             len_kmer = 0
@@ -61,7 +70,7 @@ def stream_kmers_file(file_pointer:TextIOWrapper, k:int) -> Iterator[int]:
                     len_kmer = min(len_kmer, k)
                     if len_kmer == k:
                         yield min(kmer, rev_kmer)
-    file_pointer.close()
+# file_pointer.close()
 
 def stream_to_dict(iterator) -> Dict[int, int]:
     """ Converts a stream of kmers into a dictionary of counts """
@@ -72,7 +81,7 @@ def stream_to_dict(iterator) -> Dict[int, int]:
 
 def filter_smallest(iterator, s, hash=lambda x: x, lst=None):
     """ Filters the s smallest elements from an iterator, after applying a hash function.
-    If an array lst is provided, it will be updated instead of creating a new one.
+    If an array lst is provided, it kill be updated instead of creating a nek one.
     :return: sorted np.array of size s"""
     if lst is None:
         lst = np.full(s, 0xFFFFFFFFFFFFFFFF, dtype=np.uint64)
@@ -86,60 +95,90 @@ def filter_smallest(iterator, s, hash=lambda x: x, lst=None):
             max_elmt = lst[max_id]
     return np.sort(lst)
 
-def stream_sliding_windows_kmers(stream:Iterator[int],l:int):
-    buffer = CircularBuffer(islice(stream,l))
-    yield stream_to_dict(buffer.buffer)
-    for first in stream:
-        last = buffer.peek()
-        buffer.enqueue(first)
-        yield first,last
+def stream_sliding_windows_kmers(stream:Iterator,l:int):
+    initial_buffer = list(islice(stream,l))
+    if len(initial_buffer) < l:
+        raise Exception(f"genome is too small, got initial length {len(initial_buffer)} < {l}")
+    buffer = CircularBuffer(initial_buffer)
+    def iter():
+        for first in stream:
+            last = buffer.peek()
+            buffer.enqueue(first)
+            yield first,last
 
-def update_start(buffer_1:dict,buffer_2:dict,start:int)->Tuple[int,int]:
-    n1 =  buffer_1.get(start,0)
-    buffer_1[start] = n1 + 1
-    if n1 >= buffer_2.get(start,0):
+    buffer_dict = Counter(buffer.buffer)
+    # assert sum(buffer_dict.values()) == l
+    return buffer_dict,list(iter())
+
+def update_buffer(buffer:Counter,start:int,end:int)->Tuple[int,int]:
+    n= buffer.total()
+
+    buffer[start] += 1
+
+    nb_kmers_end = buffer[end]
+    if nb_kmers_end <= 0:
+        raise Exception(f"removing a non existing kmer {end}")
+    elif nb_kmers_end == 1:
+        # print(f"del buffer_1[{end}]")
+        del buffer[end]
+    else:
+        # print(f"decrement buffer_1[{end}] to {n1-1}")
+        buffer[end] = nb_kmers_end - 1
+    assert n == buffer.total(), f"{n} !={buffer.total()},{start},{end}"
+
+def delta_nb_inter(buffer_1:Dict[int,int],buffer_2:Dict[int,int],start:int,end:int)->Tuple[int,int]:
+    res = 0
+    print(">",start,end)
+    if start == end:
         return 0
-    else:
-        return 1
+    if buffer_1[start] <= buffer_2[start]:
+        res += 1
+        print("+",start)
+    if buffer_1[end] < buffer_2[end]:
+        res -= 1
+        print("-",end)
+    return res
 
-def update_end(buffer_1:Dict[int,int],buffer_2:Dict[int,int],end:int)->Tuple[int,int]:
-    n1 =  buffer_1.get(end,0)
-    if n1 == 0:
-        error(f"removing a non existing kmer {end}")
-    elif n1 == 1:
-        del buffer_1[end]
-    else:
-        buffer_1[end] = n1 - 1
+def update(buffer_1:Counter,buffer_2:Counter,start:int,end:int)->int:
+    update_buffer(buffer_1,start,end)
+    return delta_nb_inter(buffer_1,buffer_2,start,end)
 
-    if n1 > buffer_2.get(end,0):
-        return 0
-    else:
-        return -1
-
-def update(buffer_1:Dict[int,int],buffer_2:Dict[int,int],start:int,end:int)->Tuple[int,int]:
-    delta_inter_1  = update_start(buffer_1,buffer_2,start)
-    delta_inter_2  = update_end(buffer_1,buffer_2,end)
-    return delta_inter_1 + delta_inter_2
-
-def nb_union_inter(buffer_1:Dict[int,int],buffer_2:Dict[int,int]):
+def nb_intersections(buffer_1:Counter,buffer_2:Counter):
     nb_inter = 0
     for k1 in buffer_1.keys():
         if k1 in buffer_2.keys():
             nb_inter += min(buffer_1[k1],buffer_2[k1]) 
+    assert nb_inter <= buffer_1.total()
+    assert buffer_1.total() == buffer_2.total()
     return nb_inter
 
-def multiple_comparaison(a_stream:Iterator,b_stream:Iterator):
-    a_buffer = next(a_stream)
-    b_buffer = next(b_stream)
-    nb_inter = nb_union_inter(a_buffer,b_buffer)
-    yield nb_inter
-    for a_s,a_e in a_stream:
-        nb_inter += update(a_buffer,b_buffer,a_s,a_e)
-        for b_s,b_e in b_stream:
-            nb_inter += update(b_buffer,a_buffer,b_s,b_e)
+def multiple_comparaison(sliding_window_a:Tuple[Counter,List],sliding_window_b:Tuple[Counter,List])->Iterator[int]:
+    window_a,a_stream = sliding_window_a
+    for start_a,end_a in a_stream:
+        window_b,b_stream = sliding_window_b
+        nb_inter = nb_intersections(window_a,window_b)
+        for start_b,end_b in b_stream:
+            print(nb_inter)
             yield nb_inter
+            nb_inter += update(window_b,window_a,start_b,end_b)
+            assert nb_inter >= 0
+            assert nb_inter == nb_intersections(window_a,window_b), f"got {nb_inter} instead of {nb_intersections(window_a,window_b)}\n {window_a}\n {window_b}"
+        nb_inter += update(window_a,window_b,start_a,end_a)
+        # assert nb_inter == nb_union_inter(window_a,window_b)
+        assert nb_inter >= 0
 
-def list_intersection_fast(seq_a,seq_b,k:int,l:int):
-    return list(multiple_comparaison(
-            stream_sliding_windows_kmers(stream_kmers_file(seq_a,k),l),
-            stream_sliding_windows_kmers(stream_kmers_file(seq_b,k),l)))
+def iter_local_intersections(seq_a:TextIOWrapper,seq_b:TextIOWrapper,k:int,l:int):
+    kmers_a = list(stream_kmers_file(seq_a,k))
+    kmers_b = list(stream_kmers_file(seq_b,k))
+    return multiple_comparaison(
+            stream_sliding_windows_kmers(kmers_a,l),
+            stream_sliding_windows_kmers(kmers_b,l)
+    )
+
+def jackard_matrix_file(seq_a:TextIOWrapper,seq_b:TextIOWrapper,k:int,l:int):
+    """return the jackard distance for all windows of k-mers of size l."""
+    len_a = genome_length(seq_a)
+    len_b = genome_length(seq_b)
+    intersections = np.fromiter(iter_local_intersections(seq_a,seq_b,k,l),dtype = np.int64).reshape((len_a-k+1,len_b-k+1))
+    assert (intersections <= l).all()
+    return intersections / (2*l - intersections )

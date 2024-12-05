@@ -7,11 +7,12 @@ class CircularBuffer:
         :param elements: Optional initial list of elements to populate the buffer
         """
         elements = list(elements)
-        if len(elements)<= 0:
-            raise ValueError("Capacity must be a positive integer")
+        if len(elements)== 0:
+            raise ValueError("initial buffer must be non empty")
         
         self.buffer = elements[:]
         self.head = 0
+        self.len = len(self.buffer)
 
     def enqueue(self, item):
         """
@@ -19,7 +20,7 @@ class CircularBuffer:
         :param item: Element to be added
         """
         self.buffer[self.head] = item
-        self.head = (self.head +1)%len(self)
+        self.head = (self.head +1)%self.len
 
     def peek(self):
         """
@@ -35,7 +36,7 @@ class CircularBuffer:
         
         :return: Current size of the buffer
         """
-        return len(self.buffer)
+        return self.len
 
     def __str__(self):
         """
