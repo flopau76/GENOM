@@ -1,8 +1,13 @@
 import get_taxid
+from ribo_db_build import prepare_ribo_db
 
-import sys, os, subprocess
+import sys, os, subprocess, shutil
+from typing import Dict
 
-def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', printEnd = "\r"):
+def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', printEnd = "\r") -> None:
+    """
+    Show a progress bar indicating downloading progress
+    """
     percent = f'{round(100 * (iteration / float(total)), 1)}'
 
     add = int(100 * iteration // total)
@@ -12,17 +17,31 @@ def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', prin
     if iteration == total: 
         print()
 
-def getter(taxon, index):
+def getter(taxon : str, index : str, ribo_dir : str) -> None:
+    """
+    Run a subprocess to fetch the genome corresponding to the
+    accession number.
+    """
     test = subprocess.run(
             f'bio fetch {taxon} -t DNA -f fasta > "{index}/genome_{taxon}.fasta"',
             capture_output=True, shell=True
         )
+    subprocess.run(
+        f'bio fetch {taxon} -t DNA > "{ribo_dir}/ribosome_{taxon}.gb',
+            capture_output=True, shell=True
+    )
     return 0
 
-def load_taxid(taxon_file : str):
+def load_taxid(taxon_file : str) -> Dict[str, str]:
+    """
+    Load dictionnary associating a species name with its taxid
+    """
     return get_taxid.get_id(path=taxon_file)
 
-def generate_report(db_path : str, failed : list):
+def generate_report(db_path : str, failed : list) -> None:
+    """
+    Generates the downloading report.
+    """
     with open(os.path.join(db_path, "_failed.txt"), 'w') as fail_file:
         for elt in failed:
             fail_file.write(f"{elt}\n")
@@ -31,16 +50,22 @@ def generate_report(db_path : str, failed : list):
 
 def main(taxon_file, db):
     taxon_dico = load_taxid(taxon_file)
-    n = 0
+    n = 1
     e = 0
     failed = []
+    ribo_dir = os.path.join(db, 'ribo_db')
+
+    print("Starting database building...")
     for index, taxon in taxon_dico.items():
         enddir = os.path.join(db, f"{index}")
+        if index in os.listdir(db):
+            shutil.rmtree(enddir, ignore_errors=True, )
+            
         os.makedirs(enddir)
-        
+
         try :
             taxon = get_taxid.get_accession(taxon[0])
-            getter(taxon, enddir)
+            getter(taxon, enddir, ribo_dir)
             progressbar(n, len(taxon_dico))
 
             n+=1
@@ -50,6 +75,12 @@ def main(taxon_file, db):
             failed.append(index)
             os.rmdir(enddir)
     
+    print("Building Ribosomic sequence database")
+    if "ribo_db" in os.listdir(db):
+        print("  Existing database found. Will be overwritten.")
+        shutil.rmtree(ribo_dir, ignore_errors=True)
+    os.makedirs(ribo_dir)
+    prepare_ribo_db(ribo_dir)
     generate_report(db, failed)
     print(f"{len(taxon_dico)-e} taxa genomes download successful\n{e} failed to download or unavailable")
     return 0
