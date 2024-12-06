@@ -109,7 +109,7 @@ from typing import Dict, List
 if __name__ == "__main__":
     k = 8
     window_size = 2000
-    input_folder = "data_test"
+    input_folder = "toy_no_transfer"
     output_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", f"transfer_summary_{input_folder}.json")
 
     best_hits = {}
@@ -131,8 +131,11 @@ if __name__ == "__main__":
         st = time()
         kldiv = signatures.KLdivergence(kmers_list, kmers_freq)
         print("   KL divergencce Done in ", round(time()-st, 4), "s")
-
-        # disp.display_freq(kldiv)
+        disp.display_freq(kldiv)
+        
+        #kldiv2 = signatures.naive_KLdiv(kmers_list, kmers_freq)
+        #disp.display_freq(kldiv2)
+        
         # kmers_rarity = {kmer:1/freq for kmer, freq in kmers_freq.items()}
         # window_average_rarity = signatures.window_slider_average(kmers_list, kmers_rarity, window_size)
 

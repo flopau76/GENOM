@@ -3,7 +3,7 @@
 import numpy as np
 from collections import Counter
 from scipy.signal import find_peaks
-from scipy.spatial.distance import jensenshannon
+from scipy.special import kl_div
 
 from typing import Dict
 
@@ -37,6 +37,26 @@ def window_slider_distance(kmers_list:list[int], kmers_ref_freq:Dict[int,float],
         current_val += abs(diff_with_ref[kmers_list[i-window_size]])**p
         all_val.append(current_val)
     return np.power(np.array(all_val), 1/p)
+
+def naive_KLdiv(kmers_list:list[int], kmers_ref_freq:Dict[int,float], window_size:int=2000):
+    """
+    Naive implementation of the Kullback-Leibler divergence to check
+    output of the nlog(n) implementation.
+    ==> Results are identical
+    """
+    all_div = []
+    for i in range(0, len(kmers_list)-window_size+1):
+        print(i)
+        init_kmer_window = kmers_list[i:i+window_size]
+        kl = 0
+        for kmer in kmers_ref_freq.keys():
+            freq_in_window = init_kmer_window.count(kmer)/window_size
+            if freq_in_window > 0:
+                kl += -(kmers_ref_freq[kmer]*np.log2(freq_in_window/kmers_ref_freq[kmer]))
+        
+        all_div.append(kl)
+    return np.array(all_div)
+
 
 def KLdivergence(kmers_list:list[int], kmers_ref_freq:Dict[int,float], window_size:int=2000):
     """
