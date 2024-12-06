@@ -55,11 +55,12 @@ def main(taxon_file, db):
     failed = []
     ribo_dir = os.path.join(db, 'ribo_db')
 
-    print("Starting database building...")
+    os.makedirs(ribo_dir)
+
+    print("Starting Genomes Download...\n")
     for index, taxon in taxon_dico.items():
-        enddir = os.path.join(db, f"{index}")
-        if index in os.listdir(db):
-            shutil.rmtree(enddir, ignore_errors=True, )
+
+        enddir = os.path.join(db, f"{index.split('/')[0]}")
             
         os.makedirs(enddir)
 
@@ -75,14 +76,12 @@ def main(taxon_file, db):
             failed.append(index)
             os.rmdir(enddir)
     
-    print("Building Ribosomic sequence database")
-    if "ribo_db" in os.listdir(db):
-        print("  Existing database found. Will be overwritten.")
-        shutil.rmtree(ribo_dir, ignore_errors=True)
-    os.makedirs(ribo_dir)
-    prepare_ribo_db(ribo_dir)
+    print("\n   Building Ribosomic sequence database\n")
+    n = prepare_ribo_db(ribo_dir)
     generate_report(db, failed)
-    print(f"{len(taxon_dico)-e} taxa genomes download successful\n{e} failed to download or unavailable")
+
+    print(f"{len(taxon_dico)-e} taxa genomes download successful - {e} failed to download or unavailable\n")
+    print(f"{n} Ribosomal informations gathered - {len(taxon_dico)-e-n} failed to parse.")
     return 0
 
 if __name__ == '__main__':
