@@ -1,6 +1,9 @@
 from TP.loading import load_directory_as_pointers
 from TP.kmers import stream_kmers_file
+
 import TP.signatures as signatures
+import TP.km_stats as km_stats
+import TP.display as disp
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -8,10 +11,6 @@ from collections import Counter
 from scipy.signal import find_peaks
 from time import time
 import os, json
-from typing import Dict, List
-
-import TP.km_stats as km_stats
-import TP.display as disp
 
 def dict_intersection(dictA, dictB):
     """ Computes the intersection of two dictionaries
@@ -70,39 +69,6 @@ def compute_jaccard(dico : Dict[str, List[int]]):
 
     return list_tuple_jac
 
-
-if __name__ == "__main__1":
-    print("showing this one")
-    k = 8
-    folder = "data_test"
-    
-    time_ = []
-    out_dic = {}
-
-    dir_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-
-    for sample, kmers_list in compute_kmer(folder, k):
-        st = time()
-
-        print("  Starting frequence profile comparison")
-        dico_km = Counter(kmers_list)
-        somme = sum(dico_km.values())
-        freq_dico_km = {key:n/somme for key, n in dico_km.items()}
-
-        hits, freq_avg_km = km_stats.window_slider(kmers_list, freq_dico_km)
-        time_.append(time()-st)
-
-        out_dic[sample] = hits
-        
-        disp.display_freq(freq_avg_km)
-        
-    
-    with open(os.path.join(dir_path,"transfer_summary.json"), 'w') as outjson:
-        json.dump(out_dic, outjson)
-    
-    print("Average runtime per genome", np.average(time_))
-    print("Total Runtime", round(time()-st))
-    
 from typing import Dict, List
 
 
@@ -126,12 +92,12 @@ if __name__ == "__main__":
         
         st = time()
         window_distance = signatures.window_slider_distance(kmers_list, kmers_freq, window_size=window_size)
-        print("   L2 Done in ", round(time()-st, 4), "s")
+        print("   L2 done in ", round(time()-st, 4), "s")
 
         st = time()
-        kldiv = signatures.KLdivergence(kmers_list, kmers_freq)
-        print("   KL divergencce Done in ", round(time()-st, 4), "s")
-        disp.display_freq(kldiv)
+        window_kldiv = signatures.KLdivergence(kmers_list, kmers_freq)
+        print("   KL divergencce done in ", round(time()-st, 4), "s")
+        disp.display_windows(window_kldiv, ylabel="KL divergence", title="KL divergence for sample "+sample)
         
         #kldiv2 = signatures.naive_KLdiv(kmers_list, kmers_freq)
         #disp.display_freq(kldiv2)
@@ -152,16 +118,6 @@ if __name__ == "__main__":
 
         print("    Done in ", round(time()-start, 4), "s")
 
-    #     # Plotting
-        """fig, ax = plt.subplots()
-        ax.plot(window_distance)
-        ax.plot(highest_values_indices, highest_values, 'r*')
-        ax.set_title("Sample "+sample)
-        ax.set_xlabel("Window start index")
-        ax.set_ylabel("Distance between window and average signature")
-        plt.show(block=False)
-        plt.waitforbuttonpress(timeout=2)
-        plt.waitforbuttonpress()"""
-        
+    plt.waitforbuttonpress()
     with open(output_path, 'w') as outjson:
         json.dump(best_hits, outjson)

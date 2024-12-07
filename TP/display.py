@@ -1,22 +1,17 @@
 from matplotlib import pyplot as plt
 import seaborn as sns
 
-sns.set_theme()
-
 from typing import List
 
+sns.set_theme()
 
-def display_appearance_freq(dico_windows : dict, ax : plt.Axes = None):
-    plt.plot(list(range(0, len(dico_windows))), list(dico_windows.values()))
-    plt.xlabel("Key index")
-    plt.ylabel("kmer count in the genome")
-    return 0
-
-def display_freq(freq_km_avg : List[float], ax : plt.Axes = None):
-    plt.plot(list(range(0, len(freq_km_avg))), freq_km_avg)
+def display_windows(window_value:List[float], title:str=None, ylabel:str=None):
+    plt.plot(window_value)
     plt.xlabel("Window position")
-    plt.ylabel("Average frequency")
-    plt.title("Average kmer frequency in the window over the genome length")
+    if ylabel is not None:
+        plt.ylabel(ylabel)
+    if title is not None:
+        plt.title(title)
     plt.show(block=False)
     plt.waitforbuttonpress(timeout=2)
     return 0
