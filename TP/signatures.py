@@ -3,6 +3,7 @@
 import numpy as np
 from collections import Counter
 from scipy.signal import find_peaks
+from scipy.special import kl_div
 
 from typing import Dict
 
@@ -36,6 +37,61 @@ def window_slider_distance(kmers_list:list[int], kmers_ref_freq:Dict[int,float],
         current_val += abs(diff_with_ref[kmers_list[i-window_size]])**p
         all_val.append(current_val)
     return np.power(np.array(all_val), 1/p)
+
+def naive_KLdiv(kmers_list:list[int], kmers_ref_freq:Dict[int,float], window_size:int=2000):
+    """
+    Naive implementation of the Kullback-Leibler divergence to check
+    output of the nlog(n) implementation.
+    ==> Results are identical
+    """
+    all_div = []
+    for i in range(0, len(kmers_list)-window_size+1):
+        print(i)
+        init_kmer_window = kmers_list[i:i+window_size]
+        kl = 0
+        for kmer in kmers_ref_freq.keys():
+            freq_in_window = init_kmer_window.count(kmer)/window_size
+            if freq_in_window > 0:
+                kl += -(kmers_ref_freq[kmer]*np.log2(freq_in_window/kmers_ref_freq[kmer]))
+        
+        all_div.append(kl)
+    return np.array(all_div)
+
+
+def KLdivergence(kmers_list:list[int], kmers_ref_freq:Dict[int,float], window_size:int=2000):
+    """
+    Computes Kullback-Leibler divergence between two probability distribution.
+    Here computes the divergence between the window k-mer probability distribution and the overall 
+    k-mer distribution in the genome.
+    """
+    init_kmer_window = kmers_list[0:window_size]
+    window_freq = {kmer: init_kmer_window.count(kmer)/window_size for kmer in kmers_ref_freq.keys()}
+
+    current_kl_div = np.sum(-kmers_ref_freq[kmer]*np.log10(freq/kmers_ref_freq[kmer]) if freq > 0 else 0 for kmer, freq in window_freq.items())
+    all_kl_div = [current_kl_div]
+
+    for i in range(window_size, len(kmers_list)-window_size+1):
+        first_kmer = kmers_list[i-window_size]
+        P_first_kmer = kmers_ref_freq[kmers_list[i-window_size]]
+        Q_first_kmer = window_freq[kmers_list[i-window_size]]
+
+        new_kmer = kmers_list[i]
+        P_new_kmer = kmers_ref_freq[new_kmer]
+        Q_new_kmer = window_freq[new_kmer]
+
+        current_kl_div -= -(P_first_kmer*np.log2(Q_first_kmer/P_first_kmer))
+        if Q_new_kmer > 0: #avoid warning for log(0)
+            current_kl_div -= -(P_new_kmer*np.log2(Q_new_kmer/P_new_kmer))
+
+        window_freq[first_kmer] -= 1/window_size
+        window_freq[new_kmer] += 1/window_size
+
+        if window_freq[first_kmer] > 0: #avoid warning for log(0)
+            current_kl_div += -(P_first_kmer*np.log2(window_freq[first_kmer]/P_first_kmer))
+        current_kl_div += -(P_new_kmer*np.log2(window_freq[new_kmer]/P_new_kmer))
+
+        all_kl_div.append(current_kl_div)   
+    return np.array(all_kl_div)
 
 def find_maxima(window_array:np.array, nb_maxima:int) -> np.array:
     """Finds the indices of the nb_maxima highest values in the window_array"""
