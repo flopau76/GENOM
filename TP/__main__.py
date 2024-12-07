@@ -12,6 +12,8 @@ from scipy.signal import find_peaks
 from time import time
 import os, json
 
+from typing import Dict, List
+
 def dict_intersection(dictA, dictB):
     """ Computes the intersection of two dictionaries
     :param dict dictA, dictB: dictionaries to compare"""
@@ -69,8 +71,6 @@ def compute_jaccard(dico : Dict[str, List[int]]):
 
     return list_tuple_jac
 
-from typing import Dict, List
-
 
 if __name__ == "__main__":
     k = 8
@@ -109,10 +109,13 @@ if __name__ == "__main__":
         # highest_values_indices = signatures.find_maxima(window_distance, nb_hits)
         # highest_values = window_distance[highest_values_indices]
 
+
+        """
+        # possible filtering parameters: dependig on the metric, they may need to be adjusted
         height = np.mean(window_distance) + 10*np.var(window_distance)
-        distance = window_size
+        distance = window_size"""
         prominence = (np.max(window_distance) - np.min(window_distance))/3
-        highest_values_indices, _ = find_peaks(window_distance, prominence=prominence)     # note: dependig on the metric, filtering parameters may need to be adjusted
+        highest_values_indices, _ = find_peaks(window_distance, prominence=prominence)
         highest_values = window_distance[highest_values_indices]
         best_hits[sample] = {int(idx):val for idx, val in zip(highest_values_indices, highest_values)}
 
