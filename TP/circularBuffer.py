@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 class CircularBuffer:
     def __init__(self, elements):
         """
@@ -6,11 +8,11 @@ class CircularBuffer:
         :param capacity: Maximum number of elements the buffer can hold
         :param elements: Optional initial list of elements to populate the buffer
         """
-        elements = list(elements)
+        elements = deepcopy(list(elements))
         if len(elements)== 0:
             raise ValueError("initial buffer must be non empty")
         
-        self.buffer = elements[:]
+        self.buffer = elements
         self.head = 0
         self.len = len(self.buffer)
 
