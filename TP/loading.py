@@ -54,6 +54,21 @@ def load_directory(directory:str) -> Dict[str, List[str]]:
     
     return sequence_dict
 
+def open_genome(name:str):
+    if name.endswith(".fa") or name.endswith(".fasta"):
+        return open(name)
+    elif name.endswith(".fa.gz") or name.endswith(".fasta.gz"):
+        return gzip.open(name, 'rt')
+    else:
+        raise Exception(f"file {name} has wrong format")
+
+def iter_directory(directory:str):
+    for name in listdir(directory):
+        subpath = path.join(directory, name)
+        if path.isdir(subpath):
+            for filename in listdir(subpath):
+                yield path.join(subpath,filename)
+    
 def load_directory_as_pointers(directory:str) -> Iterator[Tuple[str, TextIOWrapper]]:
     """ Creates a generator that yields the name of the sample and a file pointer to the fasta file. """
     for name in listdir(directory):
