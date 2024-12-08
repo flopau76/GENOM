@@ -245,10 +245,16 @@ if __name__ == "__main__":
             dump_matrix_to_csv(m,out_path)
             visualize_matrix(m,out_path)
             print(m)
-    # for name_a,name_b in product(iter_directory(folder),iter_directory(folder)):
-        # if name_a > name_b:
-            # continue
-        # print(f"comparing {name_a} and {name_b}")
-    # with open_genome(name_a) as file_a,open_genome(name_b) as file_b:
-        # m = jackard_matrix_file(file_a,file_b,k,l)
-        # print(m)
+    for name_a,name_b in product(iter_directory(folder),iter_directory(folder)):
+        if name_a >= name_b:
+            continue
+        print(f"comparing {name_a} and {name_b}")
+        with open_genome(name_a) as file_a,open_genome(name_b) as file_b:
+            out_path= os.path.join(out,
+                os.path.splitext(os.path.basename(name_a))[0] +
+                "_" +
+                os.path.splitext(os.path.basename(name_b))[0])
+            m = jackard_matrix_file(file_a,file_b,k,l)
+            dump_matrix_to_csv(m,out_path)
+            visualize_matrix(m,out_path)
+            print(m)
