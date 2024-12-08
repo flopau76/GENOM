@@ -19,13 +19,13 @@ def load_json(path : str) -> Dict[str, Dict[str, float]]:
     return dico
 
 def serialize_files(dir_path : str,
-                    json_path : str = r'C:\Subpbiotech_cours\BT5\BIM_BMC\GENOM\project\project_git\GENOM\transfer_summary.json', 
+                    json_path : str = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))),"transfer_summary.json"), 
                     window_size : int = 2000) -> Generator:
     
     strain_dico = load_json(json_path)
 
     for strain, position_dico in strain_dico.items():
-        directory = os.path.join(dir_path, f"db\\{strain}")
+        directory = os.path.join(dir_path, f"data/{strain}")
         file = os.listdir(directory)[0]
         for seq in SeqIO.parse(os.path.join(directory, file), 'fasta'):
             list_transfer = []

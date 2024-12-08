@@ -7,10 +7,18 @@ from collections import Counter
 import os, json
 from itertools import product
 import matplotlib.pyplot as plt
-
-
+import TP.signatures as signatures
 import TP.km_stats as km_stats
 import TP.display as disp
+
+import numpy as np
+import matplotlib.pyplot as plt
+from collections import Counter
+from scipy.signal import find_peaks
+from time import time
+import os, json
+
+from typing import Dict, List
 
 def dict_intersection(dictA, dictB):
     """ Computes the intersection of two dictionaries
@@ -50,22 +58,8 @@ def compute_kmer(folder : str, k : int):
     # Computing the kmers
     print("  Computing the kmers")
     for sample, file_pointer in load_directory_as_pointers(folder):
-        kmers_list = []
-        dico = {}
-
-        print("Processing", sample)
-        size = len(file_pointer.read())
-        file_pointer.seek(0)
-
-        threshold = round(np.log2(size))
-        
-        kmers_list.append(list(stream_kmers_file(file_pointer, k)))
-
-        kmer_split_list = np.array_split(*kmers_list, threshold)
-        dico = dict(zip([f"{sample}_{i}" for i in range(threshold)], kmer_split_list))
-
-        yield dico, kmers_list[0], sample
-
+        print("Processing", sample)        
+        yield sample, list(stream_kmers_file(file_pointer, k))
 
 def compute_jaccard(dico : Dict[str, List[int]]):
     # Computing the Jaccard index
@@ -181,34 +175,56 @@ def visualize_matrix(matrix,
 
 if __name__ == "__main__1":
     k = 8
-    folder = "toy_transfer"
-    
-    time_ = []
-    out_dic = {}
-    dir_path = os.path.dirname(os.path.realpath(__file__)).split('/')[:-1]
-    dir_path = '/'.join(dir_path)
+    window_size = 2000
+    input_folder = "toy_no_transfer"
+    output_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", f"transfer_summary_{input_folder}.json")
 
-    
-    for dico_strain, kmers_list, sample in compute_kmer(folder, k):
+    best_hits = {}
+
+    for sample, file_pointer in  load_directory_as_pointers(input_folder):
+        start = time()
+        print("Processing sample ", sample)
+        print("    Computing the list of kmers")
+        kmers_list = list(stream_kmers_file(file_pointer, k))
+
+        print("    Starting frequence profile comparison")
+        kmers_count = Counter(kmers_list)
+        kmers_freq = {kmer:count/len(kmers_list) for kmer, count in kmers_count.items()}
+        
         st = time()
-        liste_jac = compute_jaccard(dico_strain)
-        df = km_stats.load_as_matrix(liste_jac)
+        window_distance = signatures.window_slider_distance(kmers_list, kmers_freq, window_size=window_size)
+        print("   L2 done in ", round(time()-st, 4), "s")
 
-        print("  Starting frequence profile comparison")
-        dico_km = Counter(kmers_list)
-        freq_dico_km = {key:n/sum(list(dico_km.values())) for key, n in Counter(kmers_list).items()}
+        st = time()
+        window_kldiv = signatures.KLdivergence(kmers_list, kmers_freq)
+        print("   KL divergencce done in ", round(time()-st, 4), "s")
+        disp.display_windows(window_kldiv, ylabel="KL divergence", title="KL divergence for sample "+sample)
+        
+        #kldiv2 = signatures.naive_KLdiv(kmers_list, kmers_freq)
+        #disp.display_freq(kldiv2)
+        
+        # kmers_rarity = {kmer:1/freq for kmer, freq in kmers_freq.items()}
+        # window_average_rarity = signatures.window_slider_average(kmers_list, kmers_rarity, window_size)
 
-        hits, freq_avg_km = km_stats.window_slider(kmers_list, freq_dico_km)
-        time_.append(time()-st)
+        print("    Finding the best hits")
+        # highest_values_indices = signatures.find_maxima(window_distance, nb_hits)
+        # highest_values = window_distance[highest_values_indices]
 
-        out_dic[sample] = hits
-        #disp.display_freq(freq_avg_km)
+        """
+        # possible filtering parameters: dependig on the metric, they may need to be adjusted
+        height = np.mean(window_distance) + 10*np.var(window_distance)
+        distance = window_size"""
+        prominence = (np.max(window_distance) - np.min(window_distance))/3
+        highest_values_indices, _ = find_peaks(window_distance, prominence=prominence)
+        highest_values = window_distance[highest_values_indices]
+        best_hits[sample] = {int(idx):val for idx, val in zip(highest_values_indices, highest_values)}
 
-    with open(os.path.join(dir_path,"transfer_summary.json"), 'w') as outjson:
-        json.dump(out_dic, outjson)
-    
-    print("Average runtime per genome", np.average(time_[1:]))
-    print("Total Runtime", round(sum(time()-st)))
+        print("    Done in ", round(time()-start, 4), "s")
+
+    plt.waitforbuttonpress()
+    with open(output_path, 'w') as outjson:
+        json.dump(best_hits, outjson)
+
 
 if __name__ == "__main__":
     k = 8
