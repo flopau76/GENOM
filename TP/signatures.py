@@ -70,7 +70,7 @@ def KLdivergence(kmers_list:list[int], kmers_ref_freq:Dict[int,float], window_si
     current_kl_div = np.sum(-kmers_ref_freq[kmer]*np.log10(freq/kmers_ref_freq[kmer]) if freq > 0 else 0 for kmer, freq in window_freq.items())
     all_kl_div = [current_kl_div]
 
-    for i in range(window_size, len(kmers_list)-window_size+1):
+    for i in range(window_size, len(kmers_list)):
         first_kmer = kmers_list[i-window_size]
         P_first_kmer = kmers_ref_freq[kmers_list[i-window_size]]
         Q_first_kmer = window_freq[kmers_list[i-window_size]]
