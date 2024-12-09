@@ -96,7 +96,22 @@ def filter_smallest(iterator, s, hash=lambda x: x, lst=None):
             max_elmt = lst[max_id]
     return np.sort(lst)
 
-def stream_sliding_windows_kmers(stream:Iterator,l:int):
+def stream_sliding_windows_kmers(stream:Iterator,l:int)->Tuple[Counter,Iterator]:
+    """turn a stream of token into a stream of updates to a sliding window
+
+    Parameters
+    ----------
+    stream:Iterator
+        the stream of token to take as input
+    l:int
+        the length of the sliding window
+
+    Returns
+    -------
+    Tuple[Counter,Iterator]
+        the initial sliding window(as a counter) and Iterator of of tuples (start,end).
+        The start value is the value that is added to the sliding window at the update and the end token is the token that is removed during the update.
+    """
     stream = iter(stream)
     initial_buffer = list(islice(stream,l))
     if len(initial_buffer) < l:
@@ -136,10 +151,12 @@ def delta_nb_inter(buffer_1:Dict[int,int],buffer_2:Dict[int,int],start:int,end:i
     return res
 
 def update(buffer_1:Counter,buffer_2:Counter,start:int,end:int)->int:
+    """update buffer_1 and retun the variation of nb_inter cousidering the event (start,end)"""
     update_buffer(buffer_1,start,end)
     return delta_nb_inter(buffer_1,buffer_2,start,end)
 
 def nb_intersections(buffer_1:Counter,buffer_2:Counter):
+    """return the number of intersections between 2 Counters"""
     nb_inter = 0
     for k1 in buffer_1.keys():
         if k1 in buffer_2.keys():
@@ -148,11 +165,6 @@ def nb_intersections(buffer_1:Counter,buffer_2:Counter):
     assert buffer_1.total() == buffer_2.total()
     return nb_inter
 
-def test_sliding_window(x):
-    window_a,a_stream = x
-    window_a = deepcopy(window_a)
-    for start_a,end_a in a_stream:
-        update_buffer(window_a,start_a,end_a)
 
 def _multiple_comparaison(window_a:Counter,sliding_window_b:Tuple[Counter,List]) ->Iterator[int]:
     window_b,b_stream = sliding_window_b
@@ -175,7 +187,8 @@ def multiple_comparaison(sliding_window_a:Tuple[Counter,List],sliding_window_b:T
 
     yield from _multiple_comparaison(window_a,sliding_window_b)
 
-def iter_local_intersections(seq_a:TextIOWrapper,seq_b:TextIOWrapper,k:int,l:int):
+def iter_local_intersections(seq_a:TextIOWrapper,seq_b:TextIOWrapper,k:int,l:int)->Iterator[int]:
+    """given 2 DNA sequences, compute the the number of intersections between windows of k-mers of size l"""
     kmers_a = list(stream_kmers_file(seq_a,k))
     kmers_b = list(stream_kmers_file(seq_b,k))
     stream_windows_a = stream_sliding_windows_kmers(kmers_a,l)
@@ -183,7 +196,25 @@ def iter_local_intersections(seq_a:TextIOWrapper,seq_b:TextIOWrapper,k:int,l:int
     return multiple_comparaison(stream_windows_a,stream_windows_b)
 
 def jackard_matrix_file(seq_a:TextIOWrapper,seq_b:TextIOWrapper,k:int,l:int):
-    """return the jackard distance for all windows of k-mers of size l."""
+    """return the jackard distance for all windows of k-mers of size l.
+    
+    Parameters
+    ----------
+    seq_a:TextIOWrapper
+        fasta file representing the first sequence
+    seq_b:TextIOWrapper
+        fasta file representing the second sequence
+    k:int
+        the length of the kmers
+    l:int
+        the length of the windows
+
+    Returns
+    -------
+    np.ndarray
+        a matrix of float64 of size (len_a -k -l +2)*(len_b -k -l +2) where len_a and len_b are the lengths of the first and the second sequence.
+        Each components is in [0,1].
+     """
     len_a = genome_length(seq_a)
     len_b = genome_length(seq_b)
     intersections = np.fromiter(
