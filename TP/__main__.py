@@ -1,6 +1,12 @@
-from TP.loading import load_directory_as_pointers
-from TP.kmers import stream_kmers_file
-
+from TP.loading import load_directory_as_pointers,iter_directory,open_genome
+from TP.kmers import stream_kmers_file,jackard_matrix_file
+import numpy as np
+from typing import Dict, List
+from time import time
+from collections import Counter
+import os, json
+from itertools import product
+import matplotlib.pyplot as plt
 import TP.signatures as signatures
 import TP.km_stats as km_stats
 import TP.display as disp
@@ -63,7 +69,7 @@ def compute_jaccard(dico : Dict[str, List[int]]):
 
     for i in range(len(filenames)):
         for j in range(i+1, len(filenames)):
-            intersection = list_intersection(sorted(dico[filenames[i]].tolist()), sorted(dico[filenames[j]].tolist()))
+            intersection = list_intersection(sorted(dico[filenames[i]].tolist()), sorted(dico[filenames[j]].tolist()),k=8,l=16)
             dist_j = intersection / (len(dico[filenames[i]]) + len(dico[filenames[j]]) - intersection)
             #print(f"{'==='*20}\n{filenames[i]} | {filenames[j]} | {dist_j}")
 
@@ -72,7 +78,102 @@ def compute_jaccard(dico : Dict[str, List[int]]):
     return list_tuple_jac
 
 
-if __name__ == "__main__":
+def dump_matrix_to_csv(matrix, filename, delimiter=',', precision=6):
+    """
+    Dump a NumPy matrix to a CSV file.
+    
+    Parameters:
+    -----------
+    matrix : numpy.ndarray
+        The input matrix to dump
+    filename : str 
+        Path to save the CSV file. 
+    delimiter : str, optional
+        Delimiter to use in the CSV file (default: ',')
+    precision : int, optional
+        Number of decimal places to use when writing float values (default: 6)
+    
+    Returns:
+    --------
+    str
+        Path to the saved CSV file
+    """
+    
+    # Ensure the filename has .csv extension
+    if not filename.lower().endswith('.csv'):
+        filename += '.csv'
+    
+    # Use numpy's savetxt for straightforward CSV export
+    try:
+        # Set print options to control precision
+        np.set_printoptions(precision=precision, suppress=True)
+        
+        # Save the matrix to CSV
+        np.savetxt(filename, matrix, delimiter=delimiter, fmt=f'%0.{precision}f')
+        
+        print(f"Matrix successfully exported to: {filename}")
+        
+        # Additional matrix information
+    
+    except Exception as e:
+        print(f"Error exporting matrix to CSV: {e}")
+
+def visualize_matrix(matrix, 
+                    save_path, 
+                    title='Matrix Heatmap', 
+                    cmap='viridis', 
+                    figsize=(10, 10), 
+                    value_fmt='%.2f',
+                    colorbar=True,
+                    text_color='black'):
+    """
+    Visualize a NumPy matrix as a heatmap using Matplotlib.
+    
+    Parameters:
+    -----------
+    matrix : numpy.ndarray
+        Input matrix to visualize
+    title : str, optional
+        Title of the heatmap (default: 'Matrix Heatmap')
+    cmap : str, optional
+        Colormap to use (default: 'viridis')
+    save_path : str 
+        Path to save the heatmap image (default: None)
+    figsize : tuple, optional
+        Figure size (width, height) in inches (default: (10, 10))
+    value_fmt : str, optional
+        Format specifier for cell values (default: '%.2f')
+    colorbar : bool, optional
+        Whether to show a colorbar (default: True)
+    text_color : str, optional
+        Color of the text in cells (default: 'black')
+    
+    Returns:
+    --------
+    matplotlib.figure.Figure
+        The generated figure object
+    """
+    # Create a new figure with specified size
+    fig, ax = plt.subplots(figsize=figsize)
+    
+    # Create the heatmap
+    im = ax.imshow(matrix, cmap=cmap, aspect='equal',interpolation ='none')
+    
+    # Set title
+    ax.set_title(title)
+    
+    # Add colorbar
+    if colorbar:
+        plt.colorbar(im, ax=ax, label='Value')
+    
+    
+    # Save figure if path is provided
+    if save_path:
+        plt.savefig(save_path, bbox_inches='tight', dpi=300)
+    
+    return fig
+
+if __name__ == "__main__1":
     k = 8
     window_size = 2000
     input_folder = "toy_no_transfer"
@@ -109,7 +210,6 @@ if __name__ == "__main__":
         # highest_values_indices = signatures.find_maxima(window_distance, nb_hits)
         # highest_values = window_distance[highest_values_indices]
 
-
         """
         # possible filtering parameters: dependig on the metric, they may need to be adjusted
         height = np.mean(window_distance) + 10*np.var(window_distance)
@@ -124,3 +224,37 @@ if __name__ == "__main__":
     plt.waitforbuttonpress()
     with open(output_path, 'w') as outjson:
         json.dump(best_hits, outjson)
+
+
+if __name__ == "__main__":
+    k = 8
+    l = 16
+    folder = "toy_transfer"
+    out= "result"
+    if not(os.path.exists(out)):
+        os.mkdir(out)
+    
+    dir_path = os.path.dirname(os.path.realpath(__file__)).split('/')[:-1]
+    dir_path = '/'.join(dir_path)
+
+    
+    for name_a in iter_directory(folder):
+        with open_genome(name_a) as file_a:
+            out_path= os.path.join(out,os.path.splitext(os.path.basename(name_a))[0])
+            m = jackard_matrix_file(file_a,file_a,k,l)
+            dump_matrix_to_csv(m,out_path)
+            visualize_matrix(m,out_path)
+            print(m)
+    for name_a,name_b in product(iter_directory(folder),iter_directory(folder)):
+        if name_a >= name_b:
+            continue
+        print(f"comparing {name_a} and {name_b}")
+        with open_genome(name_a) as file_a,open_genome(name_b) as file_b:
+            out_path= os.path.join(out,
+                os.path.splitext(os.path.basename(name_a))[0] +
+                "_" +
+                os.path.splitext(os.path.basename(name_b))[0])
+            m = jackard_matrix_file(file_a,file_b,k,l)
+            dump_matrix_to_csv(m,out_path)
+            visualize_matrix(m,out_path)
+            print(m)
