@@ -5,7 +5,9 @@ from typing import List
 
 sns.set_theme()
 
-def display_windows(window_value:List[float], title:str=None, ylabel:str=None):
+def display_windows(window_value:List[float], title:str=None, ylabel:str=None, ax=None):
+    if ax is None:
+        fig, ax = plt.subplots()
     plt.plot(window_value)
     plt.xlabel("Window position")
     if ylabel is not None:
