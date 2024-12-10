@@ -27,7 +27,7 @@ def getter(taxon : str, index : str, ribo_dir : str) -> None:
             capture_output=True, shell=True
         )
     subprocess.run(
-        f'bio fetch {taxon} -t DNA > "{ribo_dir}/ribosome_{taxon}.gb',
+        f'bio fetch {taxon} -t DNA > "{ribo_dir}/ribosome_{taxon}.gb"',
             capture_output=True, shell=True
     )
     return 0
