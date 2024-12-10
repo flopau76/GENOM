@@ -267,12 +267,13 @@ if __name__ == "__main__":
         file_pointer = open_genome(file_name)
 
         # iterate once over the file to compute the total kmer frequency
-        kmers_stream = stream_kmers_file(file_pointer, k)
-        kmers_count = Counter(kmers_stream)
+        kmers_list = list(stream_kmers_file(file_pointer, k))
+        kmers_count = Counter(kmers_list)
+        ref_count = Counter(kmers_list[:window_size])
         kmers_nb = sum(kmers_count.values())
         kmers_freq = {kmer:count/kmers_nb for kmer, count in kmers_count.items()}
 
-        results = compute_metrics_file(file_pointer, metrics, window_size, k, ref_freq=kmers_freq, ref_count=kmers_count)
+        results = compute_metrics_file(file_pointer, metrics, window_size, k, ref_freq=kmers_freq, ref_count=ref_count)
         file_pointer.close()
 
         fig = plt.figure()
@@ -284,6 +285,8 @@ if __name__ == "__main__":
         
         fig.suptitle(f"Metrics for sample {sample}")
         fig.tight_layout()
+
+        fig.savefig(f"transfer_summary_{sample}_test.png")
 
         # storing best hits:
         results = results[:,0] # distance
