@@ -11,6 +11,7 @@ from collections import Counter
 from scipy.signal import find_peaks
 from time import time
 import os, json
+from typing import Dict, List
 
 from typing import Dict, List
 
@@ -75,7 +76,7 @@ def compute_jaccard(dico : Dict[str, List[int]]):
 if __name__ == "__main__":
     k = 8
     window_size = 2000
-    input_folder = "toy_no_transfer"
+    input_folder = "data_test"
     output_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", f"transfer_summary_{input_folder}.json")
 
     best_hits = {}
@@ -92,12 +93,13 @@ if __name__ == "__main__":
         
         st = time()
         window_distance = signatures.window_slider_distance(kmers_list, kmers_freq, window_size=window_size)
+        #disp.display_windows(window_distance, ylabel="L2 distance", title="L2 distance for sample "+sample)
         print("   L2 done in ", round(time()-st, 4), "s")
 
         st = time()
         window_kldiv = signatures.KLdivergence(kmers_list, kmers_freq)
         print("   KL divergencce done in ", round(time()-st, 4), "s")
-        disp.display_windows(window_kldiv, ylabel="KL divergence", title="KL divergence for sample "+sample)
+        #disp.display_windows(window_kldiv, ylabel="KL divergence", title="KL divergence for sample "+sample)
         
         #kldiv2 = signatures.naive_KLdiv(kmers_list, kmers_freq)
         #disp.display_freq(kldiv2)
@@ -105,6 +107,10 @@ if __name__ == "__main__":
         # kmers_rarity = {kmer:1/freq for kmer, freq in kmers_freq.items()}
         # window_average_rarity = signatures.window_slider_average(kmers_list, kmers_rarity, window_size)
 
+        
+        #prop_test = window_kldiv/window_average_rarity
+        #plt.plot(list(range(len(window_average_rarity))), prop_test)        
+        
         print("    Finding the best hits")
         # highest_values_indices = signatures.find_maxima(window_distance, nb_hits)
         # highest_values = window_distance[highest_values_indices]
@@ -121,6 +127,5 @@ if __name__ == "__main__":
 
         print("    Done in ", round(time()-start, 4), "s")
 
-    plt.waitforbuttonpress()
     with open(output_path, 'w') as outjson:
         json.dump(best_hits, outjson)
