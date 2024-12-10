@@ -58,16 +58,18 @@ if __name__ == "__main__":
     transfer_proba = 0.05
 
     base_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-    in_dir, out_dir, report_file = "input", 'output', "HGT_report.txt"
+    in_dir, out_dir_receiver, out_dir_sender, report_file = "input", 'output_receiver', 'output_sender', "HGT_report.txt"
 
     db_path = os.path.join(base_dir, in_dir)
-    output_path = os.path.join(base_dir, out_dir)
+    output_path_receiver = os.path.join(base_dir, out_dir_receiver)
+    output_path_sender = os.path.join(base_dir, out_dir_sender)
     path_report = os.path.join(base_dir, report_file)
 
-    if out_dir in os.listdir(base_dir) or report_file in os.listdir(base_dir):
+    if output_path_receiver in os.listdir(base_dir) or output_path_sender in os.listdir(base_dir) or report_file in os.listdir(base_dir):
         print("  Cleaning output directory...")
-        ctrl_removal(base_dir, out_dir, report_file)
-
+        ctrl_removal(base_dir, output_path_receiver, report_file)
+        ctrl_removal(base_dir, output_path_sender, report_file)
+    
     init_report(path_report)
     for iteration in range(0, iterations):
         progressbar(iteration=iteration+1, total=iterations)
@@ -77,7 +79,7 @@ if __name__ == "__main__":
             transfered = transferer(selected, iteration, iterations)
 
             write_report(path_report, transfered)
-            write_output_db(output_path, transfered)
+            write_output_db(output_path_receiver, out_dir_sender, transfered)
 
     print(f"\nHGT database is Ready. Refer to the file {report_file} for the list of the transfers that occured.\n")
     
