@@ -1,15 +1,13 @@
-import numpy as np
-
 from typing import List, Dict, Tuple, Iterator
 from io import TextIOWrapper
 
 def encode_nucl(letter:str) -> int:
-    """ Encodes a nucleotide on two bits using the ascii code"""
+    """ Encodes a nucleotide on tko bits using the ascii code"""
     # encode = {'A': 0b00, 'C': 0b01, 'T': 0b10, 'G': 0b11}
     return (ord(letter) >> 1) & 0b11
 
 def encode_nucl_rev(letter:str) -> int:
-    """ Encodes the complementary of a nucleotide on two bits using the ascii code"""
+    """ Encodes the complementary of a nucleotide on tko bits using the ascii code"""
     return encode_nucl(letter) ^ 0b10
 
 def encode_kmer(seq:str, k:int) -> Tuple[int, int]:
@@ -37,8 +35,18 @@ def stream_kmers(file:List[str], k:int) -> Iterator[int]:
             rev_kmer |= encode_nucl_rev(seq[i+k]) << (2*(k-1))
             yield min(kmer, rev_kmer)
 
+def genome_length(file_pointer:TextIOWrapper) -> int:
+    """ Returns the length of the genome in a fasta file """
+    sm = 0
+    file_pointer.seek(0)
+    for line in file_pointer:
+        if line[0] != '>':
+            sm += len(line.strip())
+    return sm
+
 def stream_kmers_file(file_pointer:TextIOWrapper, k:int) -> Iterator[int]:
     """ Enumerates all canonical kmers present in a file """
+    file_pointer.seek(0)
     mask = (1 << (2*k)) - 1
     for line in file_pointer:
         if line[0] == '>':
@@ -59,27 +67,3 @@ def stream_kmers_file(file_pointer:TextIOWrapper, k:int) -> Iterator[int]:
                     len_kmer = min(len_kmer, k)
                     if len_kmer == k:
                         yield min(kmer, rev_kmer)
-    file_pointer.close()
-
-def stream_to_dict(iterator) -> Dict[int, int]:
-    """ Converts a stream of kmers into a dictionary of counts """
-    d = {}
-    for kmer in iterator:
-        d[kmer] = d.get(kmer, 0) + 1
-    return d
-
-def filter_smallest(iterator, s, hash=lambda x: x, lst=None):
-    """ Filters the s smallest elements from an iterator, after applying a hash function.
-    If an array lst is provided, it will be updated instead of creating a new one.
-    :return: sorted np.array of size s"""
-    if lst is None:
-        lst = np.full(s, 0xFFFFFFFFFFFFFFFF, dtype=np.uint64)
-    max_id = lst.argmax()
-    max_elmt = lst[max_id]
-    for kmer in iterator:
-        kmer = hash(kmer)
-        if kmer < max_elmt:
-            lst[max_id] = kmer
-            max_id = lst.argmax()
-            max_elmt = lst[max_id]
-    return np.sort(lst)

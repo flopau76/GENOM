@@ -1,7 +1,7 @@
 import gzip
 from os import listdir, path
 
-from typing import Iterator, Tuple, List, Dict
+from typing import Tuple, List, Dict
 from io import TextIOWrapper
 
 
@@ -24,7 +24,6 @@ def load_fasta(file_pointer:TextIOWrapper) -> List[str]:
     if len(txt) > 0:
         texts.append("".join(txt))
     return texts
-
 
 def load_directory(directory:str) -> Dict[str, List[str]]:
     """ Loads all the fasta files from a data directory into a dictionary.
@@ -54,16 +53,25 @@ def load_directory(directory:str) -> Dict[str, List[str]]:
     
     return sequence_dict
 
-def load_directory_as_pointers(directory:str) -> Iterator[Tuple[str, TextIOWrapper]]:
-    """ Creates a generator that yields the name of the sample and a file pointer to the fasta file. """
+def iter_directory(directory:str) -> List[Tuple[str, str]]:
+    """ Iterates over all fasta files in a sequence directory.
+    Return the name of the subdirectory and the full path to the file."""
+    res = []
     for name in listdir(directory):
         subpath = path.join(directory, name)
         if path.isdir(subpath):
             for filename in listdir(subpath):
-                if filename.endswith(".fa") or filename.endswith(".fasta"):
-                    yield (name, open(path.join(subpath, filename)))
-                elif filename.endswith(".fa.gz") or filename.endswith(".fasta.gz"):
-                    yield (name, gzip.open(path.join(subpath, filename), 'rt'))
+                res.append((name, path.join(subpath,filename)))
+    return res
+
+def open_genome(name:str):
+    """ Open a fasta file, either plain or gzipped. """
+    if name.endswith(".fa") or name.endswith(".fasta"):
+        return open(name)
+    elif name.endswith(".fa.gz") or name.endswith(".fasta.gz"):
+        return gzip.open(name, 'rt')
+    else:
+        raise Exception(f"file {name} has wrong format")
 
 
 if __name__ == "__main__":
