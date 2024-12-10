@@ -14,7 +14,7 @@ def display_windows(window_value:List[float], title:str=None, ylabel:str=None, a
     if label is not None:
         ax.legend()
     plt.show(block=False)
-    plt.waitforbuttonpress(timeout=2)
+    plt.waitforbuttonpress(timeout=0.5)
     return 0
 
 def display_matrix(matrix, save_path, step=1, title='Matrix Heatmap', 
