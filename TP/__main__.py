@@ -96,7 +96,6 @@ if __name__ == "__main__":
         #disp.display_windows(window_distance, ylabel="L2 distance", title="L2 distance for sample "+sample)
         print("   L2 done in ", round(time()-st, 4), "s")
 
-
         st = time()
         window_kldiv = signatures.KLdivergence(kmers_list, kmers_freq)
         print("   KL divergencce done in ", round(time()-st, 4), "s")
@@ -105,11 +104,8 @@ if __name__ == "__main__":
         #kldiv2 = signatures.naive_KLdiv(kmers_list, kmers_freq)
         #disp.display_freq(kldiv2)
         
-        st = time()
-        kmers_rarity = {kmer:1/freq for kmer, freq in kmers_freq.items()}
-        res, window_average_rarity = km_stats.window_slider_average(kmers_list, kmers_freq)
-        print("   Convolution done in", round(time()-st, 4), "s")
-        #disp.display_windows(window_average_rarity, ylabel="FFP average", title="FFP average for sample "+sample)
+        # kmers_rarity = {kmer:1/freq for kmer, freq in kmers_freq.items()}
+        # window_average_rarity = signatures.window_slider_average(kmers_list, kmers_rarity, window_size)
 
         
         #prop_test = window_kldiv/window_average_rarity
