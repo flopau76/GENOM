@@ -27,22 +27,54 @@ class Metric(ABC):
         """ Compute the metric for a single kmer. """
         pass
 
-    def compute(self, kmers_count:Dict[int,int]):
-        """ Compute the metric for a window, assuming that if a kmer is not in kmers_count, it has no impact on the metric. """
+    def compute_truncated(self, kmers_count:Dict[int,int]):
+        """ Compute the metric for a window. 
+        This is 'truncated', as we only consider kmers that are present in the window, allowing for efficient updates. """
         return sum([self.compute_single(kmer, count) for kmer, count in kmers_count.items()])
 
-    def compute_initial(self, kmers_count:Dict[int,int]):
-        """ Compute the metric for a window"""
-        return self.compute(kmers_count)
+    def compute(self, kmers_count:Dict[int,int]):
+        """ Compute the metric for a window. """
+        return self.compute_truncated(kmers_count)
 
     def update(self, old_value, count:Dict[int,int], changes:Dict[int,int]):
         """ Update the metric value after a window slide """
         old_count, new_count = get_subset(count, changes)
-        return old_value + self.compute(new_count) - self.compute(old_count)
+        return old_value + self.compute_truncated(new_count) - self.compute_truncated(old_count)
 
     def post_process(self, value:List[any]) -> np.ndarray:
         return np.array(value)
     
+    def compute_single_window(self, kmers_count:Dict[int,int]) -> float:
+        return self.post_process(self.compute(kmers_count))[0]
+
+##########################################################################
+#                Iterate over file to compute metric                     #
+##########################################################################
+
+from io import TextIOWrapper
+from compute_signatures.window_slider import stream_windows
+
+def compute_metrics_file(file_pointer:TextIOWrapper, metric_list:List[Metric], window_size:int, k:int, step:int=1):
+    """ Compute the metric for all windows of a file
+    Currently supported metrics are: "average", "distance", "KLdiv", "jacc" """
+
+    windows_stream = stream_windows(file_pointer, window_size, k, step=step)
+
+    window, changes = next(windows_stream)
+    results = [[metric.compute(window.count) for metric in metric_list]]
+
+    for window, changes in windows_stream:
+        results.append([metric.update(old_value, window.count, changes) for metric, old_value in zip(metric_list, results[-1])])
+
+    new_results = []
+    for i, metric in enumerate(metric_list):
+        res = [result[i] for result in results]
+        new_results.append(metric.post_process(res))
+    new_results = np.array(new_results)
+    return new_results
+
+##########################################################################
+#                     Metric implementation                              #
 ##########################################################################
 
 class total_value(Metric):
@@ -67,7 +99,7 @@ class distance(Metric):
     def compute_single(self, kmer:int, count:int) -> float:
         return np.power(np.abs(count/self.norm - self.ref_value.get(kmer,0)), self.p)
     
-    def compute_initial(self, kmers_count:Dict[int,int]):
+    def compute(self, kmers_count:Dict[int,int]):
         return sum([self.compute_single(kmer, kmers_count[kmer]) for kmer in set(kmers_count.keys()).union(set(self.ref_value))])
     
     def post_process(self, value:float) -> float:
@@ -86,7 +118,7 @@ class jaccard(Metric):
         union = max(count, self.ref_value.get(kmer,0))
         return np.array([inter, union])
     
-    def compute_initial(self, kmers_count:Counter[int]):
+    def compute(self, kmers_count:Counter[int]):
         inter = sum([min(count, self.ref_value.get(kmer,0)) for kmer, count in kmers_count.items()])
         union = sum([max(kmers_count[kmer], self.ref_value.get(kmer,0)) for kmer in set(kmers_count.keys()).union(set(self.ref_value.keys()))])
         return np.array([inter, union])
@@ -108,32 +140,6 @@ class KLdivergence(Metric):
         def KLdiv(p, q):
             return p*np.log10(p/q) if p > 0 else 0
         return KLdiv(count/self.norm, self.ref_value.get(kmer,0))
-
-##########################################################################
-#                Iterate over file to compute metric                     #
-##########################################################################
-
-from io import TextIOWrapper
-from compute_signatures.window_slider import stream_windows
-
-def compute_metrics_file(file_pointer:TextIOWrapper, metric_list:List[Metric], window_size:int, k:int, step:int=1):
-    """ Compute the metric for all windows of a file
-    Currently supported metrics are: "average", "distance", "KLdiv", "jacc" """
-
-    windows_stream = stream_windows(file_pointer, window_size, k, step=step)
-
-    window, changes = next(windows_stream)
-    results = [[metric.compute_initial(window.count) for metric in metric_list]]
-
-    for window, changes in windows_stream:
-        results.append([metric.update(old_value, window.count, changes) for metric, old_value in zip(metric_list, results[-1])])
-
-    new_results = []
-    for i, metric in enumerate(metric_list):
-        res = [result[i] for result in results]
-        new_results.append(metric.post_process(res))
-    new_results = np.array(new_results)
-    return new_results
 
 ##########################################################################
 #       Old implementation using the kmer_list (for debugging only)      #
