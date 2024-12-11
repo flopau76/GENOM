@@ -1,3 +1,8 @@
+##########################################################################
+#                        Useless/Deprecated ?                            #
+##########################################################################
+
+
 from matplotlib import pyplot as plt
 import matplotlib.backends.backend_pdf as bpdf
 

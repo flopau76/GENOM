@@ -26,7 +26,7 @@ def load_json(path : str) -> Dict[str, Dict[str, float]]:
 
 def serialize_files(dir_path : str,
                     json_path : str = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))),"transfer_summary.json"),
-                    window_size : int = 2000) -> Generator:
+                    window_size : int = 2000) -> Generator[StrainHorizontalTransfer]:
     
     strain_dico = load_json(json_path)
 
