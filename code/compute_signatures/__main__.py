@@ -9,11 +9,26 @@ import os, json
 import compute_signatures.metrics as metrics
 from compute_signatures.loading import iter_directory, open_genome
 from compute_signatures.kmers import stream_kmers_file
+from compute_signatures.display import display_windows, save_pdf_fig_report
 
 from typing import List, Dict
 from io import TextIOWrapper
 
 from time import time
+
+def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', printEnd = "\r") -> None:
+    """
+    Show a progress bar indicating downloading progress
+    """
+    percent = f'{round(100 * (iteration / float(total)), 1)}'
+
+    add = int(100 * iteration // total)
+    bar = filler * add + '-' * (100 - add)
+    print(f'\r{prefix} |{bar}| {percent}% {suffix}', end = printEnd)
+
+    if iteration == total: 
+        print()
+
 
 def find_potential_HGT(file_pointer:TextIOWrapper, window_size:int, k:int, metric:metrics.Metric, step:int=1) -> Dict[int, float]:
     """ Find potential HGT regions in a genome file """
@@ -47,24 +62,31 @@ def plot_profile(file_pointer:TextIOWrapper, window_size:int, k:int, metric_list
 if __name__ == "__main__":
     k = 8
     window_size = 2000
-    input_folder = "procariote_diversity"
-    # input_folder = "toy_transfer"
+    folder_name = "procariote_diversity"
+    # folder_name = "toy_transfer"
 
-    input_path = os.path.join(os.path.dirname(os.path.realpath(__file__)),"../../input/sequence_db", input_folder)
-    output_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", f"transfer_summary_{input_folder}.json")
-
+    base_dir =  os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+    input_folder = os.path.join(base_dir, "input", "sequence_db", folder_name)
+    output_path = os.path.join(base_dir, "output", f"transfer_summary_{folder_name}.json")
+    output_path_pdf = os.path.join(base_dir, "output", f"transfer_summary_{folder_name}.pdf")
     best_hits = {}
 
-    for sample, file_name in  iter_directory(input_path):
+    fig_list = []
+    n=1
+
+    fig_list = []
+    n=1
+
+    for sample, file_name in  iter_directory(input_folder):
         file_pointer = open_genome(file_name)
 
         # iterate once over the file to get the global signature
         t = time()
         kmers_list = list(stream_kmers_file(file_pointer, k))
-        print(f"Time for computing the kmers: {time()-t}")
         kmers_count = Counter(kmers_list)
         kmers_freq = {kmer:count/len(kmers_list) for kmer, count in kmers_count.items()}
-        print(f"Sample {sample} has {len(kmers_freq)} kmers")
+        print(f"Time for computing the kmers: {time()-t}")
+
 
         # compute metrics using the metric class
         t0 = time()
@@ -82,13 +104,17 @@ if __name__ == "__main__":
         results_2 = metrics.window_slider_distance(kmers_list, kmers_freq, window_size, p=2)
         print(f"Time for window_slider_distance: {time()-t2}")
 
+        # display results
         plt.plot(result, label="new")
         plt.plot(result_1, label="old Flo")
         plt.plot(results_2, label="old Matt")
         plt.legend()
-        plt.show()
+        plt.show(block=False)
+        plt.pause(1)
 
-        print("Done computing distance")
+    # saving hits to json
+    with open(output_path, 'w') as outjson:
+        json.dump(best_hits, outjson)
 
     # waiting for all figures to be closed manually
     plt.show(block=True)
@@ -106,32 +132,3 @@ if __name__ == "__main__new":
 
     args = parser.parse_args()
 
-    root_dir = os.path.abspath(os.path.join(__file__, "..", "..", ".."))
-    input_folder = os.path.join(root_dir, "input", "sequence_db", args.input_db)
-    output_path = os.path.join(root_dir, "output" f"transfer_summary_{input_folder}.json")
-
-    best_hits = dict()
-
-    for sample, file_name in  iter_directory(input_folder):
-        file_pointer = open_genome(file_name)
-
-        # iterate once over the file to compute the total kmer frequency
-        kmers_count = Counter(stream_kmers_file(file_pointer, k))
-        kmers_tot = sum(kmers_count.values())
-        kmers_freq = {kmer:count/kmers_tot for kmer, count in kmers_count.items()}
-
-        # use the global signature to create some metrics
-        metric_list = [metrics.distance(kmers_freq, norm=window_size), metrics.KLdivergence(kmers_freq, norm=window_size)]
-
-        # find potential HGT regions
-        best_hits[sample] = find_potential_HGT(file_pointer, window_size, k, metric_list[0])
-
-        # plot the profile of the metrics
-        fig = plot_profile(file_pointer, window_size, k, metric_list)
-
-    # saving hits to json
-    with open(output_path, 'w') as outjson:
-        json.dump(best_hits, outjson)
-
-    # waiting for all figures to be closed manually
-    plt.show(block=True)

@@ -1,8 +1,10 @@
 **/__pycache__/
 .vscode/
+.vscode/
 
 **/taxdump.tar.gz
 
 input/sequence_db/*
 input/ribosome_db/*
 !input/sequence_db/toy*
+profile.prof
