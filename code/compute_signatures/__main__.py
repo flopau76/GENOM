@@ -10,7 +10,21 @@ import os, json
 import compute_signatures.metrics as metrics
 from compute_signatures.loading import iter_directory, open_genome
 from compute_signatures.kmers import stream_kmers_file
-from compute_signatures.display import display_windows
+from compute_signatures.display import display_windows, save_pdf_fig_report
+
+def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', printEnd = "\r") -> None:
+    """
+    Show a progress bar indicating downloading progress
+    """
+    percent = f'{round(100 * (iteration / float(total)), 1)}'
+
+    add = int(100 * iteration // total)
+    bar = filler * add + '-' * (100 - add)
+    print(f'\r{prefix} |{bar}| {percent}% {suffix}', end = printEnd)
+
+    if iteration == total: 
+        print()
+
 
 def dump_matrix_to_csv(matrix, filename, delimiter=',', precision=6):
     """ Dump a NumPy matrix to a CSV file. """
@@ -26,10 +40,16 @@ def dump_matrix_to_csv(matrix, filename, delimiter=',', precision=6):
 if __name__ == "__main__":
     k = 8
     window_size = 2000
-    input_folder = "toy_transfer"
-    output_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", f"transfer_summary_{input_folder}.json")
+    folder_name = "toy_transfer"
 
+    base_dir =  os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+    input_folder = os.path.join(base_dir, "input", "sequence_db", folder_name)
+    output_path = os.path.join(base_dir, "output", f"transfer_summary_{folder_name}.json")
+    output_path_pdf = os.path.join(base_dir, "output", f"transfer_summary_{folder_name}.pdf")
     best_hits = {}
+
+    fig_list = []
+    n=1
 
     for sample, file_name in  iter_directory(input_folder):
         file_pointer = open_genome(file_name)
@@ -54,6 +74,7 @@ if __name__ == "__main__":
         fig.suptitle(f"Metrics for sample {sample}")
         fig.tight_layout()
         # fig.savefig(f"metrics_{sample}.png")
+        fig_list.append(fig)
 
         # finding best hits:
         distances = results[0,:]
@@ -61,9 +82,13 @@ if __name__ == "__main__":
         highest_values = distances[highest_values_indices]
         best_hits[sample] = {int(idx):val for idx, val in zip(highest_values_indices, highest_values)}
 
+        progressbar(n, len(os.listdir(input_folder)))
+        n+=1
+
+    save_pdf_fig_report(fig_list, output_path_pdf)
     # saving hits to json
     with open(output_path, 'w') as outjson:
         json.dump(best_hits, outjson)
 
     # waiting for all figures to be closed manually
-    plt.show(block=True)
+    #plt.show(block=True)

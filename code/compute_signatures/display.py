@@ -1,4 +1,5 @@
 from matplotlib import pyplot as plt
+import matplotlib.backends.backend_pdf as bpdf
 
 from typing import List
 
@@ -30,3 +31,11 @@ def display_matrix(matrix, save_path, step=1, title='Matrix Heatmap',
     if save_path:
         plt.savefig(save_path, bbox_inches='tight', dpi=1000)
     return fig
+
+
+def save_pdf_fig_report(fig_list : List[plt.Axes], output_path_pdf):
+    with bpdf.PdfPages(output_path_pdf) as pdf:
+        for fig in fig_list:
+            pdf.savefig(fig)
+    return 0
+            
