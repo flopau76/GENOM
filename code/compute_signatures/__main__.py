@@ -71,13 +71,8 @@ if __name__ == "__main__":
     output_path_pdf = os.path.join(base_dir, "output", f"transfer_summary_{folder_name}.pdf")
     best_hits = {}
 
-    fig_list = []
-    n=1
-
-    fig_list = []
-    n=1
-
     for sample, file_name in  iter_directory(input_folder):
+        print(f"    Processing {sample}...")
         file_pointer = open_genome(file_name)
 
         # iterate once over the file to get the global signature
@@ -108,7 +103,7 @@ if __name__ == "__main__":
         plt.plot(result, label="new")
         plt.plot(result_1, label="old Flo")
         plt.plot(results_2, label="old Matt")
-        plt.legend()
+        plt.legend(loc="upper left")
         plt.show(block=False)
         plt.pause(1)
 
@@ -118,8 +113,6 @@ if __name__ == "__main__":
 
     # waiting for all figures to be closed manually
     plt.show(block=True)
-
-
 
 
 if __name__ == "__main__new":
