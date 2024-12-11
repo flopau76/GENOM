@@ -2,15 +2,17 @@ from Bio.Blast import NCBIWWW
 from Bio import SeqIO
 from analysis.loading import StrainHorizontalTransfer, HorizontalTransfer
 
-from compute_signatures.kmers import stream_kmers
-from compute_signatures.signatures import KLdivergence
+from compute_signatures.kmers import stream_kmers, stream_kmers_file
+import compute_signatures.metrics as metrics
 from compute_signatures.display import display_windows
+from compute_signatures.loading import open_genome
 
 from scipy.special import kl_div
 from typing import List, Dict, Tuple
 from collections import Counter
+from io import TextIOWrapper
 import numpy as np
-import os
+import os, time
 
 def bootstrap_genome(seq : str, num_windows : int = 100, window_size : int = 2000, k_mer_length : int = 8):
     """
@@ -75,17 +77,24 @@ def load_target_sequence(dir_name : str, db_path : str, kmer_size : int = 8) -> 
         seq = content.seq
     return [kmer for kmer in stream_kmers([seq], kmer_size)]
 
-def KL_fixed_window_distance(fixed_window : List[int], Target_kmers_list : List[int]) -> np.ndarray:
+def KL_fixed_window_distance(fixed_window : List[int], file_pointer : TextIOWrapper, kmer_size = 8) -> np.ndarray:
     """
     Computes Kullback-Leibler divergence over the target genome of the possible transfer sequence with
     sequences of identical size. Idea is to find if there is a place in the genome with a similar profile.
-    """
-    fixed_window_count = Counter(fixed_window)
-    Target_count = Counter(Target_kmers_list)
-    Target_profile = {kmer : (1+count)/(len(Target_kmers_list)+len(Target_count)) for kmer, count in Target_count.items()}
-    Query_fixed_profile = {kmer: (1+fixed_window_count[kmer])/(len(fixed_window)+len(Target_count)) for kmer in Target_profile.keys()}
 
-    return KLdivergence(Target_kmers_list, Query_fixed_profile, window_size=len(fixed_window))
+    Query is the receiver's window .
+    Target is the sender's genome.
+    """
+    # iterate once over the file to compute the total kmer frequency
+    Target_list = list(stream_kmers_file(file_pointer, k=kmer_size))
+    Target_count = set(Target_list)
+
+    fixed_window_count = Counter(fixed_window)
+    Query_fixed_profile = {kmer: (1+fixed_window_count[kmer])/(len(fixed_window)+len(Target_count)) for kmer in Target_count}
+
+    metric_list = [metrics.distance(Query_fixed_profile, norm=len(fixed_window))]
+    distances = metrics.compute_metrics_file(file_pointer, metric_list, len(fixed_window), k=kmer_size, )
+    return distances, len(distances[0])
 
 
 def sliding_window_search(top_screen : Dict[str, Dict[int,Tuple[float, str]]], 
@@ -98,13 +107,14 @@ def sliding_window_search(top_screen : Dict[str, Dict[int,Tuple[float, str]]],
     """
     target = top_screen[transfer_summary.strain]
     for transfer in transfer_summary.transfer_summary:
+
         Query_sequence = [kmer for kmer in stream_kmers([transfer.seq], kmer_size)]
-        Target_sequence = load_target_sequence(target[transfer.start_position][1], db_path, kmer_size)
-
-        all_kl_div = KL_fixed_window_distance(Query_sequence, Target_sequence)
-        display_windows(all_kl_div, f"KL divergence between a sequence from {transfer_summary.strain} at position {transfer.start_position}\nand the full genome of {target[transfer.start_position][1]} whom may be the origin of a horizontal transfer")
-        return
-
+        Target_file = os.listdir(os.path.join(db_path, target[transfer.start_position][1]))[0]
+        Target_pointer = os.path.join(db_path, target[transfer.start_position][1], Target_file)
+        
+        file_pointer = open_genome(Target_pointer)
+        all_kl_div = KL_fixed_window_distance(Query_sequence, file_pointer)
+        return all_kl_div
 
 
 def blast_seq(transfer_elt : HorizontalTransfer) -> str:
