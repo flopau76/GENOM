@@ -1,0 +1,156 @@
+<p><!--
+QBlastInfoBegin
+	Status=READY
+QBlastInfoEnd
+--><p>
+<PRE>
+
+BLASTN 2.16.1+
+Reference: Stephen F. Altschul, Thomas L. Madden, Alejandro
+A. Schaffer, Jinghui Zhang, Zheng Zhang, Webb Miller, and
+David J. Lipman (1997), "Gapped BLAST and PSI-BLAST: a new
+generation of protein database search programs", Nucleic
+Acids Res. 25:3389-3402.
+
+
+RID: MSX8M6AW013
+
+
+Database: Core nucleotide BLAST database
+           110,962,326 sequences; 815,054,304,494 total letters
+Query= 
+Length=2021
+
+
+                                                                   Score     E      Max
+Sequences producing significant alignments:                       (Bits)  Value   Ident
+
+CP000896.1 Acholeplasma laidlawii PG-8A, complete genome           3639    0.0     100%      
+LS483439.1 Acholeplasma laidlawii strain NCTC10116 genome asse...  3639    0.0     100%      
+CP103951.1 Acholeplasma laidlawii strain JS42 chromosome, comp...  3537    0.0     99%       
+CP126461.1 Acholeplasma laidlawii strain 8195 chromosome, comp...  3107    0.0     94%       
+X61068.1 Acholeplasma laidlawii 23S rRNA, 5S rRNA, tRNA-Val, t...  2427    0.0     100%      
+LK028559.1 Acholeplasma oculi genome assembly Acholeplasma ocu...  1608    0.0     88%       
+LR215050.1 Acholeplasma hippikon strain NCTC10172 genome assem...  1467    0.0     86%       
+FO681347.1 complete chromosome Acholeplasma palmae                 1290    0.0     82%       
+OY782823.1 Acholeplasmataceae bacterium isolate 45ae5b24-82d0-...  1138    0.0     80%       
+OY763415.1 Acholeplasmataceae bacterium isolate 742012ca-395f-...  1135    0.0     80%       
+OY764060.1 Acholeplasmataceae bacterium isolate e871f63d-8a2d-...  1134    0.0     80%       
+OY775910.1 Acholeplasmataceae bacterium isolate 79d77305-d387-...  1131    0.0     81%       
+OY781090.1 Acholeplasmataceae bacterium isolate ac846720-52a4-...  1052    0.0     78%       
+OY781159.1 Acholeplasmataceae bacterium isolate b77914f2-8fec-...  1012    0.0     79%       
+AP024412.1 Mariniplasma anaerobium DNA, complete genome            612     6e-170  82%       
+CP017948.1 Tenericutes bacterium MO-XQ chromosome, complete se...  602     1e-166  82%       
+CP082918.1 Sutcliffiella horikoshii strain BAT chromosome, com...  587     2e-162  78%       
+CP046266.1 Metabacillus sediminilitoris strain DSL-17 chromoso...  585     8e-162  78%       
+CP113365.1 Bacillus paranthracis isolate 4M chromosome, comple...  583     3e-161  79%       
+OY780959.1 Coprobacillaceae bacterium isolate 22225718-2d80-49...  581     4e-160  79%       
+CP045403.1 Bacillus sp. THAF10 chromosome, complete genome         581     4e-160  79%       
+OY780955.1 Coprobacillaceae bacterium isolate f063cbd2-7223-40...  580     4e-160  79%       
+CP089518.1 Bacillus cereus strain PT1 chromosome, complete genome  575     2e-158  79%       
+CP127376.1 Bacillus arachidis strain YX15 chromosome, complete...  574     2e-158  78%       
+CP064266.1 Bacillus pseudomycoides strain N451-2 chromosome, c...  570     7e-157  78%       
+CP128153.1 Bacillus sp. DX3.1 chromosome, complete genome          568     2e-156  78%       
+CP063975.1 Bacillus cereus strain N435-1 chromosome, complete ...  563     3e-155  78%       
+CP007626.1 Bacillus pseudomycoides strain 219298, complete genome  563     1e-154  77%       
+CP009651.1 Bacillus pseudomycoides strain BTZ chromosome, comp...  563     1e-154  77%       
+CP076653.1 Bacillus sp. NP247 chromosome, complete genome          558     1e-153  78%       
+OY776328.1 Coprobacillaceae bacterium isolate 0ca6b35a-982b-46...  543     9e-149  78%       
+CP137624.1 Lysinibacillus louembei strain Ll15 chromosome, com...  533     5e-146  77%       
+CP152046.1 Metasolibacillus sp. FSL K6-0083 chromosome, comple...  527     2e-144  77%       
+CP015436.1 Anoxybacillus sp. B7M1 chromosome, complete genome      526     7e-144  76%       
+CP015435.1 Anoxybacillus sp. B2M1 chromosome, complete genome      526     7e-144  76%       
+CP151964.1 Metasolibacillus sp. FSL H7-0170 chromosome, comple...  526     7e-144  77%       
+AP025689.1 Lysinibacillus sp. PLM2 DNA, complete genome            525     2e-143  77%       
+CP088239.1 Tannockella kyphosi strain BP52G chromosome, comple...  525     2e-143  76%       
+CP028083.1 Lysinibacillus sp. SGAir0095 chromosome, complete g...  524     2e-143  77%       
+CP047158.1 Anoxybacillus sp. PDR2 chromosome, complete genome      522     8e-143  76%       
+CP126689.1 Kurthia sp. YJT4 chromosome, complete genome            515     1e-140  76%       
+CP147847.1 Kurthia gibsonii strain ND2 chromosome, complete ge...  515     1e-140  76%       
+CP013659.2 Planococcus rifietoensis strain M8 chromosome, comp...  514     4e-140  77%       
+CP025135.1 Planococcus sp. MB-3u-03 chromosome, complete genome    514     4e-140  77%       
+CP014806.1 Rummeliibacillus stabekisii strain PP9, complete ge...  514     4e-140  76%       
+CP097314.1 Rummeliibacillus sp. G93 chromosome, complete genome    511     2e-139  76%       
+CP059540.1 Planococcus maritimus strain XJ11 chromosome, compl...  510     5e-139  76%       
+CP085009.1 Ureibacillus chungkukjangi strain SLM-173 chromosom...  501     3e-136  76%       
+CP120467.1 Enterococcus montenegrensis strain CoE-012-22 chrom...  469     2e-126  78%       
+CP074575.1 Tenericutes bacterium strain zrk6 chromosome, compl...  450     4e-121  79%       
+
+<p><!--
+QBlastInfoBegin
+	Status=READY
+QBlastInfoEnd
+--><p>
+<PRE>
+
+BLASTN 2.16.1+
+Reference: Stephen F. Altschul, Thomas L. Madden, Alejandro
+A. Schaffer, Jinghui Zhang, Zheng Zhang, Webb Miller, and
+David J. Lipman (1997), "Gapped BLAST and PSI-BLAST: a new
+generation of protein database search programs", Nucleic
+Acids Res. 25:3389-3402.
+
+
+RID: MSXAMU03013
+
+
+Database: Core nucleotide BLAST database
+           110,962,326 sequences; 815,054,304,494 total letters
+Query= 
+Length=2025
+
+
+                                                                   Score     E     Max
+Sequences producing significant alignments:                       (Bits)  Value  Ident
+
+CP000896.1 Acholeplasma laidlawii PG-8A, complete genome           3646    0.0    100%      
+LS483439.1 Acholeplasma laidlawii strain NCTC10116 genome asse...  3646    0.0    100%      
+CP103951.1 Acholeplasma laidlawii strain JS42 chromosome, comp...  3628    0.0    100%      
+CP126461.1 Acholeplasma laidlawii strain 8195 chromosome, comp...  3599    0.0    100%      
+LK028559.1 Acholeplasma oculi genome assembly Acholeplasma ocu...  2941    0.0    92%       
+LR215050.1 Acholeplasma hippikon strain NCTC10172 genome assem...  2789    0.0    91%       
+FO681347.1 complete chromosome Acholeplasma palmae                 2262    0.0    85%       
+AY740437.1 Acholeplasma laidlawii strain ATCC 23206 16S riboso...  1755    0.0    100%      
+AY740435.1 Acholeplasma laidlawii strain ATCC 14089 16S riboso...  1751    0.0    100%      
+DQ400444.1 Acholeplasma pleciae strain PS-1 operon 1 16S ribos...  1615    0.0    97%       
+FJ226570.1 Acholeplasma laidlawii strain Haig 179L 16S ribosom...  1563    0.0    100%      
+NR_076550.1 Acholeplasma laidlawii strain PG-8A 23S ribosomal ...  1563    0.0    100%      
+FJ590758.1 Acholeplasma laidlawii strain TTB 103 16S ribosomal...  1562    0.0    100%      
+JN935888.1 Acholeplasma laidlawii strain BN1-JA1 16S ribosomal...  1559    0.0    100%      
+FJ226559.1 Acholeplasma laidlawii strain SRCD 16S ribosomal RN...  1559    0.0    100%      
+EU925161.1 Acholeplasma laidlawii strain REP 16S ribosomal RNA...  1557    0.0    100%      
+JN935875.1 Acholeplasma laidlawii strain Concha-2 16S ribosoma...  1557    0.0    100%      
+JN935890.1 Acholeplasma laidlawii strain Algen 16S ribosomal R...  1556    0.0    100%      
+JN935887.1 Acholeplasma laidlawii strain KHS 16S ribosomal RNA...  1515    0.0    100%      
+JN935891.1 Acholeplasma sp. Harris TD3 16S ribosomal RNA gene,...  1484    0.0    98%       
+MN271344.1 Acholeplasma pleciae strain PS-1 (ATCC 49582) 23S r...  1480    0.0    98%       
+FJ876262.1 Acholeplasma oculi strain Panangala 59 16S ribosoma...  1388    0.0    96%       
+NR_074448.2 Acholeplasma laidlawii PG-8A 16S ribosomal RNA, co...  1386    0.0    100%      
+M23932.1 A.laidlawii 16S ribosomal RNA small subunit gene          1385    0.0    100%      
+KU870649.1 Acholeplasma laidlawii strain FJ-NP 16S ribosomal R...  1375    0.0    100%      
+FJ655561.1 Acholeplasma laidlawii strain CIRG/Alw-1 16S riboso...  1337    0.0    100%      
+NR_025738.1 Acholeplasma pleciae strain PS-1 16S ribosomal RNA...  1330    0.0    99%       
+MH539019.1 Acholeplasma laidlawii strain B1412-14-18 16S ribos...  1305    0.0    100%      
+OP501868.1 Acholeplasma laidlawii strain SP2 16S ribosomal RNA...  1300    0.0    100%      
+NR_113658.1 Acholeplasma laidlawii strain NBRC 14400 16S ribos...  1299    0.0    100%      
+EU925159.1 Acholeplasma equirhinis strain N93 16S ribosomal RN...  1287    0.0    96%       
+GU985440.1 Acholeplasma sp. ZJ2005 16S ribosomal RNA gene, par...  1287    0.0    100%      
+NR_113898.1 Acholeplasma pleciae strain NBRC 100476 16S riboso...  1277    0.0    99%       
+NR_042957.1 Acholeplasma granularum strain BTS-39 16S ribosoma...  1276    0.0    100%      
+NR_025961.1 Acholeplasma laidlawii strain PG8 16S ribosomal RN...  1273    0.0    99%       
+FO681348.1 complete chromosome Acholeplasma brassicae              1253    0.0    88%       
+MT237181.1 Acholeplasma sp. strain MDP1 16S ribosomal RNA gene...  1251    0.0    100%      
+KP685380.1 Acholeplasma laidlawii strain 43A/AL4 16S ribosomal...  1240    0.0    100%      
+AY785356.1 Acholeplasma sp. CODA 1G 16S ribosomal RNA gene, pa...  1231    0.0    98%       
+KY077687.1 Acholeplasma laidlawii strain Fac-ladi 16S ribosoma...  1220    0.0    100%      
+HQ661832.1 Acholeplasma laidlawii strain R3.6 16S ribosomal RN...  1216    0.0    100%      
+KR107351.1 Uncultured bacterium clone LY-0-3 16S ribosomal RNA...  1214    0.0    99%       
+KR107373.1 Uncultured bacterium clone LY-5-5 16S ribosomal RNA...  1214    0.0    99%       
+KM280691.1 Acholeplasma laidlawii strain IVRI/AL77 16S ribosom...  1212    0.0    100%      
+KP702115.1 Lethal wilt oil palm phytoplasma clone LWP-16S23S-P...  1207    0.0    99%       
+KM280692.1 Acholeplasma laidlawii strain IVRI/AL105D 16S ribos...  1202    0.0    100%      
+FJ590760.1 Paracholeplasma manati strain Holly 16S ribosomal R...  1179    0.0    90%       
+FJ590762.1 Paracholeplasma manati strain Lorelei 16S ribosomal...  1179    0.0    90%       
+KP685381.1 Acholeplasma laidlawii strain 43B/AL5 16S ribosomal...  1169    0.0    99%       
+KP685382.1 Acholeplasma laidlawii strain 44B/AL6 16S ribosomal...  1165    0.0    100%      
+
