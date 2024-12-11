@@ -180,23 +180,24 @@ def KLdivergence_kmers_list(kmers_list:List[int], ref_freq:Dict[int, float], win
         current_freq[new_kmer] = kmers_count[new_kmer]/window_size
         current_freq[old_kmer] = kmers_count[old_kmer]/window_size
         new_p = current_freq[old_kmer]
-        old_p = current_freq[new_kmer]        
-        if old_p > 0:
-            current_val += old_p*np.log10(old_p/ref_freq[new_kmer])
+        old_p = current_freq[new_kmer]
+        current_val += old_p*np.log10(old_p/ref_freq[new_kmer]) if old_p > 0 else 0
         current_val += new_p*np.log10(new_p/ref_freq[old_kmer])
     return np.array(all_val)
 
 def jaccard_kmers_list(kmers_list:List[int], ref_count:Dict[int, int], window_size:int) -> np.array:
-    def jacc(countA, countB):
-        return sum((countA & countB).values())/sum((countA | countB).values())
-    current_count = Counter(kmers_list[:window_size])
-    all_val = [jacc(current_count, ref_count)]
-    for i in range(window_size, len(kmers_list)):
-        current_count[kmers_list[i]] += 1
-        current_count[kmers_list[i-window_size]] -= 1
-        if current_count[kmers_list[i-window_size]] == 0:
-            del current_count[kmers_list[i-window_size]]
-        all_val.append(jacc(current_count, ref_count))
+    kmers_count = Counter(kmers_list[:window_size])
+    current_val = sum([min(count, ref_count[kmer])/max(count, ref_count[kmer]) for kmer, count in kmers_count.items()])
+    all_val = [current_val]
+    for i, new_kmer in  enumerate(kmers_list[window_size:]):
+        old_kmer = kmers_list[i]
+        current_val -= min(kmers_count[old_kmer], ref_count[old_kmer])/max(kmers_count[old_kmer], ref_count[old_kmer])
+        current_val -= min(kmers_count[new_kmer], ref_count[new_kmer])/max(kmers_count[new_kmer], ref_count[new_kmer])
+        kmers_count[new_kmer] += 1
+        kmers_count[old_kmer] -= 1
+        current_val += min(kmers_count[new_kmer], ref_count[new_kmer])/max(kmers_count[new_kmer], ref_count[new_kmer])
+        current_val += min(kmers_count[old_kmer], ref_count[old_kmer])/max(kmers_count[old_kmer], ref_count[old_kmer])
+        all_val.append(current_val)
     return np.array(all_val)
 
 
