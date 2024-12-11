@@ -2,7 +2,7 @@ import numpy as np
 from collections import Counter
 from itertools import islice
 
-from TP.kmers import stream_kmers_file
+from compute_signatures.kmers import stream_kmers_file
 
 from typing import Dict, List, Iterator, Tuple, Set
 from io import TextIOWrapper

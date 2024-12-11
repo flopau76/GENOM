@@ -2,9 +2,9 @@ from Bio.Blast import NCBIWWW
 from Bio import SeqIO
 from analysis.loading import StrainHorizontalTransfer, HorizontalTransfer
 
-from TP.kmers import stream_kmers
-from TP.signatures import KLdivergence
-from TP.display import display_windows
+from compute_signatures.kmers import stream_kmers
+from compute_signatures.signatures import KLdivergence
+from compute_signatures.display import display_windows
 
 from scipy.special import kl_div
 from typing import List, Dict, Tuple

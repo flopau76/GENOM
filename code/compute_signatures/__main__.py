@@ -7,10 +7,10 @@ from collections import Counter
 from time import time
 import os, json
 
-import TP.metrics as metrics
-from TP.loading import iter_directory, open_genome
-from TP.kmers import stream_kmers_file
-from TP.display import display_windows
+import compute_signatures.metrics as metrics
+from compute_signatures.loading import iter_directory, open_genome
+from compute_signatures.kmers import stream_kmers_file
+from compute_signatures.display import display_windows
 
 def dump_matrix_to_csv(matrix, filename, delimiter=',', precision=6):
     """ Dump a NumPy matrix to a CSV file. """

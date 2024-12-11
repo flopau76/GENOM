@@ -19,8 +19,8 @@ def get_subset(d:Dict[int,int], changes:Dict[int, int]) -> Dict[int,int]:
 
 class Metric(ABC):
     """ This class is an abstract class for efficient metrics on sliding windows. 
-    For it to work, we must have f(x1,...,xn) = h(g(x1), ..., g(xn)) 
-    Having this, we can update f knowing only the changes in x1, ..., xn """
+    For it to work, we must have f(x1,...,xn) = h(g(x1)+...+g(xn)) 
+    Having this, we can update f recomputing only the values g(xi) for which xi changed. """
 
     @abstractmethod
     def compute_single(self, kmer:int, count:int) -> float:
@@ -114,7 +114,7 @@ class KLdivergence(Metric):
 ##########################################################################
 
 from io import TextIOWrapper
-from TP.window_slider import stream_windows
+from compute_signatures.window_slider import stream_windows
 
 def compute_metrics_file(file_pointer:TextIOWrapper, metric_list:List[Metric], window_size:int, k:int, step:int=1):
     """ Compute the metric for all windows of a file

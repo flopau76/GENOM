@@ -1,7 +1,7 @@
-import get_taxid
-from ribo_db_build import prepare_ribo_db
+import load_samples.get_taxid as get_taxid
+from load_samples.ribo_db_build import prepare_ribo_db
 
-import sys, os, subprocess, shutil
+import sys, os, subprocess
 from typing import Dict
 
 def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', printEnd = "\r") -> None:
@@ -48,12 +48,11 @@ def generate_report(db_path : str, failed : list) -> None:
 
     return 0
 
-def main(taxon_file, db):
+def main(taxon_file, db, ribo_dir):
     taxon_dico = load_taxid(taxon_file)
     n = 1
     e = 0
     failed = []
-    ribo_dir = os.path.join(db, 'ribo_db')
 
     os.makedirs(ribo_dir)
 
@@ -85,10 +84,33 @@ def main(taxon_file, db):
     return 0
 
 if __name__ == '__main__':
-    taxon_file, db = sys.argv[1], sys.argv[2]
-    
-    if "report.txt" in os.listdir():
-        os.remove(os.path.join(db, "report.txt"))
+    if len(sys.argv) != 2:
+        print("Usage: python -m load_sample  <sample_file>")
+        sys.exit(1)
 
-    main(taxon_file, db)
+    root_dir = os.path.abspath(os.path.join(__file__, "..", "..", ".."))
+
+    taxon_file = sys.argv[1]
+    taxon_basename = os.path.basename(taxon_file)
+    if taxon_file == taxon_basename:
+        taxon_file = os.path.join(root_dir, "input", "samples_list", taxon_basename)
+    print(f"Taxon file: {taxon_file}")
+
+    out_dir = os.path.join(root_dir, "input", "sequence_db", taxon_basename.split('.')[0])
+    print(f"Output directory: {out_dir}")
+
+    ribo_dir = os.path.join(root_dir, "input", "ribosome_db", taxon_basename.split('.')[0])
+
+    if os.path.exists(out_dir):
+        print(f"Output directory already exists. If you continue, the content will be erased.")
+        user_input = input("Do you want to continue? (Y/N): ")
+        if user_input.strip().upper() != 'Y':
+            print("Operation cancelled by user.")
+            sys.exit(1)
+        else:
+            os.system(f"rm -r {out_dir}")
+            os.system(f"rm -r {ribo_dir}")
+
+
+    main(taxon_file, out_dir, ribo_dir)
 

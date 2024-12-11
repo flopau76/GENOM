@@ -78,7 +78,3 @@ def write_output_db(output_path_receiver : str, output_path_sender : str, transf
     
     with open(receiver_path, 'w') as receiver_file:
         receiver_file.write(f">{receiver.strain}_{receiver.ID} | {receiver.reception_position}\n{receiver.seq}\n")
-
-
-
-
