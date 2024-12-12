@@ -62,28 +62,9 @@ if __name__ == "__main__":
     files = iter_directory(input_folder)
     n = 0
     n_total = len(files)
+    progressbar(n, n_total , prefix = 'Progress:', suffix = 'Complete', printEnd = "\r")
 
     for sample, file_name in files:
-        n+=1
-        progressbar(n, n_total , prefix = 'Progress:', suffix = 'Complete', printEnd = "\r")
-    times_kmers = []
-    times_windows = []
-    start = time.time()
-
-    files = iter_directory(input_folder)
-    n = 0
-    n_total = len(files)
-
-    for sample, file_name in files:
-        n+=1
-        progressbar(n, n_total , prefix = 'Progress:', suffix = 'Complete', printEnd = "\r")
-
-        # iterate once over the file to get the kmers_list
-        t0 = time.time()
-        with open_genome(file_name) as file_pointer:
-            kmers_list = list(stream_kmers_file(file_pointer, k))
-        
-        # compute the average signature of the genome
         # iterate once over the file to get the kmers_list
         t0 = time.time()
         with open_genome(file_name) as file_pointer:
@@ -102,12 +83,16 @@ if __name__ == "__main__":
         times_windows.append(t2-t1)
 
         # find the highest peaks
-        best_hits[sample] = find_potential_HGT(result)
+        sample_hits = find_potential_HGT(result)
+        best_hits[sample] = sample_hits
 
         # save the resulting figure
-        fig = display.display_windows(result, hits=best_hits[sample], title=f"{sample}", ylabel="KL divergence")
-        fig.savefig(os.path.join(tmp_dir_images, f"{sample}.png"), dpi=1000)
-        plt.close(fig)
+        fig = display.display_windows(result, hits=sample_hits, title=f"{sample}", ylabel="KL divergence", dpi=300)
+        fig.savefig(os.path.join(tmp_dir_images, f"{sample}.png"))
+        plt.close("all")
+
+        n += 1
+        progressbar(n, n_total , prefix = 'Progress:', suffix = 'Complete', printEnd = "\r")
 
     # saving hits to json
     with open(output_path, 'w') as outjson:
@@ -125,6 +110,7 @@ if __name__ == "__main__":
                 pdf.savefig(fig)
                 plt.close(fig)
                 os.remove(fig_path)
+    os.rmdir(tmp_dir_images)
 
     print(f"Total time: {time.time()-start:.2f}s")
     print(f"Average time to compute kmers: {np.mean(times_kmers):.2f}s")
