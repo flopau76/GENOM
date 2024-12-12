@@ -85,7 +85,7 @@ def screen_origins(list_transfer : StrainHorizontalTransfer,
         
     return divergence_dico
 
-def KL_fixed_window_distance(fixed_window : List[int], file_pointer : TextIOWrapper, kmer_size = 8) -> np.ndarray:
+def fixed_window_distance(fixed_window : List[int], file_pointer : TextIOWrapper, kmer_size : int = 8) -> np.ndarray:
     """
     Computes Kullback-Leibler divergence over the target genome of the possible transfer sequence with
     sequences of identical size. Idea is to find if there is a place in the genome with a similar profile.
@@ -98,9 +98,9 @@ def KL_fixed_window_distance(fixed_window : List[int], file_pointer : TextIOWrap
     Target_count = set(Target_list)
 
     fixed_window_count = Counter(fixed_window)
-    Query_fixed_profile = {kmer: (1+fixed_window_count[kmer])/(len(fixed_window)+len(Target_count)) for kmer in Target_count}
+    Query_fixed_profile = {kmer: fixed_window_count[kmer]/len(fixed_window) for kmer in Target_count}
 
-    distances = metrics.old_KL(kmers_list=Target_list, kmers_ref_freq=Query_fixed_profile, window_size=len(fixed_window))
+    distances = metrics.distance(Query_fixed_profile).slide_window(kmers_list=Target_list, window_size=len(fixed_window))
     return distances
 
 
@@ -120,7 +120,7 @@ def sliding_window_search(top_screen : Dict[str, Dict[int,Tuple[float, str]]],
         Target_pointer = os.path.join(db_path, target[transfer.start_position][1], Target_file)
         
         file_pointer = open_genome(Target_pointer)
-        all_kl_div = KL_fixed_window_distance(Query_sequence, file_pointer)
+        all_kl_div = fixed_window_distance(Query_sequence, file_pointer)
 
         ccl = Conclusion(
             sender_found=target[transfer.start_position][1],

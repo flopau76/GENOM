@@ -54,14 +54,16 @@ def ctrl_removal(base_dir : str, out_dir : str, report_file : str):
 if __name__ == "__main__":
     print("Starting HGTdb generation...")
     iterations = 1000
-    transfer_proba = 0.05
+    transfer_proba = 0.01
 
     base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
     in_dir, out_dir_receiver, out_dir_sender, report_file = "input_generator", 'output_receiver', 'output_sender', "HGT_report.txt"
 
-    db_path = os.path.join(base_dir, "input", in_dir)
+    base_db = db_path = os.path.join(base_dir, "input", "sequence_db")
+    db_path = os.path.join(base_db, in_dir)
+    output_path_receiver = os.path.join(base_db, out_dir_receiver)
+
     output_path = os.path.join(base_dir, "output", "output_generator")
-    output_path_receiver = os.path.join(output_path, out_dir_receiver)
     output_path_sender = os.path.join(output_path, out_dir_sender)
     path_report = os.path.join(output_path, report_file)
 

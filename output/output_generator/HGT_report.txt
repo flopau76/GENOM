@@ -1,10 +1,9 @@
 Sp_sending		Sending_position		Sp_receiving		Receiving_position
-Blautia hansenii		917283-926113		Blautia obeum		3562273
-Bacteroides xylanisolvens		2264669-2271049		Dorea longicatena		1599665
-Dorea formicigenerans		642183-662153		Bifidobacterium pseudocatenulatum		1188365
-Citrobacter freundii		1777972-1791524		Bifidobacterium bifidum		458576
-Bifidobacterium pseudocatenulatum		1476689-1496057		Veillonella parvula		674205
-Alistipes onderdonkii		3284779-3288639		Dorea formicigenerans		500430
-Bifidobacterium bifidum		1721703-1730803		Bacteroides xylanisolvens		4229469
-Alistipes shahii		98649-103957		Butyricimonas faecihominis		4431551
-Butyricimonas virosa		1156224-1175423		Blautia wexlerae		778341
+Citrobacter freundii		2445832-2454606		Citrobacter portucalensis		450240
+Coprococcus comes		1643870-1647486		Bifidobacterium adolescentis		1553004
+Desulfovibrio piger		1710648-1726863		Bifidobacterium bifidum		53332
+Blautia hansenii		2071993-2076788		Blautia obeum		1722553
+Alistipes shahii		2647531-2666136		Alistipes finegoldii		1936929
+Coprococcus comes		2134117-2148707		Adlercreutzia hattorii		1365362
+Dorea longicatena		1127323-1139543		Dorea longicatena		1143345
+Butyricimonas faecihominis		2189375-2208827		Bifidobacterium animalis		497276

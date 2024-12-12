@@ -36,8 +36,8 @@ def ctrl_removal(base_dir : str, report_file : str):
 
 if __name__ == "__main__":
     
-    json_file = "transfer_summary_data_test.json"
-    db_dir_name = "data_test"
+    json_file = "transfer_summary_input_generator.json"
+    db_dir_name = "input_generator"
     report_name = "analysis_report.txt"
     time_ = []
 

@@ -1,30 +1,51 @@
 Sp_sending		Sending_position		Sp_receiving		Receiving_position
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		3288
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		77269
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		137365
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		227561
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		386917
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		444902
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		463114
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		463116
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		544040
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		585890
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		635507
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		715296
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		843987
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		890913
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		951966
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		991503
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		1029621
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		1054389
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		1097776
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		1104136
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		1179804
-Acidobacterium capsulatum ATCC 51196		1661213		Acholeplasma laidlawii PG-8A		1201259
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		1211335
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		1304925
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		1368525
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		1393592
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		1412783
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		1424778
-Acidobacterium capsulatum ATCC 51196		1661211		Acholeplasma laidlawii PG-8A		1469879
+Bacteroides faecis		11777		Bacteroides finegoldii		124236
+Bacteroides faecis		8262		Bacteroides finegoldii		231159
+Bacteroides faecis		1770		Bacteroides finegoldii		307997
+Bacteroides faecis		2655		Bacteroides finegoldii		482443
+Bacteroides faecis		29744		Bacteroides finegoldii		568335
+Bacteroides faecis		7290		Bacteroides finegoldii		734552
+Bacteroides faecis		4291		Bacteroides finegoldii		898390
+Bacteroides faecis		34291		Bacteroides finegoldii		1143384
+Bacteroides faecis		30969		Bacteroides finegoldii		1183807
+Bacteroides faecis		33916		Bacteroides finegoldii		1248091
+Bacteroides faecis		10466		Bacteroides finegoldii		1311881
+Bacteroides faecis		13893		Bacteroides finegoldii		1374373
+Bacteroides faecis		11290		Bacteroides finegoldii		1546597
+Bacteroides faecis		2070		Bacteroides finegoldii		1655399
+Bacteroides faecis		16936		Bacteroides finegoldii		1664160
+Bacteroides faecis		33916		Bacteroides finegoldii		1783533
+Bacteroides faecis		27272		Bacteroides finegoldii		1863409
+Bacteroides faecis		11540		Bacteroides finegoldii		2052859
+Bacteroides faecis		30978		Bacteroides finegoldii		2231447
+Bacteroides faecis		17113		Bacteroides finegoldii		2429661
+Bacteroides faecis		28402		Bacteroides finegoldii		2635671
+Bacteroides faecis		24680		Bacteroides finegoldii		2768520
+Bacteroides faecis		29156		Bacteroides finegoldii		2827832
+Bacteroides faecis		21021		Bacteroides finegoldii		2863527
+Bacteroides faecis		34402		Bacteroides finegoldii		3109655
+Bacteroides faecis		13967		Bacteroides finegoldii		3192126
+Bacteroides faecis		23918		Bacteroides finegoldii		3272430
+Bacteroides faecis		15762		Bacteroides finegoldii		3369192
+Bacteroides faecis		11543		Bacteroides finegoldii		3439830
+Bacteroides faecis		11543		Bacteroides finegoldii		3439832
+Bacteroides faecis		8390		Bacteroides finegoldii		3461407
+Bacteroides faecis		5113		Bacteroides finegoldii		3524543
+Bacteroides faecis		26060		Bacteroides finegoldii		3568886
+Bacteroides faecis		26060		Bacteroides finegoldii		3574067
+Bacteroides faecis		26060		Bacteroides finegoldii		3578654
+Bacteroides faecis		17044		Bacteroides finegoldii		3608227
+Bacteroides faecis		27670		Bacteroides finegoldii		3694296
+Bacteroides faecis		15032		Bacteroides finegoldii		3734518
+Bacteroides faecis		33916		Bacteroides finegoldii		3857428
+Bacteroides faecis		6678		Bacteroides finegoldii		3902861
+Bacteroides faecis		24626		Bacteroides finegoldii		4057632
+Bacteroides faecis		26046		Bacteroides finegoldii		4329804
+Bacteroides faecis		9614		Bacteroides finegoldii		4358845
+Bacteroides faecis		4914		Bacteroides finegoldii		4471905
+Bacteroides faecis		30723		Bacteroides finegoldii		4694730
+Bacteroides faecis		28344		Bacteroides finegoldii		4842008
+Bacteroides faecis		33916		Bacteroides finegoldii		4958270
+Bacteroides faecis		19703		Bacteroides finegoldii		4995395
+Bacteroides faecis		24295		Bacteroides finegoldii		5080278
+Bacteroides faecis		34853		Bacteroides finegoldii		5109661
