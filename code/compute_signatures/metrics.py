@@ -95,7 +95,6 @@ class Jaccard(Metric):
             all_res.append(current_inter/current_union)
         return np.array(all_res)
     
-
 class Convolution(Metric):
     def __init__(self, ref_count : Dict[int, int]) -> None:
         self.ref_count = ref_count
