@@ -30,7 +30,7 @@ def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', prin
         print()
 
 
-def find_potential_HGT(file_pointer:TextIOWrapper, window_size:int, k:int, metric:metrics.Metric, step:int=1) -> Dict[int, float]:
+def find_potential_HGT(file_pointer:TextIOWrapper, window_size:int, k:int) -> Dict[int, float]:
     """ Find potential HGT regions in a genome file """
     # slide over the file to compute the metric
     results = metrics.compute_metrics_file(file_pointer, metric_list, window_size, k, step)[0]
@@ -73,14 +73,8 @@ if __name__ == "__main__":
         result = metric.slide_window(kmers_list, window_size)
         print(f"Time for distance: {time()-t0}")
 
-        # compute metrics using the old function
-        t1 = time()
-        result_1 = metrics.distance_kmers_list(kmers_list, kmers_freq, window_size, p=2)
-        print(f"Time for distance_kmers_list: {time()-t1}")
-
         # display results
         plt.plot(result, label="new")
-        plt.plot(result_1, label="old Flo")
         plt.legend(loc="upper left")
         plt.show(block=False)
         plt.pause(1)
