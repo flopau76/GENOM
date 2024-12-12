@@ -66,7 +66,24 @@ if __name__ == "__main__":
     for sample, file_name in files:
         n+=1
         progressbar(n, n_total , prefix = 'Progress:', suffix = 'Complete', printEnd = "\r")
+    times_kmers = []
+    times_windows = []
+    start = time.time()
 
+    files = iter_directory(input_folder)
+    n = 0
+    n_total = len(files)
+
+    for sample, file_name in files:
+        n+=1
+        progressbar(n, n_total , prefix = 'Progress:', suffix = 'Complete', printEnd = "\r")
+
+        # iterate once over the file to get the kmers_list
+        t0 = time.time()
+        with open_genome(file_name) as file_pointer:
+            kmers_list = list(stream_kmers_file(file_pointer, k))
+        
+        # compute the average signature of the genome
         # iterate once over the file to get the kmers_list
         t0 = time.time()
         with open_genome(file_name) as file_pointer:

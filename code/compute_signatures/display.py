@@ -1,21 +1,27 @@
+##########################################################################
+#                        Useless/Deprecated ?                            #
+##########################################################################
+
+
 from matplotlib import pyplot as plt
 import matplotlib.backends.backend_pdf as bpdf
 
 from typing import List
 
-def display_windows(window_value:List[float], hits=None,
-                     title:str=None, ylabel:str=None, ax=None):
+def display_windows(window_value:List[float], title:str=None, ylabel:str=None, ax=None, label:str=None):
     if ax is None:
         fig, ax = plt.subplots()
-    ax.plot(window_value)
-    if hits is not None:
-        ax.scatter(hits.keys(), hits.values(), color='red', marker='+')
-    ax.set_xlabel("Window start")
+    ax.plot(window_value, label=label)
+    ax.set_xlabel("Window position")
     if ylabel is not None:
         ax.set_ylabel(ylabel)
     if title is not None:
         ax.set_title(title)
-    return fig
+    if label is not None:
+        ax.legend()
+    plt.show(block=False)
+    plt.waitforbuttonpress(timeout=0.5)
+    return 0
 
 def display_matrix(matrix, save_path, step=1, title='Matrix Heatmap', 
                      figsize=(10,10), cmap='viridis', colorbar=True):
@@ -37,3 +43,4 @@ def save_pdf_fig_report(fig_list : List[plt.Axes], output_path_pdf):
         for fig in fig_list:
             pdf.savefig(fig)
     return 0
+            
