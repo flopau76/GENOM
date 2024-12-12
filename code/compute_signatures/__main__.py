@@ -42,22 +42,6 @@ def find_potential_HGT(file_pointer:TextIOWrapper, window_size:int, k:int, metri
 
     return best_hits
 
-def plot_profile(file_pointer:TextIOWrapper, window_size:int, k:int, metric_list:List[metrics.Metric], step:int=1):
-    """ Plot the value of some metrics along a genome """
-    # slide over the file to compute the metric
-    results = metrics.compute_metrics_file(file_pointer, metric_list, window_size, k, step)[0]
-
-    # display results
-    fig = plt.figure()
-    for i, metric in enumerate(metric_list):
-        ax = fig.add_subplot(len(metric_list), 1, i+1)
-        ax.plot(results[i])
-        ax.set_title(metric.name)
-    ax.set_xlabel("Position")
-    fig.suptitle(f"Metrics for sample {sample}")
-    fig.tight_layout()
-    return fig
-
 
 if __name__ == "__main__":
     k = 8
@@ -85,9 +69,8 @@ if __name__ == "__main__":
 
         # compute metrics using the metric class
         t0 = time()
-        metric_list = [metrics.distance(kmers_freq, norm=window_size)]
-        kmers_stream = stream_kmers_file(file_pointer, k)
-        result = metrics.compute_metrics_file(kmers_stream, metric_list, window_size)[0]
+        metric = metrics.distance(kmers_freq, norm=window_size)
+        result = metric.slide_window(kmers_list, window_size)
         print(f"Time for distance: {time()-t0}")
 
         # compute metrics using the old function
@@ -95,14 +78,9 @@ if __name__ == "__main__":
         result_1 = metrics.distance_kmers_list(kmers_list, kmers_freq, window_size, p=2)
         print(f"Time for distance_kmers_list: {time()-t1}")
 
-        t2 = time()
-        results_2 = metrics.window_slider_distance(kmers_list, kmers_freq, window_size, p=2)
-        print(f"Time for window_slider_distance: {time()-t2}")
-
         # display results
         plt.plot(result, label="new")
         plt.plot(result_1, label="old Flo")
-        plt.plot(results_2, label="old Matt")
         plt.legend(loc="upper left")
         plt.show(block=False)
         plt.pause(1)
