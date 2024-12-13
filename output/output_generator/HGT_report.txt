@@ -1,9 +1,0 @@
-Sp_sending		Sending_position		Sp_receiving		Receiving_position
-Citrobacter freundii		2445832-2454606		Citrobacter portucalensis		450240
-Coprococcus comes		1643870-1647486		Bifidobacterium adolescentis		1553004
-Desulfovibrio piger		1710648-1726863		Bifidobacterium bifidum		53332
-Blautia hansenii		2071993-2076788		Blautia obeum		1722553
-Alistipes shahii		2647531-2666136		Alistipes finegoldii		1936929
-Coprococcus comes		2134117-2148707		Adlercreutzia hattorii		1365362
-Dorea longicatena		1127323-1139543		Dorea longicatena		1143345
-Butyricimonas faecihominis		2189375-2208827		Bifidobacterium animalis		497276
