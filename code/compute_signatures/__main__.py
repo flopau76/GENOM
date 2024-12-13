@@ -37,12 +37,17 @@ if __name__ == "__main__":
     parser.add_argument("input_db", help="The name of the input database (must be in `input/sequence_db/`)")
     parser.add_argument('-k', '--kmer', help='The size of the kmer (default=8)', type=int, default=8)
     parser.add_argument('-w', '--window', help='The size of the sliding window (default=2000)', type=int, default=2000)
+    parser.add_argument('-r', '--results', help='Path to the file containing the known HGT for them to be shown on the report', type=str, default="")
 
     args = parser.parse_args()
 
     k = args.kmer
     window_size = args.window
     folder_name = args.input_db
+    reference_file = args.results
+
+    if reference_file != "":
+        reference_dico = display.ref_parse(reference_file)
 
     base_dir =  os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
     input_folder = os.path.join(base_dir, "input", "sequence_db", folder_name)
@@ -87,7 +92,7 @@ if __name__ == "__main__":
         best_hits[sample] = sample_hits
 
         # save the resulting figure
-        fig = display.display_windows(result, hits=sample_hits, title=f"{sample}", ylabel="KL divergence", dpi=300)
+        fig = display.display_windows(result, sample, hits=sample_hits, title=f"{sample}", ylabel="KL divergence", dpi=300, ref=reference_dico)
         fig.savefig(os.path.join(tmp_dir_images, f"{sample}.png"))
         plt.close("all")
 

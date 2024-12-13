@@ -67,7 +67,7 @@ def write_output_db(output_path_receiver : str, output_path_sender : str, transf
 
     output_dir_sender = os.path.join(output_path_sender, str(transfer.iteration))
     os.makedirs(output_dir_sender)
-    output_dir_receiver = os.path.join(output_path_receiver, str(transfer.iteration))
+    output_dir_receiver = os.path.join(output_path_receiver, receiver.strain)
     os.makedirs(output_dir_receiver)
 
     sender_path = os.path.join(output_dir_sender, f"sender_{sender.strain}.fasta")
@@ -77,4 +77,4 @@ def write_output_db(output_path_receiver : str, output_path_sender : str, transf
         sender_file.write(f">{sender.strain}_{sender.ID} | {sender.transfer_start}-{sender.transfer_end}\n{sender.seq}\n")
     
     with open(receiver_path, 'w') as receiver_file:
-        receiver_file.write(f">{receiver.strain}_{receiver.ID} | {receiver.reception_position}\n{receiver.seq}\n")
+        receiver_file.write(f">{receiver.strain}_{receiver.ID} | {receiver.reception_position} | it = {transfer.iteration}\n{receiver.seq}\n")

@@ -60,8 +60,8 @@ if __name__ == "__main__":
     in_dir, out_dir_receiver, out_dir_sender, report_file = "input_generator", 'output_receiver', 'output_sender', "HGT_report.txt"
 
     base_db = db_path = os.path.join(base_dir, "input", "sequence_db")
-    db_path = os.path.join(base_db, in_dir)
-    output_path_receiver = os.path.join(base_db, out_dir_receiver)
+    db_path = os.path.join(base_db, in_dir) #send to input generator
+    output_path_receiver = os.path.join(base_db, out_dir_receiver) #send to output receiver
 
     output_path = os.path.join(base_dir, "output", "output_generator")
     output_path_sender = os.path.join(output_path, out_dir_sender)
@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
     if out_dir_receiver in os.listdir(output_path) or out_dir_sender in os.listdir(output_path) or report_file in os.listdir(output_path):
         print("  Cleaning output directory...")
-        ctrl_removal(output_path, out_dir_receiver, report_file)
+        ctrl_removal(base_db, out_dir_receiver, report_file)
         ctrl_removal(output_path, out_dir_sender, report_file)
         print("  Output directory cleaned.\n")
     
