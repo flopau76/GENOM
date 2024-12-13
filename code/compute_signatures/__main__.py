@@ -17,11 +17,9 @@ from typing import Dict
 def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', printEnd = "\r") -> None:
     """ Show a progress bar indicating downloading progress """
     percent = f'{round(100 * (iteration / float(total)), 1)}'
-
     add = int(100 * iteration // total)
     bar = filler * add + '-' * (100 - add)
     print(f'\r{prefix} |{bar}| {percent}% {suffix}', end = printEnd)
-
     if iteration == total: 
         print()
 
@@ -35,8 +33,8 @@ def find_potential_HGT(result:np.ndarray) -> Dict[int, float]:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Compute the signature of a genome and find potential HGT regions")
     parser.add_argument("input_db", help="The name of the input database (must be in `input/sequence_db/`)")
-    parser.add_argument('-k', '--kmer', help='The size of the kmer (default=8)', type=int, default=8)
-    parser.add_argument('-w', '--window', help='The size of the sliding window (default=2000)', type=int, default=2000)
+    parser.add_argument('-k', '--kmer', help='The size of the kmer (default=8)', type=int, default=5)
+    parser.add_argument('-w', '--window', help='The size of the sliding window (default=2000)', type=int, default=5000)
     parser.add_argument('-r', '--results', help='Path to the file containing the known HGT for them to be shown on the report', type=str, default="")
 
     args = parser.parse_args()
@@ -51,12 +49,10 @@ if __name__ == "__main__":
 
     base_dir =  os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
     input_folder = os.path.join(base_dir, "input", "sequence_db", folder_name)
-    output_path = os.path.join(base_dir, "output", f"transfer_summary_{folder_name}.json")
-    output_path_pdf = os.path.join(base_dir, "output", f"transfer_summary_{folder_name}.pdf")
-    tmp_dir_images = os.path.join(base_dir, "output", f"images_{folder_name}")
+    output_path_json = os.path.join(base_dir, "output", f"transfer_summary", f"{folder_name}.json")
+    output_path_pdf = os.path.join(base_dir, "output", f"transfer_summary", f"{folder_name}.pdf")
 
-    if not os.path.exists(tmp_dir_images):
-        os.makedirs(tmp_dir_images)
+    pdf = bpdf.PdfPages(output_path_pdf)
 
     best_hits = {}
 
@@ -92,30 +88,18 @@ if __name__ == "__main__":
         best_hits[sample] = sample_hits
 
         # save the resulting figure
-        fig = display.display_windows(result, sample, hits=sample_hits, title=f"{sample}", ylabel="KL divergence", dpi=300, ref=reference_dico)
-        fig.savefig(os.path.join(tmp_dir_images, f"{sample}.png"))
-        plt.close("all")
+        fig = display.display_windows(result, hits=sample_hits, title=f"{sample}", ylabel="KL divergence", dpi=300, ref=reference_dico, window_size=window_size)
+        fig.savefig(pdf, format='pdf')
+        plt.close(fig)
 
         n += 1
         progressbar(n, n_total , prefix = 'Progress:', suffix = 'Complete', printEnd = "\r")
 
-    # saving hits to json
-    with open(output_path, 'w') as outjson:
-        json.dump(best_hits, outjson)
+    pdf.close()
 
-    # Combine all the images into a single PDF
-    with bpdf.PdfPages(output_path_pdf) as pdf:
-        for sample in best_hits.keys():
-            fig_path = os.path.join(tmp_dir_images, f"{sample}.png")
-            if os.path.exists(fig_path):
-                fig = plt.figure()
-                img = plt.imread(fig_path)
-                plt.imshow(img)
-                plt.axis('off')
-                pdf.savefig(fig)
-                plt.close(fig)
-                os.remove(fig_path)
-    os.rmdir(tmp_dir_images)
+    # saving hits to json
+    with open(output_path_json, 'w') as outjson:
+        json.dump(best_hits, outjson)
 
     print(f"Total time: {time.time()-start:.2f}s")
     print(f"Average time to compute kmers: {np.mean(times_kmers):.2f}s")

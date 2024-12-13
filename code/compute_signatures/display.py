@@ -19,7 +19,7 @@ def ref_parse(ref_path : str):
 
 def display_windows(window_value:List[float], sample : str, hits=None,
                      title:str=None, ylabel:str=None, ax=None, 
-                     dpi=None, ref : Dict[str,int] = None, window_size : int = 2000): 
+                     dpi=None, ref : Dict[str,int] = None, window_size : int = 5000) -> plt.Figure: 
 
     if ax is None:
         fig, ax = plt.subplots(dpi=dpi)
@@ -54,10 +54,3 @@ def display_matrix(matrix, save_path, step=1, title='Matrix Heatmap',
     if save_path:
         plt.savefig(save_path, bbox_inches='tight', dpi=1000)
     return fig
-
-def save_pdf_fig_report(fig_list : List[plt.Axes], output_path_pdf):
-    with bpdf.PdfPages(output_path_pdf) as pdf:
-        for fig in fig_list:
-            pdf.savefig(fig)
-    return 0
-            
