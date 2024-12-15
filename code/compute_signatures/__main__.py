@@ -23,19 +23,23 @@ def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', prin
     if iteration == total: 
         print()
 
-def find_potential_HGT(result:np.ndarray) -> Dict[int, float]:
+def find_potential_HGT(result:np.ndarray, min_height=None, min_prominence=None) -> Dict[int, float]:
     """ Find potential HGT regions corresponding to the highest peaks in the result """
-    highest_values_indices, _ = find_peaks(result, prominence=(np.max(result) - np.min(result))/3)
+    highest_values_indices, _ = find_peaks(result, prominence=min_prominence, height=min_height)
     highest_values = result[highest_values_indices]
     best_hits = {int(idx):val for idx, val in zip(highest_values_indices, highest_values)}
     return best_hits
 
+
 if __name__ == "__main__":
+    metric_dict = {0:metrics.distance(), 1:metrics.chi_squared(), 2:metrics.KLdivergence(), 3:metrics.Convolution()}
+
     parser = argparse.ArgumentParser(description="Compute the signature of a genome and find potential HGT regions")
     parser.add_argument("input_db", help="The name of the input database (must be in `input/sequence_db/`)")
     parser.add_argument('-k', '--kmer', help='The size of the kmer (default=8)', type=int, default=5)
     parser.add_argument('-w', '--window', help='The size of the sliding window (default=2000)', type=int, default=5000)
     parser.add_argument('-r', '--results', help='Path to the file containing the known HGT for them to be shown on the report', type=str, default="")
+    parser.add_argument('-m', '--metric', help=f'Metric used for computation. Currently supports: ' + " ,".join([f"{metric.name} ({key})" for key, metric in metric_dict.items()]), type=int, default=1)
 
     args = parser.parse_args()
 
@@ -43,14 +47,15 @@ if __name__ == "__main__":
     window_size = args.window
     folder_name = args.input_db
     reference_file = args.results
-
     if reference_file != "":
         reference_dico = display.ref_parse(reference_file)
 
+    metric = metric_dict[args.metric]
+
     base_dir =  os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
     input_folder = os.path.join(base_dir, "input", "sequence_db", folder_name)
-    output_path_json = os.path.join(base_dir, "output", f"transfer_summary", f"{folder_name}.json")
-    output_path_pdf = os.path.join(base_dir, "output", f"transfer_summary", f"{folder_name}.pdf")
+    output_path_json = os.path.join(base_dir, "output", f"transfer_summary", f"{folder_name}_{metric.name}.json")
+    output_path_pdf = os.path.join(base_dir, "output", f"transfer_summary", f"{folder_name}_{metric.name}.pdf")
 
     pdf = bpdf.PdfPages(output_path_pdf)
 
@@ -78,17 +83,17 @@ if __name__ == "__main__":
         times_kmers.append(t1-t0)
 
         # compute the distance to the average signature along the genome
-        metric = metrics.Convolution(kmers_freq)
+        metric.update(ref_freq=kmers_freq, ref_count=kmers_count)
         result = metric.slide_window(kmers_list, window_size)
         t2 = time.time()
         times_windows.append(t2-t1)
 
         # find the highest peaks
-        sample_hits = find_potential_HGT(result)
+        sample_hits = find_potential_HGT(result, min_prominence=(np.max(result) - np.min(result))/3)
         best_hits[sample] = sample_hits
 
         # save the resulting figure
-        fig = display.display_windows(result, hits=sample_hits, title=f"{sample}", ylabel="KL divergence", dpi=300, ref=reference_dico, window_size=window_size)
+        fig = display.display_windows(result, hits=sample_hits, title=f"{sample}", ylabel=metric.name, dpi=300, ref=reference_dico, window_size=window_size)
         fig.savefig(pdf, format='pdf')
         plt.close(fig)
 
