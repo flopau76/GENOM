@@ -1,4 +1,4 @@
-import os, shutil
+import os, shutil, argparse
 import numpy as np
 
 from HGTransfer.load_input import HGT, loader
@@ -54,10 +54,21 @@ def ctrl_removal(base_dir : str, out_dir : str, report_file : str):
 if __name__ == "__main__":
     print("Starting HGTdb generation...")
     iterations = 1000
-    transfer_proba = 0.01
+    transfer_proba = 0.02
+    
+    parser = argparse.ArgumentParser(description="Generate Horizontal Transfer from a provided database")
+    parser.add_argument('-db', '--database', help="Input database with list of taxa", type=str, default ="db")
+    parser.add_argument('-re', '--output_receiver', help="Path to the receiver output directory", type=str, default="output_receiver")
+    parser.add_argument('-se', '--output_sender', help="Path to the receiver output directory", type=str, default="output_sender")
+    parser.add_argument('-r', '--report', help='Name of the report file', type=str,default='HGT_report.txt')
+
+    args = parser.parse_args()
 
     base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-    in_dir, out_dir_receiver, out_dir_sender, report_file = "db", 'output_receiver', 'output_sender', "HGT_report.txt"
+    in_dir = args.database
+    out_dir_receiver = args.output_receiver
+    out_dir_sender = args.output_sender
+    report_file = args.report
 
     base_db = db_path = os.path.join(base_dir, "input", "sequence_db")
     db_path = os.path.join(base_db, in_dir) #send to input generator
