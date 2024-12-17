@@ -1,0 +1,750 @@
+Additional file 1 - The 118 query genomes and their reference genomes with distances.,,,,
+,,,,
+Query Accession,Query Description,Reference Accession,Reference Description,CVTree Distance
+NC_009665.1,Shewanella baltica OS185,NC_008345.1,Shewanella frigidimarina NCIMB 400,0.399
+,,NC_008700.1,Shewanella amazonensis SB2B,0.405
+,,NC_009052.1,Shewanella baltica OS155,0.146
+,,NC_010506.1,Shewanella woodyi ATCC 51908,0.413
+,,,,
+NC_007606.1,Shigella dysenteriae Sd197,NC_009436.1,Enterobacter sp. 638,0.376
+,,NC_004631.1,Salmonella enterica subsp. enterica serovar Typhi Ty2,0.355
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.383
+,,NC_008258.1,Shigella flexneri 5 str. 8401,0.227
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.395
+,,NC_009792.1,Citrobacter koseri ATCC BAA-895,0.349
+,,,,
+NC_006350.1,"Burkholderia pseudomallei K96243 chromosome 1, complete sequence.",NC_007951.1,"Burkholderia xenovorans LB400 chromosome 1, complete sequence.",0.399
+,,NC_008060.1,"Burkholderia cenocepacia AU 1054 chromosome 1, complete sequence.",0.357
+,,NC_010084.1,"Burkholderia multivorans ATCC 17616 chromosome 1, complete sequence.",0.327
+,,NC_007510.1,"Burkholderia sp. 383 chromosome 1, complete sequence.",0.336
+,,NC_007434.1,"Burkholderia pseudomallei 1710b chromosome I, complete sequence.",0.109
+,,NC_009256.1,"Burkholderia vietnamiensis G4 chromosome 1, complete sequence.",0.339
+,,,,
+NC_004431.1,Escherichia coli CFT073,NC_009436.1,Enterobacter sp. 638,0.369
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.391
+,,NC_009792.1,Citrobacter koseri ATCC BAA-895,0.327
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.379
+,,NC_008258.1,Shigella flexneri 5 str. 8401,0.232
+,,NC_010067.1,"Salmonella enterica subsp. arizonae serovar 62:z4,z23:--",0.349
+,,,,
+NC_003485.1,Streptococcus pyogenes MGAS8232,NC_004116.1,Streptococcus agalactiae 2603V/R,0.410
+,,NC_007432.1,Streptococcus agalactiae A909,0.408
+,,NC_004368.1,Streptococcus agalactiae NEM316,0.410
+,,NC_002737.1,Streptococcus pyogenes M1 GAS,0.101
+,,NC_008024.1,Streptococcus pyogenes MGAS10750,0.117
+,,NC_008023.1,Streptococcus pyogenes MGAS2096,0.131
+,,,,
+NC_008543.1,"Burkholderia cenocepacia HI2424 chromosome 2, complete sequence.",NC_007511.1,"Burkholderia sp. 383 chromosome 2, complete sequence.",0.297
+,,NC_010515.1,"Burkholderia cenocepacia MC0-3 chromosome 2, complete sequence.",0.105
+,,NC_009255.1,"Burkholderia vietnamiensis G4 chromosome 2, complete sequence.",0.344
+,,NC_008391.1,"Burkholderia cepacia AMMD chromosome 2, complete sequence.",0.297
+,,NC_010086.1,"Burkholderia multivorans ATCC 17616 chromosome 2, complete sequence.",0.330
+,,NC_010552.1,"Burkholderia ambifaria MC40-6 chromosome 2, complete sequence.",0.300
+,,,,
+NC_003997.3,Bacillus anthracis str. Ames,NC_003909.8,Bacillus cereus ATCC 10987,0.203
+,,NC_004722.1,Bacillus cereus ATCC 14579,0.224
+,,NC_006274.1,Bacillus cereus E33L,0.132
+,,NC_009674.1,Bacillus cereus subsp. cytotoxis NVH 391-98,0.351
+,,NC_008600.1,Bacillus thuringiensis str. Al Hakam,0.137
+,,NC_010184.1,Bacillus weihenstephanensis KBAB4,0.247
+,,,,
+NC_010334.1,Shewanella halifaxensis HAW-EB4,NC_009092.1,Shewanella loihica PV-4,0.395
+,,NC_010506.1,Shewanella woodyi ATCC 51908,0.396
+,,NC_009901.1,Shewanella pealeana ATCC 700345,0.259
+,,NC_009831.1,Shewanella sediminis HAW-EB3,0.382
+,,NC_009665.1,Shewanella baltica OS185,0.414
+,,NC_008345.1,Shewanella frigidimarina NCIMB 400,0.419
+,,,,
+NC_004722.1,Bacillus cereus ATCC 14579,NC_006274.1,Bacillus cereus E33L,0.217
+,,NC_005945.1,Bacillus anthracis str. Sterne,0.218
+,,NC_003909.8,Bacillus cereus ATCC 10987,0.233
+,,NC_009674.1,Bacillus cereus subsp. cytotoxis NVH 391-98,0.354
+,,NC_008600.1,Bacillus thuringiensis str. Al Hakam,0.221
+,,NC_010184.1,Bacillus weihenstephanensis KBAB4,0.250
+,,,,
+NC_004606.1,Streptococcus pyogenes SSI-1,NC_007432.1,Streptococcus agalactiae A909,0.408
+,,NC_004368.1,Streptococcus agalactiae NEM316,0.409
+,,NC_002737.1,Streptococcus pyogenes M1 GAS,0.109
+,,NC_006086.1,Streptococcus pyogenes MGAS10394,0.102
+,,NC_008024.1,Streptococcus pyogenes MGAS10750,0.116
+,,NC_008023.1,Streptococcus pyogenes MGAS2096,0.121
+,,,,
+NC_010322.1,Pseudomonas putida GB-1,NC_007492.1,Pseudomonas fluorescens PfO-1,0.391
+,,NC_009439.1,Pseudomonas mendocina ymp,0.418
+,,NC_009656.1,Pseudomonas aeruginosa PA7,0.417
+,,NC_005773.3,Pseudomonas syringae pv. phaseolicola 1448A,0.412
+,,NC_004129.6,Pseudomonas fluorescens Pf-5,0.392
+,,NC_002947.3,Pseudomonas putida KT2440,0.232
+,,,,
+NC_007384.1,Shigella sonnei Ss046,NC_009436.1,Enterobacter sp. 638,0.360
+,,NC_004631.1,Salmonella enterica subsp. enterica serovar Typhi Ty2,0.338
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.370
+,,NC_009801.1,Escherichia coli E24377A,0.168
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.383
+,,NC_009792.1,Citrobacter koseri ATCC BAA-895,0.330
+,,,,
+NC_008819.1,Prochlorococcus marinus str. NATL1A,NC_005042.1,Prochlorococcus marinus subsp. marinus str. CCMP1375,0.419
+,,NC_009976.1,Prochlorococcus marinus str. MIT 9211,0.418
+,,NC_007335.2,Prochlorococcus marinus str. NATL2A,0.107
+,,,,
+NC_004631.1,Salmonella enterica subsp. enterica serovar Typhi Ty2,NC_009436.1,Enterobacter sp. 638,0.359
+,,NC_006905.1,Salmonella enterica subsp. enterica serovar Choleraesuis str. SC-B67,0.140
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.367
+,,NC_008258.1,Shigella flexneri 5 str. 8401,0.339
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.381
+,,NC_009792.1,Citrobacter koseri ATCC BAA-895,0.323
+,,,,
+NC_002655.2,Escherichia coli O157:H7 EDL933,NC_009436.1,Enterobacter sp. 638,0.365
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.386
+,,NC_009792.1,Citrobacter koseri ATCC BAA-895,0.333
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.376
+,,NC_010067.1,"Salmonella enterica subsp. arizonae serovar 62:z4,z23:--",0.346
+,,NC_010498.1,Escherichia coli SECEC SMS-3-5,0.169
+,,,,
+NC_009801.1,Escherichia coli E24377A,NC_009436.1,Enterobacter sp. 638,0.359
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.381
+,,NC_009792.1,Citrobacter koseri ATCC BAA-895,0.326
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.367
+,,NC_010067.1,"Salmonella enterica subsp. arizonae serovar 62:z4,z23:--",0.339
+,,NC_010498.1,Escherichia coli SECEC SMS-3-5,0.155
+,,,,
+NC_002758.2,Staphylococcus aureus subsp. aureus Mu50,NC_004461.1,Staphylococcus epidermidis ATCC 12228,0.371
+,,NC_007168.1,Staphylococcus haemolyticus JCSC1435,0.381
+,,NC_007350.1,Staphylococcus saprophyticus subsp. saprophyticus ATCC 15305,0.398
+,,NC_007622.1,Staphylococcus aureus RF122,0.107
+,,,,
+NC_008258.1,Shigella flexneri 5 str. 8401,NC_008563.1,Escherichia coli APEC O1,0.222
+,,NC_009436.1,Enterobacter sp. 638,0.363
+,,NC_010102.1,Salmonella enterica subsp. enterica serovar Paratyphi B str. SPB7,0.345
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.373
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.382
+,,NC_009792.1,Citrobacter koseri ATCC BAA-895,0.333
+,,,,
+NC_009997.1,Shewanella baltica OS195,NC_008700.1,Shewanella amazonensis SB2B,0.406
+,,NC_008345.1,Shewanella frigidimarina NCIMB 400,0.400
+,,NC_007954.1,Shewanella denitrificans OS217,0.412
+,,NC_009092.1,Shewanella loihica PV-4,0.403
+,,NC_008750.1,Shewanella sp. W3-18-1,0.293
+,,NC_010506.1,Shewanella woodyi ATCC 51908,0.415
+,,,,
+NC_005945.1,Bacillus anthracis str. Sterne,NC_003909.8,Bacillus cereus ATCC 10987,0.199
+,,NC_004722.1,Bacillus cereus ATCC 14579,0.218
+,,NC_006274.1,Bacillus cereus E33L,0.119
+,,NC_009674.1,Bacillus cereus subsp. cytotoxis NVH 391-98,0.350
+,,NC_008600.1,Bacillus thuringiensis str. Al Hakam,0.125
+,,NC_010184.1,Bacillus weihenstephanensis KBAB4,0.245
+,,,,
+NC_004459.2,"Vibrio vulnificus CMCP6 chromosome I, complete sequence.",NC_005139.1,"Vibrio vulnificus YJ016 chromosome I, complete sequence.",0.120
+,,NC_006840.2,"Vibrio fischeri ES114 chromosome I, complete sequence.",0.412
+,,NC_009457.1,"Vibrio cholerae O395 chromosome 2, complete sequence.",0.379
+,,NC_004603.1,"Vibrio parahaemolyticus RIMD 2210633 chromosome I, complete sequence.",0.344
+,,NC_009783.1,"Vibrio harveyi ATCC BAA-1116 chromosome I, complete sequence.",0.357
+,,,,
+NC_009074.1,"Burkholderia pseudomallei 668 chromosome I, complete sequence.",NC_008060.1,"Burkholderia cenocepacia AU 1054 chromosome 1, complete sequence.",0.355
+,,NC_010084.1,"Burkholderia multivorans ATCC 17616 chromosome 1, complete sequence.",0.325
+,,NC_010551.1,"Burkholderia ambifaria MC40-6 chromosome 1, complete sequence.",0.330
+,,NC_007951.1,"Burkholderia xenovorans LB400 chromosome 1, complete sequence.",0.398
+,,NC_009256.1,"Burkholderia vietnamiensis G4 chromosome 1, complete sequence.",0.338
+,,NC_007651.1,"Burkholderia thailandensis E264 chromosome I, complete sequence.",0.185
+,,,,
+NC_007946.1,Escherichia coli UTI89,NC_009436.1,Enterobacter sp. 638,0.366
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.388
+,,NC_009792.1,Citrobacter koseri ATCC BAA-895,0.326
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.377
+,,NC_010102.1,Salmonella enterica subsp. enterica serovar Paratyphi B str. SPB7,0.345
+,,AC_000091.1,Escherichia coli W3110 DNA,0.178
+,,,,
+NC_004578.1,Pseudomonas syringae pv. tomato str. DC3000,NC_008027.1,Pseudomonas entomophila L48,0.412
+,,NC_010501.1,Pseudomonas putida W619,0.412
+,,NC_004129.6,Pseudomonas fluorescens Pf-5,0.402
+,,NC_007492.1,Pseudomonas fluorescens PfO-1,0.397
+,,NC_002947.3,Pseudomonas putida KT2440,0.415
+,,NC_007005.1,Pseudomonas syringae pv. syringae B728a,0.256
+,,,,
+NC_007146.2,Haemophilus influenzae 86-028NP,NC_009655.1,Actinobacillus succinogenes 130Z,0.415
+,,NC_010278.1,Actinobacillus pleuropneumoniae serovar 3 str. JL03,0.419
+,,NC_002663.1,Pasteurella multocida subsp. multocida str. Pm70,0.403
+,,NC_006300.1,Mannheimia succiniciproducens MBEL55E,0.409
+,,NC_008309.1,Haemophilus somnus 129PT,0.405
+,,NC_000907.1,Haemophilus influenzae Rd KW20,0.136
+,,,,
+NC_007530.2,Bacillus anthracis str. 'Ames Ancestor',NC_003909.8,Bacillus cereus ATCC 10987,0.203
+,,NC_004722.1,Bacillus cereus ATCC 14579,0.224
+,,NC_006274.1,Bacillus cereus E33L,0.132
+,,NC_009674.1,Bacillus cereus subsp. cytotoxis NVH 391-98,0.351
+,,NC_008600.1,Bacillus thuringiensis str. Al Hakam,0.137
+,,NC_010184.1,Bacillus weihenstephanensis KBAB4,0.247
+,,,,
+NC_003909.8,Bacillus cereus ATCC 10987,NC_004722.1,Bacillus cereus ATCC 14579,0.233
+,,NC_006274.1,Bacillus cereus E33L,0.191
+,,NC_005945.1,Bacillus anthracis str. Sterne,0.199
+,,NC_009674.1,Bacillus cereus subsp. cytotoxis NVH 391-98,0.353
+,,NC_008600.1,Bacillus thuringiensis str. Al Hakam,0.202
+,,NC_010184.1,Bacillus weihenstephanensis KBAB4,0.252
+,,,,
+NC_008577.1,"Shewanella sp. ANA-3 chromosome 1, complete sequence.",NC_008700.1,Shewanella amazonensis SB2B,0.399
+,,NC_009831.1,Shewanella sediminis HAW-EB3,0.415
+,,NC_008321.1,Shewanella sp. MR-4,0.148
+,,NC_009092.1,Shewanella loihica PV-4,0.399
+,,NC_008345.1,Shewanella frigidimarina NCIMB 400,0.403
+,,NC_007954.1,Shewanella denitrificans OS217,0.416
+,,NC_009997.1,Shewanella baltica OS195,0.304
+,,NC_010506.1,Shewanella woodyi ATCC 51908,0.418
+,,NC_010334.1,Shewanella halifaxensis HAW-EB4,0.415
+,,,,
+NC_007613.1,Shigella boydii Sb227,NC_009436.1,Enterobacter sp. 638,0.362
+,,NC_004631.1,Salmonella enterica subsp. enterica serovar Typhi Ty2,0.338
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.372
+,,NC_008258.1,Shigella flexneri 5 str. 8401,0.170
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.384
+,,NC_009792.1,Citrobacter koseri ATCC BAA-895,0.336
+,,,,
+NC_010167.1,"Brucella suis ATCC 23445 chromosome II, complete sequence.",NC_009504.1,"Brucella ovis ATCC 25840 chromosome II, complete sequence.",0.179
+,,NC_009668.1,"Ochrobactrum anthropi ATCC 49188 chromosome 2, complete sequence.",0.418
+,,NC_004311.2,"Brucella suis 1330 chromosome II, complete sequence.",0.111
+,,,,
+NC_008390.1,"Burkholderia cepacia AMMD chromosome 1, complete sequence.",NC_008060.1,"Burkholderia cenocepacia AU 1054 chromosome 1, complete sequence.",0.252
+,,NC_007951.1,"Burkholderia xenovorans LB400 chromosome 1, complete sequence.",0.395
+,,NC_009256.1,"Burkholderia vietnamiensis G4 chromosome 1, complete sequence.",0.230
+,,NC_006348.1,"Burkholderia mallei ATCC 23344 chromosome 1, complete sequence.",0.336
+,,NC_010084.1,"Burkholderia multivorans ATCC 17616 chromosome 1, complete sequence.",0.226
+,,NC_010551.1,"Burkholderia ambifaria MC40-6 chromosome 1, complete sequence.",0.104
+,,,,
+NC_009901.1,Shewanella pealeana ATCC 700345,NC_009831.1,Shewanella sediminis HAW-EB3,0.386
+,,NC_010334.1,Shewanella halifaxensis HAW-EB4,0.259
+,,NC_008345.1,Shewanella frigidimarina NCIMB 400,0.417
+,,NC_009092.1,Shewanella loihica PV-4,0.393
+,,NC_008321.1,Shewanella sp. MR-4,0.409
+,,NC_010506.1,Shewanella woodyi ATCC 51908,0.394
+,,,,
+NC_010159.1,Yersinia pestis Angola,NC_009832.1,Serratia proteamaculans 568,0.398
+,,NC_008800.1,Yersinia enterocolitica subsp. enterocolitica 8081,0.319
+,,NC_010465.1,Yersinia pseudotuberculosis YPIII,0.125
+,,,,
+NC_009900.1,Rickettsia massiliae MTU5,NC_006142.1,Rickettsia typhi str. Wilmington,0.307
+,,NC_009881.1,Rickettsia akari str. Hartford,0.257
+,,NC_007109.1,Rickettsia felis URRWXCal2,0.251
+,,NC_003103.1,Rickettsia conorii str. Malish 7,0.169
+,,NC_007940.1,Rickettsia bellii RML369-C,0.352
+,,NC_009879.1,Rickettsia canadensis str. McKiel,0.280
+,,,,
+NC_008750.1,Shewanella sp. W3-18-1,NC_007954.1,Shewanella denitrificans OS217,0.415
+,,NC_008345.1,Shewanella frigidimarina NCIMB 400,0.403
+,,NC_008700.1,Shewanella amazonensis SB2B,0.408
+,,NC_009901.1,Shewanella pealeana ATCC 700345,0.414
+,,NC_009665.1,Shewanella baltica OS185,0.292
+,,NC_009831.1,Shewanella sediminis HAW-EB3,0.415
+,,,,
+NC_007432.1,Streptococcus agalactiae A909,NC_002737.1,Streptococcus pyogenes M1 GAS,0.407
+,,NC_004368.1,Streptococcus agalactiae NEM316,0.106
+,,NC_006086.1,Streptococcus pyogenes MGAS10394,0.406
+,,NC_008023.1,Streptococcus pyogenes MGAS2096,0.410
+,,NC_008024.1,Streptococcus pyogenes MGAS10750,0.409
+,,NC_004116.1,Streptococcus agalactiae 2603V/R,0.102
+,,,,
+NC_003923.1,Staphylococcus aureus subsp. aureus MW2,NC_004461.1,Staphylococcus epidermidis ATCC 12228,0.370
+,,NC_007168.1,Staphylococcus haemolyticus JCSC1435,0.381
+,,NC_007350.1,Staphylococcus saprophyticus subsp. saprophyticus ATCC 15305,0.395
+,,NC_007622.1,Staphylococcus aureus RF122,0.104
+,,,,
+NC_005071.1,Prochlorococcus marinus str. MIT 9313,NC_005070.1,Synechococcus sp. WH 8102,0.418
+,,NC_007513.1,Synechococcus sp. CC9902,0.419
+,,NC_007516.1,Synechococcus sp. CC9605,0.419
+,,NC_008820.1,Prochlorococcus marinus str. MIT 9303,0.210
+,,NC_009481.1,Synechococcus sp. WH 7803,0.413
+,,NC_008319.1,Synechococcus sp. CC9311,0.420
+,,,,
+NC_008600.1,Bacillus thuringiensis str. Al Hakam,NC_003909.8,Bacillus cereus ATCC 10987,0.202
+,,NC_004722.1,Bacillus cereus ATCC 14579,0.221
+,,NC_007530.2,Bacillus anthracis str. 'Ames Ancestor',0.137
+,,NC_009674.1,Bacillus cereus subsp. cytotoxis NVH 391-98,0.350
+,,NC_005957.1,Bacillus thuringiensis serovar konkukian str. 97-27,0.127
+,,NC_010184.1,Bacillus weihenstephanensis KBAB4,0.249
+,,,,
+NC_008463.1,Pseudomonas aeruginosa UCBPP-PA14,NC_009656.1,Pseudomonas aeruginosa PA7,0.168
+,,NC_009434.1,Pseudomonas stutzeri A1501,0.420
+,,NC_009439.1,Pseudomonas mendocina ymp,0.403
+,,NC_007492.1,Pseudomonas fluorescens PfO-1,0.413
+,,NC_004129.6,Pseudomonas fluorescens Pf-5,0.408
+,,NC_010501.1,Pseudomonas putida W619,0.417
+,,,,
+NC_010551.1,"Burkholderia ambifaria MC40-6 chromosome 1, complete sequence.",NC_008060.1,"Burkholderia cenocepacia AU 1054 chromosome 1, complete sequence.",0.249
+,,NC_008390.1,"Burkholderia cepacia AMMD chromosome 1, complete sequence.",0.104
+,,NC_007951.1,"Burkholderia xenovorans LB400 chromosome 1, complete sequence.",0.392
+,,NC_010084.1,"Burkholderia multivorans ATCC 17616 chromosome 1, complete sequence.",0.223
+,,NC_009256.1,"Burkholderia vietnamiensis G4 chromosome 1, complete sequence.",0.226
+,,NC_006350.1,"Burkholderia pseudomallei K96243 chromosome 1, complete sequence.",0.331
+,,,,
+NC_003197.1,Salmonella typhimurium LT2,NC_009436.1,Enterobacter sp. 638,0.359
+,,NC_003198.1,Salmonella enterica subsp. enterica serovar Typhi str. CT18,0.119
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.363
+,,NC_008258.1,Shigella flexneri 5 str. 8401,0.336
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.380
+,,NC_009792.1,Citrobacter koseri ATCC BAA-895,0.319
+,,,,
+NC_008321.1,Shewanella sp. MR-4,NC_007954.1,Shewanella denitrificans OS217,0.412
+,,NC_008700.1,Shewanella amazonensis SB2B,0.397
+,,NC_009665.1,Shewanella baltica OS185,0.294
+,,NC_010334.1,Shewanella halifaxensis HAW-EB4,0.410
+,,,,
+NC_006511.1,Salmonella enterica subsp. enterica serovar Paratyphi A str. ATCC 9150,NC_009436.1,Enterobacter sp. 638,0.358
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.365
+,,NC_008258.1,Shigella flexneri 5 str. 8401,0.335
+,,NC_010102.1,Salmonella enterica subsp. enterica serovar Paratyphi B str. SPB7,0.138
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.379
+,,NC_009792.1,Citrobacter koseri ATCC BAA-895,0.319
+,,,,
+NC_008563.1,Escherichia coli APEC O1,NC_009436.1,Enterobacter sp. 638,0.364
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.387
+,,NC_009792.1,Citrobacter koseri ATCC BAA-895,0.330
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.374
+,,NC_010067.1,"Salmonella enterica subsp. arizonae serovar 62:z4,z23:--",0.346
+,,NC_010498.1,Escherichia coli SECEC SMS-3-5,0.168
+,,,,
+NC_008024.1,Streptococcus pyogenes MGAS10750,NC_008023.1,Streptococcus pyogenes MGAS2096,0.127
+,,NC_007432.1,Streptococcus agalactiae A909,0.409
+,,NC_004368.1,Streptococcus agalactiae NEM316,0.411
+,,NC_002737.1,Streptococcus pyogenes M1 GAS,0.116
+,,NC_006086.1,Streptococcus pyogenes MGAS10394,0.122
+,,,,
+NC_010410.1,Acinetobacter baumannii AYE,NC_005966.1,Acinetobacter sp. ADP1,0.376
+,,NC_009085.1,Acinetobacter baumannii ATCC 17978,0.170
+,,NC_010400.1,Acinetobacter baumannii,0.249
+,,,,
+NC_004070.1,Streptococcus pyogenes MGAS315,NC_007432.1,Streptococcus agalactiae A909,0.408
+,,NC_004368.1,Streptococcus agalactiae NEM316,0.409
+,,NC_002737.1,Streptococcus pyogenes M1 GAS,0.108
+,,NC_006086.1,Streptococcus pyogenes MGAS10394,0.101
+,,NC_008024.1,Streptococcus pyogenes MGAS10750,0.113
+,,NC_008023.1,Streptococcus pyogenes MGAS2096,0.120
+,,,,
+NC_005139.1,"Vibrio vulnificus YJ016 chromosome I, complete sequence.",NC_006840.2,"Vibrio fischeri ES114 chromosome I, complete sequence.",0.416
+,,NC_004603.1,"Vibrio parahaemolyticus RIMD 2210633 chromosome I, complete sequence.",0.349
+,,NC_009457.1,"Vibrio cholerae O395 chromosome 2, complete sequence.",0.382
+,,NC_004459.2,"Vibrio vulnificus CMCP6 chromosome I, complete sequence.",0.120
+,,NC_009783.1,"Vibrio harveyi ATCC BAA-1116 chromosome I, complete sequence.",0.363
+,,,,
+NC_009783.1,"Vibrio harveyi ATCC BAA-1116 chromosome I, complete sequence.",NC_004459.2,"Vibrio vulnificus CMCP6 chromosome I, complete sequence.",0.357
+,,NC_004603.1,"Vibrio parahaemolyticus RIMD 2210633 chromosome I, complete sequence.",0.286
+,,NC_005139.1,"Vibrio vulnificus YJ016 chromosome I, complete sequence.",0.363
+,,NC_006840.2,"Vibrio fischeri ES114 chromosome I, complete sequence.",0.418
+,,NC_002505.1,"Vibrio cholerae O1 biovar eltor str. N16961 chromosome I, complete sequence.",0.394
+,,,,
+NC_009080.1,"Burkholderia mallei NCTC 10247 chromosome I, complete sequence.",NC_008060.1,"Burkholderia cenocepacia AU 1054 chromosome 1, complete sequence.",0.356
+,,NC_007951.1,"Burkholderia xenovorans LB400 chromosome 1, complete sequence.",0.398
+,,NC_009256.1,"Burkholderia vietnamiensis G4 chromosome 1, complete sequence.",0.340
+,,NC_009076.1,"Burkholderia pseudomallei 1106a chromosome I, complete sequence.",0.100
+,,NC_010084.1,"Burkholderia multivorans ATCC 17616 chromosome 1, complete sequence.",0.326
+,,NC_010551.1,"Burkholderia ambifaria MC40-6 chromosome 1, complete sequence.",0.331
+,,,,
+NC_008022.1,Streptococcus pyogenes MGAS10270,NC_006086.1,Streptococcus pyogenes MGAS10394,0.123
+,,NC_008023.1,Streptococcus pyogenes MGAS2096,0.116
+,,NC_007432.1,Streptococcus agalactiae A909,0.407
+,,NC_004368.1,Streptococcus agalactiae NEM316,0.407
+,,NC_002737.1,Streptococcus pyogenes M1 GAS,0.109
+,,,,
+NC_008253.1,Escherichia coli 536,NC_009436.1,Enterobacter sp. 638,0.362
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.386
+,,NC_009792.1,Citrobacter koseri ATCC BAA-895,0.322
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.372
+,,NC_008563.1,Escherichia coli APEC O1,0.128
+,,NC_010067.1,"Salmonella enterica subsp. arizonae serovar 62:z4,z23:--",0.343
+,,,,
+NC_007434.1,"Burkholderia pseudomallei 1710b chromosome I, complete sequence.",NC_007951.1,"Burkholderia xenovorans LB400 chromosome 1, complete sequence.",0.404
+,,NC_008060.1,"Burkholderia cenocepacia AU 1054 chromosome 1, complete sequence.",0.367
+,,NC_010084.1,"Burkholderia multivorans ATCC 17616 chromosome 1, complete sequence.",0.339
+,,NC_007510.1,"Burkholderia sp. 383 chromosome 1, complete sequence.",0.348
+,,NC_006348.1,"Burkholderia mallei ATCC 23344 chromosome 1, complete sequence.",0.159
+,,NC_009256.1,"Burkholderia vietnamiensis G4 chromosome 1, complete sequence.",0.351
+,,,,
+NC_006905.1,Salmonella enterica subsp. enterica serovar Choleraesuis str. SC-B67,NC_009436.1,Enterobacter sp. 638,0.361
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.367
+,,NC_008258.1,Shigella flexneri 5 str. 8401,0.337
+,,NC_010102.1,Salmonella enterica subsp. enterica serovar Paratyphi B str. SPB7,0.127
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.382
+,,NC_009792.1,Citrobacter koseri ATCC BAA-895,0.323
+,,,,
+NC_010102.1,Salmonella enterica subsp. enterica serovar Paratyphi B str. SPB7,NC_009436.1,Enterobacter sp. 638,0.365
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.370
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.385
+,,NC_009792.1,Citrobacter koseri ATCC BAA-895,0.326
+,,NC_004631.1,Salmonella enterica subsp. enterica serovar Typhi Ty2,0.143
+,,NC_004741.1,Shigella flexneri 2a str. 2457T,0.344
+,,,,
+NC_007510.1,"Burkholderia sp. 383 chromosome 1, complete sequence.",NC_007651.1,"Burkholderia thailandensis E264 chromosome I, complete sequence.",0.333
+,,NC_007951.1,"Burkholderia xenovorans LB400 chromosome 1, complete sequence.",0.395
+,,NC_009256.1,"Burkholderia vietnamiensis G4 chromosome 1, complete sequence.",0.250
+,,NC_008836.1,"Burkholderia mallei NCTC 10229 chromosome I, complete sequence.",0.335
+,,NC_010084.1,"Burkholderia multivorans ATCC 17616 chromosome 1, complete sequence.",0.238
+,,NC_010508.1,"Burkholderia cenocepacia MC0-3 chromosome 1, complete sequence.",0.179
+,,,,
+NC_009256.1,"Burkholderia vietnamiensis G4 chromosome 1, complete sequence.",NC_007510.1,"Burkholderia sp. 383 chromosome 1, complete sequence.",0.250
+,,NC_008060.1,"Burkholderia cenocepacia AU 1054 chromosome 1, complete sequence.",0.285
+,,NC_009080.1,"Burkholderia mallei NCTC 10247 chromosome I, complete sequence.",0.340
+,,NC_010084.1,"Burkholderia multivorans ATCC 17616 chromosome 1, complete sequence.",0.251
+,,NC_010551.1,"Burkholderia ambifaria MC40-6 chromosome 1, complete sequence.",0.226
+,,NC_007951.1,"Burkholderia xenovorans LB400 chromosome 1, complete sequence.",0.398
+,,,,
+NC_008023.1,Streptococcus pyogenes MGAS2096,NC_007432.1,Streptococcus agalactiae A909,0.410
+,,NC_004368.1,Streptococcus agalactiae NEM316,0.410
+,,NC_002737.1,Streptococcus pyogenes M1 GAS,0.108
+,,NC_006086.1,Streptococcus pyogenes MGAS10394,0.118
+,,NC_008024.1,Streptococcus pyogenes MGAS10750,0.127
+,,,,
+NC_008322.1,Shewanella sp. MR-7,NC_007954.1,Shewanella denitrificans OS217,0.413
+,,NC_008700.1,Shewanella amazonensis SB2B,0.397
+,,NC_009665.1,Shewanella baltica OS185,0.296
+,,NC_010334.1,Shewanella halifaxensis HAW-EB4,0.411
+,,,,
+NC_004337.1,Shigella flexneri 2a str. 301,NC_009436.1,Enterobacter sp. 638,0.363
+,,NC_004631.1,Salmonella enterica subsp. enterica serovar Typhi Ty2,0.339
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.373
+,,NC_009801.1,Escherichia coli E24377A,0.190
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.381
+,,NC_009792.1,Citrobacter koseri ATCC BAA-895,0.333
+,,,,
+NC_009085.1,Acinetobacter baumannii ATCC 17978,NC_005966.1,Acinetobacter sp. ADP1,0.385
+,,NC_010400.1,Acinetobacter baumannii,0.268
+,,NC_010410.1,Acinetobacter baumannii AYE,0.170
+,,,,
+NC_007778.1,Rhodopseudomonas palustris HaA2,NC_008435.1,Rhodopseudomonas palustris BisA53,0.381
+,,NC_007925.1,Rhodopseudomonas palustris BisB18,0.385
+,,NC_007958.1,Rhodopseudomonas palustris BisB5,0.291
+,,NC_005296.1,Rhodopseudomonas palustris CGA009,0.326
+,,NC_009445.1,Bradyrhizobium sp. ORS278,0.420
+,,,,
+NC_009800.1,Escherichia coli HS,NC_009436.1,Enterobacter sp. 638,0.355
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.380
+,,NC_009792.1,Citrobacter koseri ATCC BAA-895,0.325
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.362
+,,NC_010102.1,Salmonella enterica subsp. enterica serovar Paratyphi B str. SPB7,0.338
+,,NC_010498.1,Escherichia coli SECEC SMS-3-5,0.154
+,,,,
+NC_004347.1,Shewanella oneidensis MR-1,NC_008345.1,Shewanella frigidimarina NCIMB 400,0.407
+,,NC_008577.1,"Shewanella sp. ANA-3 chromosome 1, complete sequence.",0.258
+,,NC_008700.1,Shewanella amazonensis SB2B,0.405
+,,NC_009092.1,Shewanella loihica PV-4,0.402
+,,NC_009831.1,Shewanella sediminis HAW-EB3,0.415
+,,NC_010334.1,Shewanella halifaxensis HAW-EB4,0.414
+,,NC_007954.1,Shewanella denitrificans OS217,0.416
+,,NC_009665.1,Shewanella baltica OS185,0.311
+,,NC_010506.1,Shewanella woodyi ATCC 51908,0.420
+,,,,
+NC_009076.1,"Burkholderia pseudomallei 1106a chromosome I, complete sequence.",NC_008060.1,"Burkholderia cenocepacia AU 1054 chromosome 1, complete sequence.",0.357
+,,NC_010084.1,"Burkholderia multivorans ATCC 17616 chromosome 1, complete sequence.",0.327
+,,NC_010551.1,"Burkholderia ambifaria MC40-6 chromosome 1, complete sequence.",0.332
+,,NC_007951.1,"Burkholderia xenovorans LB400 chromosome 1, complete sequence.",0.399
+,,NC_009256.1,"Burkholderia vietnamiensis G4 chromosome 1, complete sequence.",0.339
+,,NC_007434.1,"Burkholderia pseudomallei 1710b chromosome I, complete sequence.",0.100
+,,,,
+NC_004603.1,"Vibrio parahaemolyticus RIMD 2210633 chromosome I, complete sequence.",NC_004459.2,"Vibrio vulnificus CMCP6 chromosome I, complete sequence.",0.344
+,,NC_005139.1,"Vibrio vulnificus YJ016 chromosome I, complete sequence.",0.349
+,,NC_006840.2,"Vibrio fischeri ES114 chromosome I, complete sequence.",0.412
+,,NC_009457.1,"Vibrio cholerae O395 chromosome 2, complete sequence.",0.385
+,,NC_009783.1,"Vibrio harveyi ATCC BAA-1116 chromosome I, complete sequence.",0.286
+,,,,
+NC_010380.1,Streptococcus pneumoniae Hungary19A-6,NC_009009.1,Streptococcus sanguinis SK36,0.408
+,,NC_009785.1,Streptococcus gordonii str. Challis substr. CH1,0.401
+,,NC_010582.1,Streptococcus pneumoniae CGSP14,0.138
+,,NC_003028.2,Streptococcus pneumoniae TIGR4,0.129
+,,NC_008533.1,Streptococcus pneumoniae D39,0.132
+,,,,
+NC_010501.1,Pseudomonas putida W619,NC_007492.1,Pseudomonas fluorescens PfO-1,0.385
+,,NC_009439.1,Pseudomonas mendocina ymp,0.415
+,,NC_009656.1,Pseudomonas aeruginosa PA7,0.418
+,,NC_005773.3,Pseudomonas syringae pv. phaseolicola 1448A,0.408
+,,NC_004129.6,Pseudomonas fluorescens Pf-5,0.392
+,,NC_010322.1,Pseudomonas putida GB-1,0.278
+,,,,
+NC_008061.1,"Burkholderia cenocepacia AU 1054 chromosome 2, complete sequence.",NC_007511.1,"Burkholderia sp. 383 chromosome 2, complete sequence.",0.309
+,,NC_010515.1,"Burkholderia cenocepacia MC0-3 chromosome 2, complete sequence.",0.129
+,,NC_009255.1,"Burkholderia vietnamiensis G4 chromosome 2, complete sequence.",0.347
+,,NC_008391.1,"Burkholderia cepacia AMMD chromosome 2, complete sequence.",0.306
+,,NC_010086.1,"Burkholderia multivorans ATCC 17616 chromosome 2, complete sequence.",0.335
+,,NC_010552.1,"Burkholderia ambifaria MC40-6 chromosome 2, complete sequence.",0.309
+,,,,
+NC_002516.2,Pseudomonas aeruginosa PAO1,NC_009656.1,Pseudomonas aeruginosa PA7,0.168
+,,NC_009434.1,Pseudomonas stutzeri A1501,0.418
+,,NC_009439.1,Pseudomonas mendocina ymp,0.401
+,,NC_007492.1,Pseudomonas fluorescens PfO-1,0.412
+,,NC_004129.6,Pseudomonas fluorescens Pf-5,0.406
+,,NC_010501.1,Pseudomonas putida W619,0.415
+,,,,
+NC_010184.1,Bacillus weihenstephanensis KBAB4,NC_003909.8,Bacillus cereus ATCC 10987,0.252
+,,NC_004722.1,Bacillus cereus ATCC 14579,0.250
+,,NC_006274.1,Bacillus cereus E33L,0.245
+,,NC_007530.2,Bacillus anthracis str. 'Ames Ancestor',0.247
+,,NC_008600.1,Bacillus thuringiensis str. Al Hakam,0.249
+,,NC_009674.1,Bacillus cereus subsp. cytotoxis NVH 391-98,0.351
+,,,,
+NC_002947.3,Pseudomonas putida KT2440,NC_007005.1,Pseudomonas syringae pv. syringae B728a,0.411
+,,NC_009439.1,Pseudomonas mendocina ymp,0.419
+,,NC_010501.1,Pseudomonas putida W619,0.280
+,,NC_004129.6,Pseudomonas fluorescens Pf-5,0.394
+,,NC_007492.1,Pseudomonas fluorescens PfO-1,0.393
+,,NC_009656.1,Pseudomonas aeruginosa PA7,0.419
+,,,,
+NC_010612.1,Mycobacterium marinum M,NC_002944.2,Mycobacterium avium subsp. paratuberculosis K-10,0.387
+,,NC_008595.1,Mycobacterium avium 104,0.390
+,,NC_008611.1,Mycobacterium ulcerans Agy99,0.205
+,,NC_000962.2,Mycobacterium tuberculosis H37Rv,0.373
+,,,,
+NC_010582.1,Streptococcus pneumoniae CGSP14,NC_003028.2,Streptococcus pneumoniae TIGR4,0.123
+,,NC_010380.1,Streptococcus pneumoniae Hungary19A-6,0.138
+,,NC_009009.1,Streptococcus sanguinis SK36,0.408
+,,NC_003098.1,Streptococcus pneumoniae R6,0.122
+,,NC_009785.1,Streptococcus gordonii str. Challis substr. CH1,0.400
+,,,,
+NC_000907.1,Haemophilus influenzae Rd KW20,NC_002663.1,Pasteurella multocida subsp. multocida str. Pm70,0.399
+,,NC_006300.1,Mannheimia succiniciproducens MBEL55E,0.406
+,,NC_010278.1,Actinobacillus pleuropneumoniae serovar 3 str. JL03,0.417
+,,NC_010519.1,Haemophilus somnus 2336,0.407
+,,NC_009566.1,Haemophilus influenzae PittEE,0.148
+,,NC_009655.1,Actinobacillus succinogenes 130Z,0.411
+,,,,
+NC_010498.1,Escherichia coli SECEC SMS-3-5,NC_009436.1,Enterobacter sp. 638,0.360
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.383
+,,NC_009792.1,Citrobacter koseri ATCC BAA-895,0.325
+,,NC_010067.1,"Salmonella enterica subsp. arizonae serovar 62:z4,z23:--",0.339
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.368
+,,NC_007946.1,Escherichia coli UTI89,0.173
+,,,,
+NC_007335.2,Prochlorococcus marinus str. NATL2A,NC_005042.1,Prochlorococcus marinus subsp. marinus str. CCMP1375,0.417
+,,NC_008819.1,Prochlorococcus marinus str. NATL1A,0.107
+,,NC_009976.1,Prochlorococcus marinus str. MIT 9211,0.416
+,,,,
+NC_004741.1,Shigella flexneri 2a str. 2457T,NC_009436.1,Enterobacter sp. 638,0.361
+,,NC_004631.1,Salmonella enterica subsp. enterica serovar Typhi Ty2,0.337
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.372
+,,NC_009801.1,Escherichia coli E24377A,0.192
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.380
+,,NC_009792.1,Citrobacter koseri ATCC BAA-895,0.332
+,,,,
+NC_009485.1,Bradyrhizobium sp. BTAi1,NC_009445.1,Bradyrhizobium sp. ORS278,0.263
+,,NC_005296.1,Rhodopseudomonas palustris CGA009,0.418
+,,NC_004463.1,Bradyrhizobium japonicum USDA 110,0.400
+,,,,
+NC_009708.1,Yersinia pseudotuberculosis IP 31758,NC_008800.1,Yersinia enterocolitica subsp. enterocolitica 8081,0.315
+,,NC_010159.1,Yersinia pestis Angola,0.123
+,,NC_004547.2,Erwinia carotovora subsp. atroseptica SCRI1043,0.417
+,,NC_009832.1,Serratia proteamaculans 568,0.393
+,,,,
+NC_009052.1,Shewanella baltica OS155,NC_008700.1,Shewanella amazonensis SB2B,0.407
+,,NC_007954.1,Shewanella denitrificans OS217,0.410
+,,NC_009997.1,Shewanella baltica OS195,0.146
+,,NC_010334.1,Shewanella halifaxensis HAW-EB4,0.416
+,,,,
+NC_009567.1,Haemophilus influenzae PittGG,NC_002663.1,Pasteurella multocida subsp. multocida str. Pm70,0.408
+,,NC_006300.1,Mannheimia succiniciproducens MBEL55E,0.416
+,,NC_009655.1,Actinobacillus succinogenes 130Z,0.420
+,,NC_007146.2,Haemophilus influenzae 86-028NP,0.160
+,,NC_010519.1,Haemophilus somnus 2336,0.416
+,,,,
+NC_006086.1,Streptococcus pyogenes MGAS10394,NC_004606.1,Streptococcus pyogenes SSI-1,0.102
+,,NC_008023.1,Streptococcus pyogenes MGAS2096,0.118
+,,NC_007432.1,Streptococcus agalactiae A909,0.406
+,,NC_004368.1,Streptococcus agalactiae NEM316,0.410
+,,NC_002737.1,Streptococcus pyogenes M1 GAS,0.113
+,,NC_008022.1,Streptococcus pyogenes MGAS10270,0.123
+,,,,
+NC_010473.1,Escherichia coli str. K-12 substr. DH10B,NC_009436.1,Enterobacter sp. 638,0.355
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.380
+,,NC_009792.1,Citrobacter koseri ATCC BAA-895,0.324
+,,NC_010067.1,"Salmonella enterica subsp. arizonae serovar 62:z4,z23:--",0.338
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.366
+,,NC_007946.1,Escherichia coli UTI89,0.190
+,,,,
+NC_003047.1,Sinorhizobium meliloti 1021,NC_008380.1,Rhizobium leguminosarum bv. viciae 3841,0.417
+,,NC_007761.1,Rhizobium etli CFN 42,0.411
+,,NC_009636.1,Sinorhizobium medicae WSM419,0.224
+,,,,
+NC_002695.1,Escherichia coli O157:H7 str. Sakai,NC_009436.1,Enterobacter sp. 638,0.364
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.385
+,,NC_009792.1,Citrobacter koseri ATCC BAA-895,0.332
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.375
+,,NC_010067.1,"Salmonella enterica subsp. arizonae serovar 62:z4,z23:--",0.345
+,,NC_010473.1,Escherichia coli str. K-12 substr. DH10B,0.167
+,,,,
+NC_010515.1,"Burkholderia cenocepacia MC0-3 chromosome 2, complete sequence.",NC_008391.1,"Burkholderia cepacia AMMD chromosome 2, complete sequence.",0.303
+,,NC_009255.1,"Burkholderia vietnamiensis G4 chromosome 2, complete sequence.",0.354
+,,NC_010552.1,"Burkholderia ambifaria MC40-6 chromosome 2, complete sequence.",0.308
+,,NC_010086.1,"Burkholderia multivorans ATCC 17616 chromosome 2, complete sequence.",0.336
+,,NC_007511.1,"Burkholderia sp. 383 chromosome 2, complete sequence.",0.300
+,,NC_008061.1,"Burkholderia cenocepacia AU 1054 chromosome 2, complete sequence.",0.129
+,,,,
+NC_007958.1,Rhodopseudomonas palustris BisB5,NC_005296.1,Rhodopseudomonas palustris CGA009,0.327
+,,NC_007778.1,Rhodopseudomonas palustris HaA2,0.291
+,,NC_008435.1,Rhodopseudomonas palustris BisA53,0.375
+,,NC_007925.1,Rhodopseudomonas palustris BisB18,0.381
+,,NC_009445.1,Bradyrhizobium sp. ORS278,0.420
+,,,,
+NC_009632.1,Staphylococcus aureus subsp. aureus JH1,NC_004461.1,Staphylococcus epidermidis ATCC 12228,0.373
+,,NC_007168.1,Staphylococcus haemolyticus JCSC1435,0.382
+,,NC_007350.1,Staphylococcus saprophyticus subsp. saprophyticus ATCC 15305,0.398
+,,NC_007622.1,Staphylococcus aureus RF122,0.109
+,,,,
+NC_004088.1,Yersinia pestis KIM,NC_008800.1,Yersinia enterocolitica subsp. enterocolitica 8081,0.321
+,,NC_009832.1,Serratia proteamaculans 568,0.399
+,,NC_009708.1,Yersinia pseudotuberculosis IP 31758,0.102
+,,,,
+NC_007297.1,Streptococcus pyogenes MGAS5005,NC_007296.1,Streptococcus pyogenes MGAS6180,0.100
+,,NC_004116.1,Streptococcus agalactiae 2603V/R,0.408
+,,NC_007432.1,Streptococcus agalactiae A909,0.407
+,,NC_004368.1,Streptococcus agalactiae NEM316,0.409
+,,NC_006086.1,Streptococcus pyogenes MGAS10394,0.112
+,,NC_008024.1,Streptococcus pyogenes MGAS10750,0.104
+,,,,
+NC_003198.1,Salmonella enterica subsp. enterica serovar Typhi str. CT18,NC_009436.1,Enterobacter sp. 638,0.359
+,,NC_006905.1,Salmonella enterica subsp. enterica serovar Choleraesuis str. SC-B67,0.140
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.368
+,,NC_008258.1,Shigella flexneri 5 str. 8401,0.339
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.382
+,,NC_009792.1,Citrobacter koseri ATCC BAA-895,0.324
+,,,,
+NC_007005.1,Pseudomonas syringae pv. syringae B728a,NC_008027.1,Pseudomonas entomophila L48,0.408
+,,NC_010501.1,Pseudomonas putida W619,0.406
+,,NC_004129.6,Pseudomonas fluorescens Pf-5,0.397
+,,NC_007492.1,Pseudomonas fluorescens PfO-1,0.393
+,,NC_002947.3,Pseudomonas putida KT2440,0.411
+,,NC_005773.3,Pseudomonas syringae pv. phaseolicola 1448A,0.227
+,,,,
+NC_010400.1,Acinetobacter baumannii,NC_005966.1,Acinetobacter sp. ADP1,0.394
+,,NC_010410.1,Acinetobacter baumannii AYE,0.249
+,,NC_009085.1,Acinetobacter baumannii ATCC 17978,0.268
+,,,,
+NC_009445.1,Bradyrhizobium sp. ORS278,NC_005296.1,Rhodopseudomonas palustris CGA009,0.420
+,,NC_007778.1,Rhodopseudomonas palustris HaA2,0.420
+,,NC_007958.1,Rhodopseudomonas palustris BisB5,0.420
+,,NC_004463.1,Bradyrhizobium japonicum USDA 110,0.399
+,,NC_009485.1,Bradyrhizobium sp. BTAi1,0.263
+,,,,
+NC_009504.1,"Brucella ovis ATCC 25840 chromosome II, complete sequence.",NC_009668.1,"Ochrobactrum anthropi ATCC 49188 chromosome 2, complete sequence.",0.413
+,,NC_004311.2,"Brucella suis 1330 chromosome II, complete sequence.",0.123
+,,NC_010167.1,"Brucella suis ATCC 23445 chromosome II, complete sequence.",0.179
+,,,,
+NC_009879.1,Rickettsia canadensis str. McKiel,NC_000963.1,Rickettsia prowazekii str. Madrid E,0.322
+,,NC_006142.1,Rickettsia typhi str. Wilmington,0.327
+,,NC_007109.1,Rickettsia felis URRWXCal2,0.305
+,,NC_010263.1,Rickettsia rickettsii str. Iowa,0.283
+,,NC_009881.1,Rickettsia akari str. Hartford,0.298
+,,NC_007940.1,Rickettsia bellii RML369-C,0.368
+,,,,
+NC_004116.1,Streptococcus agalactiae 2603V/R,NC_002737.1,Streptococcus pyogenes M1 GAS,0.409
+,,NC_004368.1,Streptococcus agalactiae NEM316,0.108
+,,NC_006086.1,Streptococcus pyogenes MGAS10394,0.410
+,,NC_007432.1,Streptococcus agalactiae A909,0.102
+,,NC_008023.1,Streptococcus pyogenes MGAS2096,0.411
+,,NC_008024.1,Streptococcus pyogenes MGAS10750,0.411
+,,,,
+NC_006155.1,Yersinia pseudotuberculosis IP 32953,NC_004547.2,Erwinia carotovora subsp. atroseptica SCRI1043,0.417
+,,NC_010159.1,Yersinia pestis Angola,0.116
+,,NC_008800.1,Yersinia enterocolitica subsp. enterocolitica 8081,0.313
+,,NC_009832.1,Serratia proteamaculans 568,0.394
+,,,,
+NC_007651.1,"Burkholderia thailandensis E264 chromosome I, complete sequence.",NC_007951.1,"Burkholderia xenovorans LB400 chromosome 1, complete sequence.",0.396
+,,NC_008060.1,"Burkholderia cenocepacia AU 1054 chromosome 1, complete sequence.",0.356
+,,NC_010084.1,"Burkholderia multivorans ATCC 17616 chromosome 1, complete sequence.",0.323
+,,NC_007510.1,"Burkholderia sp. 383 chromosome 1, complete sequence.",0.333
+,,NC_006350.1,"Burkholderia pseudomallei K96243 chromosome 1, complete sequence.",0.190
+,,NC_009256.1,"Burkholderia vietnamiensis G4 chromosome 1, complete sequence.",0.337
+,,,,
+NC_009512.1,Pseudomonas putida F1,NC_004129.6,Pseudomonas fluorescens Pf-5,0.392
+,,NC_007492.1,Pseudomonas fluorescens PfO-1,0.387
+,,NC_009439.1,Pseudomonas mendocina ymp,0.417
+,,NC_009656.1,Pseudomonas aeruginosa PA7,0.416
+,,NC_005773.3,Pseudomonas syringae pv. phaseolicola 1448A,0.411
+,,NC_010501.1,Pseudomonas putida W619,0.266
+,,,,
+NC_008595.1,Mycobacterium avium 104,NC_008611.1,Mycobacterium ulcerans Agy99,0.399
+,,NC_009077.1,Mycobacterium sp. JLS,0.415
+,,NC_008769.1,Mycobacterium bovis BCG str. Pasteur 1173P2,0.395
+,,NC_002944.2,Mycobacterium avium subsp. paratuberculosis K-10,0.128
+,,NC_010612.1,Mycobacterium marinum M,0.390
+,,,,
+NC_009342.1,Corynebacterium glutamicum R,NC_004369.1,Corynebacterium efficiens YS-314,0.384
+,,NC_006958.1,Corynebacterium glutamicum ATCC 13032,0.143
+,,NC_003450.3,Corynebacterium glutamicum ATCC 13032,0.143
+,,,,
+NC_007761.1,Rhizobium etli CFN 42,NC_003047.1,Sinorhizobium meliloti 1021,0.411
+,,NC_009636.1,Sinorhizobium medicae WSM419,0.417
+,,NC_008380.1,Rhizobium leguminosarum bv. viciae 3841,0.276
+,,,,
+NC_007793.1,Staphylococcus aureus subsp. aureus USA300,NC_004461.1,Staphylococcus epidermidis ATCC 12228,0.369
+,,NC_007168.1,Staphylococcus haemolyticus JCSC1435,0.380
+,,NC_007350.1,Staphylococcus saprophyticus subsp. saprophyticus ATCC 15305,0.396
+,,NC_007622.1,Staphylococcus aureus RF122,0.111
+,,,,
+NC_009487.1,Staphylococcus aureus subsp. aureus JH9,NC_007350.1,Staphylococcus saprophyticus subsp. saprophyticus ATCC 15305,0.398
+,,NC_007168.1,Staphylococcus haemolyticus JCSC1435,0.381
+,,NC_004461.1,Staphylococcus epidermidis ATCC 12228,0.373
+,,NC_007622.1,Staphylococcus aureus RF122,0.108
+,,,,
+NC_009438.1,Shewanella putrefaciens CN-32,NC_007954.1,Shewanella denitrificans OS217,0.413
+,,NC_008345.1,Shewanella frigidimarina NCIMB 400,0.402
+,,NC_008700.1,Shewanella amazonensis SB2B,0.407
+,,NC_009092.1,Shewanella loihica PV-4,0.402
+,,NC_009665.1,Shewanella baltica OS185,0.291
+,,NC_010506.1,Shewanella woodyi ATCC 51908,0.419
+,,,,
+NC_008060.1,"Burkholderia cenocepacia AU 1054 chromosome 1, complete sequence.",NC_007951.1,"Burkholderia xenovorans LB400 chromosome 1, complete sequence.",0.409
+,,NC_009256.1,"Burkholderia vietnamiensis G4 chromosome 1, complete sequence.",0.285
+,,NC_007651.1,"Burkholderia thailandensis E264 chromosome I, complete sequence.",0.356
+,,NC_006348.1,"Burkholderia mallei ATCC 23344 chromosome 1, complete sequence.",0.360
+,,NC_010084.1,"Burkholderia multivorans ATCC 17616 chromosome 1, complete sequence.",0.274
+,,NC_010551.1,"Burkholderia ambifaria MC40-6 chromosome 1, complete sequence.",0.249
+,,,,
+NC_010084.1,"Burkholderia multivorans ATCC 17616 chromosome 1, complete sequence.",NC_008060.1,"Burkholderia cenocepacia AU 1054 chromosome 1, complete sequence.",0.274
+,,NC_010551.1,"Burkholderia ambifaria MC40-6 chromosome 1, complete sequence.",0.223
+,,NC_007951.1,"Burkholderia xenovorans LB400 chromosome 1, complete sequence.",0.391
+,,NC_009256.1,"Burkholderia vietnamiensis G4 chromosome 1, complete sequence.",0.251
+,,NC_007434.1,"Burkholderia pseudomallei 1710b chromosome I, complete sequence.",0.339
+,,,,
+NC_009782.1,Staphylococcus aureus subsp. aureus Mu3,NC_004461.1,Staphylococcus epidermidis ATCC 12228,0.371
+,,NC_007168.1,Staphylococcus haemolyticus JCSC1435,0.382
+,,NC_007350.1,Staphylococcus saprophyticus subsp. saprophyticus ATCC 15305,0.398
+,,NC_007622.1,Staphylococcus aureus RF122,0.107
+,,,,
+NC_002944.2,Mycobacterium avium subsp. paratuberculosis K-10,NC_002677.1,Mycobacterium leprae TN,0.417
+,,NC_008595.1,Mycobacterium avium 104,0.128
+,,NC_008611.1,Mycobacterium ulcerans Agy99,0.392
+,,NC_009077.1,Mycobacterium sp. JLS,0.418
+,,NC_008769.1,Mycobacterium bovis BCG str. Pasteur 1173P2,0.385
+,,NC_010612.1,Mycobacterium marinum M,0.387
+,,,,
+NC_004368.1,Streptococcus agalactiae NEM316,NC_002737.1,Streptococcus pyogenes M1 GAS,0.408
+,,NC_006086.1,Streptococcus pyogenes MGAS10394,0.410
+,,NC_008023.1,Streptococcus pyogenes MGAS2096,0.410
+,,NC_008024.1,Streptococcus pyogenes MGAS10750,0.411
+,,NC_007432.1,Streptococcus agalactiae A909,0.106
+,,,,
+NC_000913.2,Escherichia coli str. K-12 substr. MG1655,NC_008800.1,Yersinia enterocolitica subsp. enterocolitica 8081,0.420
+,,NC_009436.1,Enterobacter sp. 638,0.350
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.376
+,,NC_009832.1,Serratia proteamaculans 568,0.419
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.360
+,,NC_010498.1,Escherichia coli SECEC SMS-3-5,0.142
+,,,,
+NC_010465.1,Yersinia pseudotuberculosis YPIII,NC_004547.2,Erwinia carotovora subsp. atroseptica SCRI1043,0.419
+,,NC_008800.1,Yersinia enterocolitica subsp. enterocolitica 8081,0.317
+,,NC_009832.1,Serratia proteamaculans 568,0.394
+,,NC_010159.1,Yersinia pestis Angola,0.125
+,,,,
+NC_008611.1,Mycobacterium ulcerans Agy99,NC_002677.1,Mycobacterium leprae TN,0.419
+,,NC_002944.2,Mycobacterium avium subsp. paratuberculosis K-10,0.392
+,,NC_008595.1,Mycobacterium avium 104,0.399
+,,NC_009565.1,Mycobacterium tuberculosis F11,0.380
+,,NC_010612.1,Mycobacterium marinum M,0.205
+,,,,
+AC_000091.1,Escherichia coli W3110 DNA,NC_009436.1,Enterobacter sp. 638,0.351
+,,NC_009778.1,Enterobacter sakazakii ATCC BAA-894,0.377
+,,NC_009832.1,Serratia proteamaculans 568,0.420
+,,NC_009648.1,Klebsiella pneumoniae subsp. pneumoniae MGH 78578,0.362
+,,NC_007613.1,Shigella boydii Sb227,0.177
+,,NC_010102.1,Salmonella enterica subsp. enterica serovar Paratyphi B str. SPB7,0.332
+,,,,
+NC_005773.3,Pseudomonas syringae pv. phaseolicola 1448A,NC_007005.1,Pseudomonas syringae pv. syringae B728a,0.227
+,,NC_008027.1,Pseudomonas entomophila L48,0.411
+,,NC_010501.1,Pseudomonas putida W619,0.408
+,,NC_004129.6,Pseudomonas fluorescens Pf-5,0.399
+,,NC_007492.1,Pseudomonas fluorescens PfO-1,0.394
+,,NC_002947.3,Pseudomonas putida KT2440,0.413
