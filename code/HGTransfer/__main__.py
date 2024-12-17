@@ -57,12 +57,12 @@ if __name__ == "__main__":
     transfer_proba = 0.01
 
     base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-    in_dir, out_dir_receiver, out_dir_sender, report_file = "input_generator", 'output_receiver', 'output_sender', "HGT_report.txt"
+    in_dir, out_dir_receiver, out_dir_sender, report_file = "db", 'output_receiver', 'output_sender', "HGT_report.txt"
 
     base_db = db_path = os.path.join(base_dir, "input", "sequence_db")
     db_path = os.path.join(base_db, in_dir) #send to input generator
     output_path_receiver = os.path.join(base_db, out_dir_receiver) #send to output receiver
-
+    
     output_path = os.path.join(base_dir, "output", "output_generator")
     output_path_sender = os.path.join(output_path, out_dir_sender)
     path_report = os.path.join(output_path, report_file)
@@ -82,7 +82,7 @@ if __name__ == "__main__":
             transfered = transferer(selected, iteration, iterations)
 
             write_report(path_report, transfered)
-            write_output_db(output_path_receiver, output_path_sender, transfered)
+            write_output_db(output_path_receiver, output_path_sender, transfered, iteration)
 
     print(f"\nHGT database is Ready. Refer to the file {report_file} for the list of the transfers that occured.\n")
     
