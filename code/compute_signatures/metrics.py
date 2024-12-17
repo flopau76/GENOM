@@ -69,10 +69,10 @@ class chi_squared(Metric):
             current_res -= current_val[new_kmer] + current_val[old_kmer]
             kmers_count[new_kmer] += 1
             kmers_count[old_kmer] -= 1
-            new_val = ((kmers_count[new_kmer]/window_size - ref_freq[new_kmer])**2)/ref_freq[new_kmer]
-            old_val = ((kmers_count[old_kmer]/window_size - ref_freq[old_kmer])**2)/ref_freq[old_kmer]
-            current_val[new_kmer] = new_val
-            current_val[old_kmer] = old_val
+            new_ref, old_ref = ref_freq[new_kmer], ref_freq[old_kmer]
+            new_val = ((kmers_count[new_kmer]/window_size - new_ref)**2)/new_ref
+            old_val = ((kmers_count[old_kmer]/window_size - old_ref)**2)/old_ref
+            current_val[new_kmer], current_val[old_kmer] = new_val, old_val
             current_res += new_val + old_val
             all_res.append(current_res)
         return np.array(all_res)

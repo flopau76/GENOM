@@ -35,7 +35,8 @@ if __name__ == "__main__":
     metric_dict = {0:metrics.distance(), 1:metrics.chi_squared(), 2:metrics.KLdivergence(), 3:metrics.Convolution()}
 
     parser = argparse.ArgumentParser(description="Compute the signature of a genome and find potential HGT regions")
-    parser.add_argument("input_db", help="The name of the input database (must be in `input/sequence_db/`)")
+    parser.add_argument("input_db", help="The name of the input database (must be in `input/`)")
+    parser.add_argument('-o', '--output', help="The name of the output (will be in `output/transfer_summary`)", type=str, default=None)
     parser.add_argument('-k', '--kmer', help='The size of the kmer (default=8)', type=int, default=5)
     parser.add_argument('-w', '--window', help='The size of the sliding window (default=2000)', type=int, default=5000)
     parser.add_argument('-r', '--results', help='Path to the file containing the known HGT for them to be shown on the report', type=str, default="")
@@ -45,17 +46,21 @@ if __name__ == "__main__":
 
     k = args.kmer
     window_size = args.window
-    folder_name = args.input_db
+    input_name = args.input_db
     reference_file = args.results
     if reference_file != "":
         reference_dico = display.ref_parse(reference_file)
 
+    output_name = args.output
     metric = metric_dict[args.metric]
 
+    if output_name is None:
+        output_name = os.path.basename(input_name) + '_' + metric.name
+
     base_dir =  os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-    input_folder = os.path.join(base_dir, "input", "sequence_db", folder_name)
-    output_path_json = os.path.join(base_dir, "output", f"transfer_summary", f"{folder_name}_{metric.name}.json")
-    output_path_pdf = os.path.join(base_dir, "output", f"transfer_summary", f"{folder_name}_{metric.name}.pdf")
+    input_folder = os.path.join(base_dir, "input", input_name)
+    output_path_json = os.path.join(base_dir, "output", f"transfer_summary", f"{output_name}.json")
+    output_path_pdf = os.path.join(base_dir, "output", f"transfer_summary", f"{output_name}.pdf")
 
     pdf = bpdf.PdfPages(output_path_pdf)
 

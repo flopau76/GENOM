@@ -5,7 +5,7 @@
 **/taxdump.tar.gz
 
 input/*
-!input/samples_list/
+!input/samples_list
 !input/sequence_db/toy*
 
 output/*
