@@ -65,9 +65,9 @@ def write_output_db(output_path_receiver : str, output_path_sender : str, transf
     sender = transfer.sender_object
     receiver = transfer.receiver_object
 
-    output_dir_sender = os.path.join(output_path_sender, str(transfer.iteration))
+    output_dir_sender = os.path.join(output_path_sender, f"{iteration} {sender.strain}")
     os.makedirs(output_dir_sender)
-    output_dir_receiver = os.path.join(output_path_receiver, f"{iteration}_{receiver.strain}")
+    output_dir_receiver = os.path.join(output_path_receiver, f"{iteration} {receiver.strain}")
     os.makedirs(output_dir_receiver)
 
     sender_path = os.path.join(output_dir_sender, f"sender_{sender.strain}.fasta")

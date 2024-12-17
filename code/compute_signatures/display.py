@@ -28,8 +28,9 @@ def display_windows(window_value:List[float], sample : str, hits=None,
         try :
             known_HGT_position = ref[sample]
             size = (len(window_value)/window_size)*np.log2(len(window_value))*np.log10(window_size)
-            rect = Rectangle((known_HGT_position-(size/2), min(window_value)), width=size, height=max(window_value)-min(window_value), edgecolor='red', facecolor="white", alpha = 1)
+            rect = Rectangle((known_HGT_position-(size/2), min(window_value)), width=size, height=max(window_value)-min(window_value), edgecolor='red', facecolor="white", label="Known HGT")
             ax.add_patch(rect)
+            ax.legend(loc='center left', bbox_to_anchor=(0.8, 1))
         except Exception:
             pass
     if hits is not None:
@@ -39,7 +40,7 @@ def display_windows(window_value:List[float], sample : str, hits=None,
         ax.set_ylabel(ylabel)
     if title is not None:
         ax.set_title(title)
-
+    
     return fig
 
 def display_matrix(matrix, save_path, step=1, title='Matrix Heatmap', 

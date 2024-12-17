@@ -36,7 +36,7 @@ def ctrl_removal(base_dir : str, report_file : str):
 
 if __name__ == "__main__":
     
-    json_file = "transfer_summary_input_generator.json"
+    json_file = "transfer_summary_output_receiver.json"
     db_dir_name = "input_generator"
     report_name = "analysis_report.txt"
     time_ = []
@@ -54,6 +54,7 @@ if __name__ == "__main__":
 
     print("Boostrapping Database Signatures...")
     Bootstrapped_signature = origin.load_bootstrapped_db(db_path, window_size=2000, kmer_size=8, Boostrap_iter=100)
+    print("Bootstrap finished. Starting backtrack analysis...")
     for transfer_summary in load.serialize_files(db_path, json_path=json_path):
         st = time()
 
