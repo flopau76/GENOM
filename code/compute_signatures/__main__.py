@@ -39,7 +39,7 @@ if __name__ == "__main__":
     parser.add_argument('-o', '--output', help="The name of the output (will be in `output/transfer_summary`)", type=str, default=None)
     parser.add_argument('-k', '--kmer', help='The size of the kmer (default=8)', type=int, default=5)
     parser.add_argument('-w', '--window', help='The size of the sliding window (default=2000)', type=int, default=5000)
-    parser.add_argument('-r', '--results', help='Path to the file containing the known HGT for them to be shown on the report', type=str, default="")
+    parser.add_argument('-r', '--ref', help='Path to the file containing the known HGT for them to be shown on the report', type=str, default=None)
     parser.add_argument('-m', '--metric', help=f'Metric used for computation. Currently supports: ' + " ,".join([f"{metric.name} ({key})" for key, metric in metric_dict.items()]), type=int, default=1)
 
     args = parser.parse_args()
@@ -47,9 +47,9 @@ if __name__ == "__main__":
     k = args.kmer
     window_size = args.window
     input_name = args.input_db
-    reference_file = args.results
-    if reference_file != "":
-        reference_dico = display.ref_parse(reference_file)
+    reference_dico = args.ref
+    if reference_dico is not None:
+        reference_dico = display.ref_parse(reference_dico)
 
     output_name = args.output
     metric = metric_dict[args.metric]
@@ -98,7 +98,7 @@ if __name__ == "__main__":
         best_hits[sample] = sample_hits
 
         # save the resulting figure
-        fig = display.display_windows(result, hits=sample_hits, title=f"{sample}", ylabel=metric.name, dpi=300, ref=reference_dico, window_size=window_size)
+        fig = display.display_windows(result, sample, hits=sample_hits, title=f"{sample}", ylabel=metric.name, dpi=300, ref=reference_dico, window_size=window_size)
         fig.savefig(pdf, format='pdf')
         plt.close(fig)
 
