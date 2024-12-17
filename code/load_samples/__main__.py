@@ -1,7 +1,7 @@
 import load_samples.get_taxid as get_taxid
 from load_samples.ribo_db_build import prepare_ribo_db
 
-import sys, os, subprocess
+import sys, os, subprocess, shutil
 from typing import Dict
 
 def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', printEnd = "\r") -> None:
@@ -54,8 +54,6 @@ def main(taxon_file, db, ribo_dir):
     e = 0
     failed = []
 
-    os.makedirs(ribo_dir)
-
     print("Starting Genomes Download...\n")
     for index, taxon in taxon_dico.items():
 
@@ -100,7 +98,8 @@ if __name__ == '__main__':
     print(f"Output directory: {out_dir}")
 
     ribo_dir = os.path.join(root_dir, "input", "ribosome_db", taxon_basename.split('.')[0])
-
+    print(ribo_dir)
+    
     if os.path.exists(out_dir):
         print(f"Output directory already exists. If you continue, the content will be erased.")
         user_input = input("Do you want to continue? (Y/N): ")
@@ -108,9 +107,11 @@ if __name__ == '__main__':
             print("Operation cancelled by user.")
             sys.exit(1)
         else:
-            os.system(f"rm -r {out_dir}")
-            os.system(f"rm -r {ribo_dir}")
-
+            shutil.rmtree(out_dir)
+            shutil.rmtree(ribo_dir)
+            
+            os.makedirs(out_dir)
+            os.makedirs(ribo_dir)
 
     main(taxon_file, out_dir, ribo_dir)
 

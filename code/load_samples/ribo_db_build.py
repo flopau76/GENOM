@@ -18,6 +18,7 @@ def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', prin
 @dataclass
 class GenBankElement:
     organism_name : str
+    organism_realm : str
     accession_id : str
     ribosome_beacon : Dict[str, Tuple[int, int]]
     ribosome_sequences : Dict[str, str]
@@ -55,6 +56,7 @@ def parser(ribo_db_dir : str):
         genome_seq = ''.join(re.findall('[atcg]+', ribo_file_content))
         accession_id = re.findall(r'VERSION     (.*?(?=\n))', ribo_file_content)[0]
         organism_name = re.findall(r'ORGANISM..(.+?)(?=\n)', ribo_file_content)[0]
+        realm = re.findall(r'ORGANISM..*\s.+?(?<=\s{13})(.*?)(?=;)', ribo_file_content)[0]
             
         pattern = re.findall(r'rRNA\s+(?:complement\(join\(([\d\.\.,\s]+)\)\)|complement\((\d+\.\.\d+)\)|(\d+\.\.\d+))\s+.*\s+.*\s+.*?(?<=product=\")(.+?)(?=\")',
                         ribo_file_content)
@@ -71,6 +73,7 @@ def parser(ribo_db_dir : str):
         
         yield GenBankElement(
                 ribosome_sequences=ribo_seq_dico,
+                organism_realm=realm,
                 organism_name=organism_name,
                 ribosome_beacon=ribo_dico,
                 accession_id=accession_id                
@@ -94,7 +97,7 @@ def prepare_ribo_db(ribo_db_dir : str):
             for index, seq in enumerate(ribo_elts.ribosome_sequences[ribo_id]):
                 with open(out_path, 'a+') as ribofile:
                     ribofile.write(
-                        f">{ribo_id}_{index}_{ribo_elts.organism_name}|{beacons[index][0]}-{beacons[index][1]}\n{seq.upper()}\n"
+                        f">{ribo_id}_{index}_{ribo_elts.organism_name}|{ribo_elts.organism_realm}|{beacons[index][0]}-{beacons[index][1]}\n{seq.upper()}\n"
                     )
         n+=1
     
