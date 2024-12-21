@@ -50,25 +50,24 @@ def generate_report(db_path : str, failed : list) -> None:
 
 def main(taxon_file, db, ribo_dir):
     taxon_dico = load_taxid(taxon_file)
-    n = 1
+    os.makedirs(out_dir)
+    os.makedirs(ribo_dir)
+    n = 0
     e = 0
     failed = []
 
     print("Starting Genomes Download...\n")
+    progressbar(n, len(taxon_dico))
+
     for index, taxon in taxon_dico.items():
-
+        n+=1
         enddir = os.path.join(db, f"{index.split('/')[0]}")
-            
         os.makedirs(enddir)
-
         try :
             taxon = get_taxid.get_accession(taxon[0])
             getter(taxon, enddir, ribo_dir)
             progressbar(n, len(taxon_dico))
-
-            n+=1
         except Exception:
-            n+=1
             e+=1
             failed.append(index)
             os.rmdir(enddir)
@@ -103,20 +102,15 @@ if __name__ == '__main__':
     if os.path.exists(out_dir):
         print(f"Output directory already exists. If you continue, the content will be erased.")
         user_input = input("Do you want to continue? (Y/N): ")
-        
         if user_input.strip().upper() != 'Y':
             print("Operation cancelled by user.")
             sys.exit(1)
         else:
             shutil.rmtree(out_dir)
-            try :
+            if os.path.exists(ribo_dir):
                 shutil.rmtree(ribo_dir)
-                os.makedirs(ribo_dir)
-
-            except Exception: #try catch in case the downloading process is interrupted and not finished
-                os.makedirs(ribo_dir)
-            
             os.makedirs(out_dir)
+            os.makedirs(ribo_dir)
 
     main(taxon_file, out_dir, ribo_dir)
 
