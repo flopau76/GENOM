@@ -87,7 +87,7 @@ def prepare_ribo_db(ribo_db_dir : str):
     for ribo_elts in parser(ribo_db_dir):
         if ribo_elts == "Timeout":
             continue
-        name = ribo_elts.organism_name.split('/')[0]
+        name = re.sub(r'\[|\]',"",ribo_elts.organism_name.split('/')[0])
         name_file = f'ribosomes_{name}.fasta'
         out_path = os.path.join(ribo_db_dir, name_file)
         if name_file in os.listdir(ribo_db_dir):

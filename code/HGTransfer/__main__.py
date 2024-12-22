@@ -4,6 +4,7 @@ import numpy as np
 from HGTransfer.load_input import HGT, loader
 from HGTransfer.exchanger import transferer, write_output_db
 
+
 def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', printEnd = "\r") -> None:
     """
     Show a progress bar indicating downloading progress
@@ -33,7 +34,7 @@ def write_report(path_report : str, transfered : HGT):
     sender = transfered.sender_object
     receiver = transfered.receiver_object
     with open(path_report, 'a+') as report:
-        report.write(f"{sender.strain}\t\t{sender.transfer_start}-{sender.transfer_end}\t\t{receiver.strain}\t\t{receiver.reception_position}\n")
+        report.write(f"{transfered.iteration} {sender.strain}\t\t{sender.transfer_start}-{sender.transfer_end}\t\t{transfered.iteration} {receiver.strain}\t\t{receiver.reception_position}\n")
 
     return 0
 
@@ -54,7 +55,7 @@ def ctrl_removal(base_dir : str, out_dir : str, report_file : str):
 if __name__ == "__main__":
     print("Starting HGTdb generation...")
     iterations = 1000
-    transfer_proba = 0.02
+    transfer_proba = 0.01
     
     parser = argparse.ArgumentParser(description="Generate Horizontal Transfer from a provided database")
     parser.add_argument('-db', '--database', help="Input database with list of taxa", type=str, default ="db")

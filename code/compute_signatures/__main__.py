@@ -6,13 +6,14 @@ from scipy.signal import find_peaks
 from collections import Counter
 import argparse
 import os, json, time
+from typing import Dict
 
 import compute_signatures.metrics as metrics
 from compute_signatures.loading import iter_directory, open_genome
 from compute_signatures.kmers import stream_kmers_file
 import compute_signatures.display as display
+from compute_signatures.ribo_sort import drop_ribo_position
 
-from typing import Dict
 
 def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', printEnd = "\r") -> None:
     """ Show a progress bar indicating downloading progress """
@@ -23,11 +24,17 @@ def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', prin
     if iteration == total: 
         print()
 
-def find_potential_HGT(result:np.ndarray, min_height=None, min_prominence=None) -> Dict[int, float]:
+def find_potential_HGT(result:np.ndarray, min_height=None, min_prominence=None, path_ribo_db=None, sample=None, ribo_genome_file_table:dict={}) -> Dict[int, float]:
     """ Find potential HGT regions corresponding to the highest peaks in the result """
     highest_values_indices, _ = find_peaks(result, prominence=min_prominence, height=min_height)
     highest_values = result[highest_values_indices]
     best_hits = {int(idx):val for idx, val in zip(highest_values_indices, highest_values)}
+
+    if path_ribo_db is not None:
+        ribo_file_name = ribo_genome_file_table[sample]
+        ribo_file_path = os.path.join(path_ribo_db, ribo_file_name)
+        best_hits = drop_ribo_position(best_hits, ribo_file_path)
+
     return best_hits
 
 
@@ -41,7 +48,8 @@ if __name__ == "__main__":
     parser.add_argument('-w', '--window', help='The size of the sliding window (default=2000)', type=int, default=5000)
     parser.add_argument('-r', '--ref', help='Path to the file containing the known HGT for them to be shown on the report', type=str, default=None)
     parser.add_argument('-m', '--metric', help=f'Metric used for computation. Currently supports: ' + " ,".join([f"{metric.name} ({key})" for key, metric in metric_dict.items()]), type=int, default=1)
-
+    parser.add_argument('-b', '--ribo', help="Path to the ribosome database if you wish to filter them out", type=str, default=None)
+    
     args = parser.parse_args()
 
     k = args.kmer
@@ -53,6 +61,7 @@ if __name__ == "__main__":
 
     output_name = args.output
     metric = metric_dict[args.metric]
+    path_ribo_db = args.ribo
 
     if output_name is None:
         output_name = os.path.basename(input_name) + '_' + metric.name
@@ -61,6 +70,11 @@ if __name__ == "__main__":
     input_folder = os.path.join(base_dir, "input", input_name)
     output_path_json = os.path.join(base_dir, "output", f"transfer_summary", f"{output_name}.json")
     output_path_pdf = os.path.join(base_dir, "output", f"transfer_summary", f"{output_name}.pdf")
+
+    ribo_genome_file_table = None
+    if path_ribo_db is not None:
+        liste_dir = os.listdir(input_folder)
+        ribo_genome_file_table = dict(zip(liste_dir, os.listdir(path_ribo_db)))
 
     pdf = bpdf.PdfPages(output_path_pdf)
 
@@ -94,7 +108,7 @@ if __name__ == "__main__":
         times_windows.append(t2-t1)
 
         # find the highest peaks
-        sample_hits = find_potential_HGT(result, min_prominence=(np.max(result) - np.min(result))/3)
+        sample_hits = find_potential_HGT(result, min_prominence=(np.max(result) - np.min(result))/3, path_ribo_db=path_ribo_db, sample=sample, ribo_genome_file_table=ribo_genome_file_table)
         best_hits[sample] = sample_hits
 
         # save the resulting figure
@@ -103,10 +117,10 @@ if __name__ == "__main__":
         plt.close(fig)
 
         n += 1
-        progressbar(n, n_total , prefix = 'Progress:', suffix = 'Complete', printEnd = "\r")
+        progressbar(n, n_total, prefix = 'Progress:', suffix = 'Complete', printEnd = "\r")
 
     pdf.close()
-
+        
     # saving hits to json
     with open(output_path_json, 'w') as outjson:
         json.dump(best_hits, outjson)

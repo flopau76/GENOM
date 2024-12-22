@@ -103,15 +103,20 @@ if __name__ == '__main__':
     if os.path.exists(out_dir):
         print(f"Output directory already exists. If you continue, the content will be erased.")
         user_input = input("Do you want to continue? (Y/N): ")
+        
         if user_input.strip().upper() != 'Y':
             print("Operation cancelled by user.")
             sys.exit(1)
         else:
             shutil.rmtree(out_dir)
-            shutil.rmtree(ribo_dir)
+            try :
+                shutil.rmtree(ribo_dir)
+                os.makedirs(ribo_dir)
+
+            except Exception: #try catch in case the downloading process is interrupted and not finished
+                os.makedirs(ribo_dir)
             
             os.makedirs(out_dir)
-            os.makedirs(ribo_dir)
 
     main(taxon_file, out_dir, ribo_dir)
 
