@@ -31,14 +31,9 @@ class HGT:
 
 
 def selector(input_path : str) -> np.ndarray[str]:
-    """
-    Randomly select two directory in the input directory where all strain directories are kept. 
-    """
-    selection = np.random.choice(os.listdir(input_path), size=2)
-    while "ribo_db" in selection or "_failed.txt" in selection:
-        selection = np.random.choice(os.listdir(input_path), size=2)
-
-    return selection
+    """ Randomly select two subdirectory in the input directory where all strain directories are kept. """
+    subdirs = [name for name in os.listdir(input_path) if os.path.isdir(os.path.join(input_path, name))]
+    return np.random.choice(subdirs, size=2, replace=False)
 
 def loader(input_path : str, iteration : int) -> HGT:
     """

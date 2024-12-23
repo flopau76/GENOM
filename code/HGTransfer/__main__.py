@@ -6,31 +6,22 @@ from HGTransfer.exchanger import transferer, write_output_db
 
 
 def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', printEnd = "\r") -> None:
-    """
-    Show a progress bar indicating downloading progress
-    """
+    """ Show a progress bar indicating downloading progress """
     percent = f'{round(100 * (iteration / float(total)), 1)}'
-
     add = int(100 * iteration // total)
     bar = filler * add + '-' * (100 - add)
     print(f'\r{prefix} |{bar}| {percent}% {suffix}', end = printEnd)
-
     if iteration == total: 
         print()
 
 def init_report(path_report : str):
-    """
-    Initialize report file with fields.
-    """
+    """ Initialize report file with fields. """
     with open(path_report, 'a+') as file:
         file.write(f"Sp_sending\t\tSending_position\t\tSp_receiving\t\tReceiving_position\n")
-
     return 0
 
 def write_report(path_report : str, transfered : HGT):
-    """
-    Write the report following initialized format.
-    """
+    """ Write the report following initialized format. """
     sender = transfered.sender_object
     receiver = transfered.receiver_object
     with open(path_report, 'a+') as report:
@@ -38,64 +29,44 @@ def write_report(path_report : str, transfered : HGT):
 
     return 0
 
-def ctrl_removal(base_dir : str, out_dir : str, report_file : str):
-    """
-    Check for already present outputs and delete them to avoid error throwing.
-    """
-    path_outdir = os.path.join(base_dir, out_dir)
-    if out_dir in os.listdir(base_dir):
-        shutil.rmtree(path_outdir)
-        os.makedirs(path_outdir)
-
-    if report_file in os.listdir(base_dir):
-        os.remove(os.path.join(base_dir, report_file))
-
-    return 0
 
 if __name__ == "__main__":
     print("Starting HGTdb generation...")
     iterations = 1000
     transfer_proba = 0.01
-    
-    parser = argparse.ArgumentParser(description="Generate Horizontal Transfer from a provided database")
-    parser.add_argument('-db', '--database', help="Input database with list of taxa", type=str, default ="db")
-    parser.add_argument('-re', '--output_receiver', help="Path to the receiver output directory", type=str, default="output_receiver")
-    parser.add_argument('-se', '--output_sender', help="Path to the receiver output directory", type=str, default="output_sender")
-    parser.add_argument('-r', '--report', help='Name of the report file', type=str,default='HGT_report.txt')
 
+    parser = argparse.ArgumentParser(description="Generate Horizontal Transfer from a provided database")
+    parser.add_argument('input_db', help="Name of the database containing fasta sequences (must be in input/sequence_db)", type=str)
     args = parser.parse_args()
+    in_dir = args.input_db
 
     base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-    in_dir = args.database
-    out_dir_receiver = args.output_receiver
-    out_dir_sender = args.output_sender
-    report_file = args.report
 
-    base_db = db_path = os.path.join(base_dir, "input", "sequence_db")
-    db_path = os.path.join(base_db, in_dir) #send to input generator
-    output_path_receiver = os.path.join(base_db, out_dir_receiver) #send to output receiver
-    
-    output_path = os.path.join(base_dir, "output", "output_generator")
-    output_path_sender = os.path.join(output_path, out_dir_sender)
-    path_report = os.path.join(output_path, report_file)
+    input_path = os.path.join(base_dir, "input", "sequence_db", in_dir)
+    output_path = os.path.join(base_dir, "input", "generated_HGT", in_dir)
 
-    if out_dir_receiver in os.listdir(output_path) or out_dir_sender in os.listdir(output_path) or report_file in os.listdir(output_path):
+    output_path_receiver = os.path.join(output_path, "output_receiver")
+    output_path_sender = os.path.join(output_path, "output_sender")
+    output_path_report = os.path.join(output_path, "HGT_report.txt")
+
+    if os.path.exists(output_path):
         print("  Cleaning output directory...")
-        ctrl_removal(base_db, out_dir_receiver, report_file)
-        ctrl_removal(output_path, out_dir_sender, report_file)
-        print("  Output directory cleaned.\n")
-    
-    init_report(path_report)
+        shutil.rmtree(output_path)
+        os.makedirs(output_path)
+    os.makedirs(output_path_receiver)
+    os.makedirs(output_path_sender)
+
+    init_report(output_path_report)
     for iteration in range(0, iterations):
         progressbar(iteration=iteration+1, total=iterations)
         test = np.random.random(1)
         if test < transfer_proba:
-            selected = loader(db_path, iteration)
+            selected = loader(input_path, iteration)
             transfered = transferer(selected, iteration, iterations)
 
-            write_report(path_report, transfered)
+            write_report(output_path_report, transfered)
             write_output_db(output_path_receiver, output_path_sender, transfered, iteration)
 
-    print(f"\nHGT database is Ready. Refer to the file {report_file} for the list of the transfers that occured.\n")
+    print(f"\nHGT database is Ready. Refer to the file {output_path_report} for the list of the transfers that occured.\n")
     
 
