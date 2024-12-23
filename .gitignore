@@ -4,10 +4,13 @@
 
 **/taxdump.tar.gz
 
-input/sequence_db
-input/ribosome_db
+input/*
+!input/samples_list/
+input/Brinkman_supp_files/
 !input/sequence_db/toy*
 
 output/*
 
 profile.prof
+
+TODO.txt
