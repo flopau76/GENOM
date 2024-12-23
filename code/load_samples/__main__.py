@@ -1,13 +1,15 @@
-import load_samples.get_taxid as get_taxid
 from load_samples.ribo_db_build import prepare_ribo_db
 
+import argparse
+
+from ete3 import NCBITaxa
+from taxoniq import Taxon
+
 import sys, os, subprocess, shutil
-from typing import Dict
+from typing import Dict, List
 
 def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', printEnd = "\r") -> None:
-    """
-    Show a progress bar indicating downloading progress
-    """
+    """ Show a progress bar indicating downloading progress """
     percent = f'{round(100 * (iteration / float(total)), 1)}'
 
     add = int(100 * iteration // total)
@@ -22,7 +24,7 @@ def getter(taxon : str, index : str, ribo_dir : str) -> None:
     Run a subprocess to fetch the genome corresponding to the
     accession number.
     """
-    test = subprocess.run(
+    subprocess.run(
             f'bio fetch {taxon} -t DNA -f fasta > "{index}/genome_{taxon}.fasta"',
             capture_output=True, shell=True
         )
@@ -32,24 +34,35 @@ def getter(taxon : str, index : str, ribo_dir : str) -> None:
     )
     return 0
 
-def load_taxid(taxon_file : str) -> Dict[str, str]:
-    """
-    Load dictionnary associating a species name with its taxid
-    """
-    return get_taxid.get_id(path=taxon_file)
+
+def parse_file(path : str) -> List[str]:
+    """ Load the content of a file into a list of strings. """
+    with open(path, 'r') as file:
+        result = [line.strip('\n') for line in file.readlines()]
+    return result
+
+def taxname2taxid(taxlist : List[str]) -> Dict[str, List[str]]:
+    """ Create a dictionnary from a list of species names """
+    return NCBITaxa().get_name_translator(taxlist)
+
+def taxid2seqid(taxid : str) -> str:
+    """ Return the genome accession ID for a given taxid. """
+    return Taxon(taxid).refseq_genome_accessions[0].accession_id
 
 def generate_report(db_path : str, failed : list) -> None:
-    """
-    Generates the downloading report.
-    """
+    """ Generates the downloading report. """
     with open(os.path.join(db_path, "_failed.txt"), 'w') as fail_file:
         for elt in failed:
             fail_file.write(f"{elt}\n")
-
     return 0
 
-def main(taxon_file, db, ribo_dir):
-    taxon_dico = load_taxid(taxon_file)
+def main(taxon_file, db, ribo_dir, taxnames=True):
+    samples = parse_file(taxon_file)
+    if taxnames:
+        taxon_dico = taxname2taxid(samples)   # {taxon name: taxon id}
+    else:
+        taxon_dico = {sample:sample for sample in samples} # {id: id}
+
     os.makedirs(out_dir)
     os.makedirs(ribo_dir)
     n = 0
@@ -64,31 +77,37 @@ def main(taxon_file, db, ribo_dir):
         enddir = os.path.join(db, f"{index.split('/')[0]}")
         os.makedirs(enddir)
         try :
-            taxon = get_taxid.get_accession(taxon[0])
-            getter(taxon, enddir, ribo_dir)
+            if taxnames:
+                seq_id = taxid2seqid(taxon[0])
+            else: 
+                seq_id = taxon
+            getter(seq_id, enddir, ribo_dir)
             progressbar(n, len(taxon_dico))
         except Exception:
             e+=1
             failed.append(index)
             os.rmdir(enddir)
-    
-    print("\n   Building Ribosomic sequence database\n")
-    n = prepare_ribo_db(ribo_dir)
+    print(f"{n-e} taxa genomes download successful - {e} failed to download or unavailable\n")
     generate_report(db, failed)
 
-    print(f"{len(taxon_dico)-e} taxa genomes download successful - {e} failed to download or unavailable\n")
+    print("\n   Building Ribosomic sequence database\n")
+    n = prepare_ribo_db(ribo_dir)
+
     print(f"{n} Ribosomal informations gathered - {len(taxon_dico)-e-n} failed to parse.")
     return 0
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print("Usage: python -m load_sample  <sample_file>")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description="Download genomes from NCBI")
+    parser.add_argument("taxon_file", help="File containing the list of taxons to download", type=str)
+    parser.add_argument("-s", "--taxnames", help="Select if the list contains sequence ids and not taxon names", action="store_false")
+
+    args = parser.parse_args()
+    taxon_file = args.taxon_file
+    taxon_basename = os.path.basename(taxon_file)
+    taxnames = args.taxnames
 
     root_dir = os.path.abspath(os.path.join(__file__, "..", "..", ".."))
 
-    taxon_file = sys.argv[1]
-    taxon_basename = os.path.basename(taxon_file)
     if taxon_file == taxon_basename:
         taxon_file = os.path.join(root_dir, "input", "samples_list", taxon_basename)
     print(f"Taxon file: {taxon_file}")
@@ -112,5 +131,5 @@ if __name__ == '__main__':
             os.makedirs(out_dir)
             os.makedirs(ribo_dir)
 
-    main(taxon_file, out_dir, ribo_dir)
+    main(taxon_file, out_dir, ribo_dir, taxnames)
 

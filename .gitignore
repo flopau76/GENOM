@@ -4,8 +4,8 @@
 
 **/taxdump.tar.gz
 
-input/*
-!input/samples_list
+input/sequence_db
+input/ribosome_db
 !input/sequence_db/toy*
 
 output/*
