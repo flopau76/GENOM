@@ -4,6 +4,9 @@
 
 **/taxdump.tar.gz
 
+/code/compute_signatures/ribo_class.py
+/code/compute_signatures/unit_tests.py
+
 input/*
 !input/samples_list
 !input/sequence_db/toy*
