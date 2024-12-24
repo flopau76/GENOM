@@ -19,6 +19,19 @@ class HorizontalTransfer:
     divergence : float
     seq : str
 
+def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', printEnd = "\r") -> None:
+    """
+    Show a progress bar indicating downloading progress
+    """
+    percent = f'{round(100 * (iteration / float(total)), 1)}'
+
+    add = int(100 * iteration // total)
+    bar = filler * add + '-' * (100 - add)
+    print(f'\r{prefix} |{bar}| {percent}% {suffix}', end = printEnd)
+
+    if iteration == total: 
+        print()
+
 def load_json(path : str) -> Dict[str, Dict[str, float]]:
     with open(path, 'r', encoding='utf-8') as summary:
         dico = json.load(summary)
@@ -30,7 +43,10 @@ def serialize_files(dir_path : str,
 
     strain_dico = load_json(json_path)
 
+    n = 0
     for strain, position_dico in strain_dico.items():
+        n+=1
+        progressbar(n, len(strain_dico))
         directory = os.path.join(dir_path, strain)
         file = os.listdir(directory)[0]
         for seq in SeqIO.parse(os.path.join(directory, file), 'fasta'):
@@ -44,9 +60,11 @@ def serialize_files(dir_path : str,
                                                         position+window_size,
                                                         divergence,
                                                         seq=window))
+        
         yield StrainHorizontalTransfer(
             strain,
             transfer_summary=list_transfer
         )
+        
                 
 

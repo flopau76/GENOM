@@ -23,7 +23,7 @@ class distance(Metric):
     def __init__(self, ref_freq:Dict[int, float]=None, p:int=2) -> None:
         self.ref_freq = ref_freq
         self.p = p
-        self.name = f"L{p} distance"
+        self.name = f"L{p}_distance"
 
     def slide_window(self, kmers_list:List[int], window_size:int) -> np.array:
         p = self.p
@@ -46,13 +46,17 @@ class distance(Metric):
             current_val[new_kmer] = new_val
             current_val[old_kmer] = old_val
             current_res += new_val + old_val
+
+            if current_res < 0:
+                current_res = 0
             all_res.append(current_res)
+            
         return np.power(np.array(all_res),1/p)
 
 class chi_squared(Metric):
     def __init__(self, ref_freq:Dict[int, float]=None, p:int=2) -> None:
         self.ref_freq = ref_freq
-        self.name = "Chi-squared distance"
+        self.name = "Chi-squared_distance"
 
     def slide_window(self, kmers_list:List[int], window_size:int) -> np.array:
         ref_freq = self.ref_freq
@@ -80,7 +84,7 @@ class chi_squared(Metric):
 class KLdivergence(Metric):
     def __init__(self, ref_freq:Dict[int, float]=None) -> None:
         self.ref_freq = ref_freq
-        self.name = "KL divergence"
+        self.name = "KL_divergence"
 
     def slide_window(self, kmers_list:List[int], window_size:int) -> np.array:
         ref_freq = self.ref_freq
@@ -111,7 +115,7 @@ class KLdivergence(Metric):
 class Jaccard(Metric):
     def __init__(self, ref_count:Dict[int, int]=None) -> None:
         self.ref_count = ref_count
-        self.name = "Jaccard index"
+        self.name = "Jaccard_index"
 
     def slide_window(self, kmers_list:List[int], window_size:int) -> np.array:
         ref_count = self.ref_count
@@ -135,7 +139,7 @@ class Jaccard(Metric):
 class Convolution(Metric):
     def __init__(self, ref_count:Dict[int, int]=None) -> None:
         self.ref_count = ref_count
-        self.name = "average frequency"
+        self.name = "average_frequency"
 
     def slide_window(self, kmers_list:list[int], window_size : int) -> np.array:
         assert self.ref_count is not None, "Reference count was not provided"

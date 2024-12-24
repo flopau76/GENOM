@@ -22,6 +22,21 @@ class Conclusion:
     receiver : str
     position_receiver: str
 
+
+def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', printEnd = "\r") -> None:
+    """
+    Show a progress bar indicating downloading progress
+    """
+    percent = f'{round(100 * (iteration / float(total)), 1)}'
+
+    add = int(100 * iteration // total)
+    bar = filler * add + '-' * (100 - add)
+    print(f'\r{prefix} |{bar}| {percent}% {suffix}', end = printEnd)
+
+    if iteration == total: 
+        print()
+
+
 def bootstrap_genome(seq : str, num_windows : int = 100, window_size : int = 2000, k_mer_length : int = 8) -> Dict[int, float]:
     """
     Randomly select n overlapping-able windows of length w and computes
@@ -44,8 +59,10 @@ def load_bootstrapped_db(path_db : str, window_size : int = 2000, kmer_size : in
     Return their signature in a dictionnary
     """
     all_BS_db = {}
-    for strain_dir in os.listdir(path_db):
-
+    for index, strain_dir in enumerate(os.listdir(path_db)):
+        progressbar(index+1,len(os.listdir(path_db)))
+        if strain_dir.endswith('.txt'):
+            continue
         strain_dir_path = os.path.join(path_db, strain_dir)
         strain_file = os.listdir(strain_dir_path)[0]
         strain_path = os.path.join(strain_dir_path, strain_file)
@@ -79,15 +96,15 @@ def screen_origins(list_transfer : StrainHorizontalTransfer,
             array_ref_Bootstrapped = np.array(list(dico_BS.values()))
             array_hit_sequence = np.array(list(kmers_freq.values()))
             
-            kl = sum(kl_div(array_hit_sequence, array_ref_Bootstrapped)) #!! utilisation de la kl-div de scipy, à vérifier
-            if kl < divergence_dico[transfer.start_position][0]:
-                divergence_dico[transfer.start_position] = (kl, strain_sender)
+            l2dist = np.linalg.norm(array_hit_sequence-array_ref_Bootstrapped) #!! utilisation de la kl-div de scipy, à vérifier
+            if l2dist < divergence_dico[transfer.start_position][0]:
+                divergence_dico[transfer.start_position] = (l2dist, strain_sender)
         
     return divergence_dico
 
 def fixed_window_distance(fixed_window : List[int], file_pointer : TextIOWrapper, kmer_size : int = 8) -> np.ndarray:
     """
-    Computes Kullback-Leibler divergence over the target genome of the possible transfer sequence with
+    Computes Euclidian distance over the target genome of the possible transfer sequence with
     sequences of identical size. Idea is to find if there is a place in the genome with a similar profile.
 
     Query is the receiver's window .
@@ -120,11 +137,11 @@ def sliding_window_search(top_screen : Dict[str, Dict[int,Tuple[float, str]]],
         Target_pointer = os.path.join(db_path, target[transfer.start_position][1], Target_file)
         
         file_pointer = open_genome(Target_pointer)
-        all_kl_div = fixed_window_distance(Query_sequence, file_pointer)
+        all_div = fixed_window_distance(Query_sequence, file_pointer)
 
         ccl = Conclusion(
             sender_found=target[transfer.start_position][1],
-            position_sender=all_kl_div.argmin(),
+            position_sender=all_div.argmin(),
             receiver= transfer_summary.strain,
             position_receiver= list(target.keys())[index]
         )
@@ -133,6 +150,7 @@ def sliding_window_search(top_screen : Dict[str, Dict[int,Tuple[float, str]]],
 
     return all_conclusion
     
+###################################################################################
 
 def blast_seq(transfer_elt : HorizontalTransfer) -> str:
     """

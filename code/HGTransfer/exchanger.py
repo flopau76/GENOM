@@ -55,7 +55,7 @@ def noise_dispach(victim : Union[Sender, Receiver], roll : np.ndarray):
     for proba in roll:
         pass
 
-def write_output_db(output_path_receiver : str, output_path_sender : str, transfer : HGT, iteration : int):
+def write_output_db(output_path_receiver : str, transfer : HGT, iteration : int):
     """
     Writes the output genomes from the transfer in a new directory for further analysis 
     if required.
@@ -65,7 +65,7 @@ def write_output_db(output_path_receiver : str, output_path_sender : str, transf
     sender = transfer.sender_object
     receiver = transfer.receiver_object
 
-    output_dir_sender = os.path.join(output_path_sender, f"{iteration} {sender.strain}")
+    output_dir_sender = os.path.join(output_path_receiver, f"{iteration} {sender.strain}")
     os.makedirs(output_dir_sender)
     output_dir_receiver = os.path.join(output_path_receiver, f"{iteration} {receiver.strain}")
     os.makedirs(output_dir_receiver)

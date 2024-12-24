@@ -34,9 +34,9 @@ def selector(input_path : str) -> np.ndarray[str]:
     """
     Randomly select two directory in the input directory where all strain directories are kept. 
     """
-    selection = np.random.choice(os.listdir(input_path), size=2)
+    selection = np.random.choice(os.listdir(input_path), size=2, replace=False)
     while "ribo_db" in selection or "_failed.txt" in selection:
-        selection = np.random.choice(os.listdir(input_path), size=2)
+        selection = np.random.choice(os.listdir(input_path), size=2, replace=False)
 
     return selection
 
