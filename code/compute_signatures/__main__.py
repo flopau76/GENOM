@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.backends.backend_pdf as bpdf
-from scipy.signal import find_peaks
+import scipy.signal
 
 from collections import Counter
 import argparse
@@ -26,7 +26,7 @@ def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', prin
 
 def find_potential_HGT(result:np.ndarray, min_height=None, min_prominence=None, path_ribo_db=None, sample=None, ribo_genome_file_table:dict={}) -> Dict[int, float]:
     """ Find potential HGT regions corresponding to the highest peaks in the result """
-    highest_values_indices, _ = find_peaks(result, prominence=min_prominence, height=min_height)
+    highest_values_indices, _ = scipy.signal.find_peaks(result, prominence=min_prominence, height=min_height)
     highest_values = result[highest_values_indices]
     best_hits = {int(idx):val for idx, val in zip(highest_values_indices, highest_values)}
 
@@ -34,7 +34,6 @@ def find_potential_HGT(result:np.ndarray, min_height=None, min_prominence=None, 
         ribo_file_name = ribo_genome_file_table[sample]
         ribo_file_path = os.path.join(path_ribo_db, ribo_file_name)
         best_hits = drop_ribo_position(best_hits, ribo_file_path)
-
     return best_hits
 
 
@@ -42,39 +41,33 @@ if __name__ == "__main__":
     metric_dict = {0:metrics.distance(), 1:metrics.chi_squared(), 2:metrics.KLdivergence(), 3:metrics.Convolution()}
 
     parser = argparse.ArgumentParser(description="Compute the signature of a genome and find potential HGT regions")
-    parser.add_argument("input_db", help="The name of the input database (must be in `input/`)")
-    parser.add_argument('-o', '--output', help="The name of the output (will be in `output/transfer_summary`)", type=str, default=None)
-    parser.add_argument('-k', '--kmer', help='The size of the kmer (default=8)', type=int, default=5)
-    parser.add_argument('-w', '--window', help='The size of the sliding window (default=2000)', type=int, default=5000)
-    parser.add_argument('-r', '--ref', help='Path to the file containing the known HGT for them to be shown on the report', type=str, default=None)
-    parser.add_argument('-m', '--metric', help=f'Metric used for computation. Currently supports: ' + " ,".join([f"{metric.name} ({key})" for key, metric in metric_dict.items()]), type=int, default=1)
+    parser.add_argument("input_db", help="The name of the input database (must be in `input`)")
+    parser.add_argument('-k', '--kmer', help='The size of the kmer (default=5)', type=int, default=5)
+    parser.add_argument('-w', '--window', help='The size of the sliding window (default=5000)', type=int, default=5000)
+    parser.add_argument('-m', '--metric', help='Metric used for computation. Currently supports: ' + " ,".join([f"{metric.name} ({key})" for key, metric in metric_dict.items()]), type=int, default=1)
     parser.add_argument('-b', '--ribo', help="Path to the ribosome database if you wish to filter them out", type=str, default=None)
     
     args = parser.parse_args()
 
     k = args.kmer
     window_size = args.window
-    input_name = args.input_db
-    reference_dico = args.ref
-    if reference_dico is not None:
-        reference_dico = display.ref_parse(reference_dico)
-
-    output_name = args.output
     metric = metric_dict[args.metric]
-    path_ribo_db = args.ribo
 
-    if output_name is None:
-        output_name = os.path.basename(input_name) + '_' + metric.name
+    input_name = args.input_db
+    output_name = os.path.basename(input_name) + '_' + metric.name
 
     base_dir =  os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
     input_folder = os.path.join(base_dir, "input", input_name)
     output_path_json = os.path.join(base_dir, "output", f"transfer_summary", f"{output_name}.json")
     output_path_pdf = os.path.join(base_dir, "output", f"transfer_summary", f"{output_name}.pdf")
 
+    ground_truth = display.get_ground_truth(input_folder)
+
+    path_ribo_db = args.ribo
     ribo_genome_file_table = None
     if path_ribo_db is not None:
         liste_dir = os.listdir(input_folder)
-        ribo_genome_file_table = dict(zip(liste_dir, os.listdir(path_ribo_db)))
+        ribo_genome_file_table = dict(zip(liste_dir, os.listdir(path_ribo_db))) # TODO: fix this
 
     pdf = bpdf.PdfPages(output_path_pdf)
 
@@ -112,7 +105,7 @@ if __name__ == "__main__":
         best_hits[sample] = sample_hits
 
         # save the resulting figure
-        fig = display.display_windows(result, sample, hits=sample_hits, title=f"{sample}", ylabel=metric.name, dpi=300, ref=reference_dico, window_size=window_size)
+        fig = display.display_windows(result, hits=sample_hits, ground_truth=ground_truth[sample], title=f"{sample}", ylabel=metric.name, dpi=300)
         fig.savefig(pdf, format='pdf')
         plt.close(fig)
 

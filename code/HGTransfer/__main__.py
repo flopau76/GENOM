@@ -17,7 +17,7 @@ def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', prin
 def init_report(path_report : str):
     """ Initialize report file with fields. """
     with open(path_report, 'a+') as file:
-        file.write(f"Sp_sending\t\tSending_position\t\tSp_receiving\t\tReceiving_position\n")
+        file.write(f"Sp_sending\t\tSending_start\t\tSending_end\t\tSp_receiving\t\tReceiving_position\n")
     return 0
 
 def write_report(path_report : str, transfered : HGT):
@@ -25,7 +25,7 @@ def write_report(path_report : str, transfered : HGT):
     sender = transfered.sender_object
     receiver = transfered.receiver_object
     with open(path_report, 'a+') as report:
-        report.write(f"{transfered.iteration} {sender.strain}\t\t{sender.transfer_start}-{sender.transfer_end}\t\t{transfered.iteration} {receiver.strain}\t\t{receiver.reception_position}\n")
+        report.write(f"{transfered.iteration} {sender.strain}\t\t{sender.transfer_start}\t\t{sender.transfer_end}\t\t{transfered.iteration} {receiver.strain}\t\t{receiver.reception_position}\n")
 
     return 0
 
@@ -43,11 +43,11 @@ if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
     input_path = os.path.join(base_dir, "input", "sequence_db", in_dir)
-    output_path = os.path.join(base_dir, "input", "generated_HGT", in_dir)
+    output_path = os.path.join(base_dir, "input", "generated_HGT")
 
-    output_path_receiver = os.path.join(output_path, "output_receiver")
-    output_path_sender = os.path.join(output_path, "output_sender")
-    output_path_report = os.path.join(output_path, "HGT_report.txt")
+    output_path_sender = os.path.join(output_path, in_dir + "_sender")
+    output_path_receiver = os.path.join(output_path, in_dir + "_receiver")
+    output_path_report = os.path.join(output_path_receiver, "HGT_report.txt")
 
     if os.path.exists(output_path):
         print("  Cleaning output directory...")

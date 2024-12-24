@@ -1,46 +1,55 @@
-##########################################################################
-#                        Useless/Deprecated ?                            #
-##########################################################################
-
-
 from matplotlib import pyplot as plt
-import matplotlib.backends.backend_pdf as bpdf
-from matplotlib.patches import Rectangle
 
-from typing import List, Dict
+from collections import defaultdict
+
+from typing import List
 import numpy as np
+import os, json
 
-def ref_parse(ref_path : str):
-    with open(ref_path, 'r') as ref_file:
-        ref_file =[line.split('\t') for line in ref_file.readlines()]
+def parse_HGT_report(file:str):
+    res = {}
+    with open(file, 'r') as f:
+        f.readline()
+        for line in f.readlines():
+            line = line.split('\t\t')
+            send_start, send_end, rec_name, rec_start = line[1:]
+            send_start, send_end, rec_start = int(send_start), int(send_end), int(rec_start)
+            res[rec_name]= {'pos':[[rec_start], [rec_start+send_end-send_start]]}
+    return res
 
-    res = {line[4]:int(line[6].strip()) for index, line in enumerate(ref_file) if index != 0}
-    return res    
+def get_ground_truth(folder:str):
+    """" Looks for a file called ground_truth.json or HGT_report.txt in the folder
+    and transforms it into a dictionnary containing the ground truth """
+    HGT_path = os.path.join(folder, "HGT_report.txt")
+    if os.path.exists(HGT_path):
+        return parse_HGT_report(HGT_path)
+    ground_truth_path = os.path.join(folder, "ground_truth.json")
+    if os.path.exists(ground_truth_path):
+        with open(ground_truth_path, 'r') as gt_file:
+            ground_truth = json.load(gt_file)
+        return ground_truth
+    else:
+        return defaultdict(None)
 
-def display_windows(window_value:List[float], sample : str, hits=None,
-                     title:str=None, ylabel:str=None, ax=None, 
-                     dpi=None, ref : Dict[str,int] = None, window_size : int = 5000) -> plt.Figure: 
-
-    if ax is None:
-        fig, ax = plt.subplots(dpi=dpi)
+def display_windows(window_value:List[float], hits=None, ground_truth=None,
+                     title:str=None, ylabel:str=None, dpi=None) -> plt.Figure:
+    fig, ax = plt.subplots(dpi=dpi)
     ax.plot(window_value)
-    if ref is not None:
-        try :
-            known_HGT_position = ref[sample]
-            size = (len(window_value)/window_size)*np.log2(len(window_value))*np.log10(window_size)
-            rect = Rectangle((known_HGT_position-(size/2), min(window_value)), width=size, height=max(window_value)-min(window_value), edgecolor='red', facecolor="white", label="Known HGT")
-            ax.add_patch(rect)
-            ax.legend(loc='center left', bbox_to_anchor=(0.8, 1))
-        except Exception:
-            pass
     if hits is not None:
         ax.scatter(hits.keys(), hits.values(), color='red', marker='+')
+    if ground_truth is not None:
+        y_pos = 1.2*max(window_value)
+        ground_truth_pos, ground_truth_neg = ground_truth.get('pos', None), ground_truth.get('neg', None)
+        if ground_truth_pos is not None:
+            ax.hlines([y_pos]*len(ground_truth_pos[0]), ground_truth_pos[0], ground_truth_pos[1], color='red', linewidth=40)
+        if ground_truth_neg is not None:
+            ax.hlines([y_pos]*len(ground_truth_neg[0]), ground_truth_neg[0], ground_truth_neg[1], color='green', linewidth=40)
+
     ax.set_xlabel("Window start")
     if ylabel is not None:
         ax.set_ylabel(ylabel)
     if title is not None:
         ax.set_title(title)
-    
     return fig
 
 def display_matrix(matrix, save_path, step=1, title='Matrix Heatmap', 

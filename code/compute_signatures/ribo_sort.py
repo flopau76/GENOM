@@ -2,7 +2,6 @@ import os, re
 from typing import List, Dict, Tuple, Generator
 from collections import Counter
 
-import compute_signatures.ribo_class as rb
 from compute_signatures.kmers import stream_kmers
 
 from Bio import SeqIO
