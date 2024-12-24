@@ -1,0 +1,13 @@
+load_samples:
+- fix: ribo parser raises an error when using samples_list/Brinkman
+- use same file name for ribosome_db and sequence_db (file extension) -> otherwise ribo parser in compute_signatures won't work
+
+HGTransfer + compute_signatures:
+- better compatibility in file location between each other ?
+
+compute_signature:
+- why two args for ribo in find_potential_HGT ? -> see load_samples: pb in ribo parsing and file names
+
+other:
+- what difference between reference.txt and yaml ? How to use them ?
+- update readme

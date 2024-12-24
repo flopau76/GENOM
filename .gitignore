@@ -8,7 +8,8 @@
 /code/compute_signatures/unit_tests.py
 
 input/*
-!input/samples_list
+!input/samples_list/
+input/Brinkman_supp_files/
 !input/sequence_db/toy*
 
 output/*

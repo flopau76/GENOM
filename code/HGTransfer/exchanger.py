@@ -14,7 +14,7 @@ def transferer(selected : HGT, current_iter : int, total_iter : int) -> HGT:
     receiver = selected.receiver_object
 
     seq_transfered = sender.seq[sender.transfer_start:sender.transfer_end]
-    receiver.seq = receiver.seq[0:receiver.reception_position] + seq_transfered + receiver.seq[receiver.reception_position:len(receiver.seq)]
+    receiver.seq = receiver.seq[:receiver.reception_position] + seq_transfered + receiver.seq[receiver.reception_position:]
 
     transfered = HGT(
         sender_object=sender,
