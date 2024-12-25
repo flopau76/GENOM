@@ -56,7 +56,7 @@ def parser(ribo_db_dir : str):
         genome_seq = ''.join(re.findall('[atcg]+', ribo_file_content))
         accession_id = re.findall(r'VERSION     (.*?(?=\n))', ribo_file_content)[0]
         organism_name = re.findall(r'ORGANISM..(.+?)(?=\n)', ribo_file_content)[0]
-        realm = re.findall(r'ORGANISM..*\s.+?(?<=\s{13})(.*?)(?=;)', ribo_file_content)[0]
+        realm = re.findall(r'ORGANISM..[\s\S]*?(?<=\s{13})(.*?)(?=;)', ribo_file_content)[0]
             
         pattern = re.findall(r'rRNA\s+(?:complement\(join\(([\d\.\.,\s]+)\)\)|complement\((\d+\.\.\d+)\)|(\d+\.\.\d+))\s+.*\s+.*\s+.*?(?<=product=\")(.+?)(?=\")',
                         ribo_file_content)
@@ -79,7 +79,7 @@ def parser(ribo_db_dir : str):
                 accession_id=accession_id                
             )
 
-def prepare_ribo_db(ribo_db_dir : str):
+def prepare_ribo_db(ribo_db_dir : str, accession_id_flag : bool = False):
     """
     Write ribosomic sequences to a new fasta file.
     """
@@ -87,9 +87,15 @@ def prepare_ribo_db(ribo_db_dir : str):
     for ribo_elts in parser(ribo_db_dir):
         if ribo_elts == "Timeout":
             continue
-        name = re.sub(r'\[|\]',"",ribo_elts.organism_name.split('/')[0])
+        
+        if accession_id_flag is True:
+            name = ribo_elts.accession_id
+        else:
+            name = re.sub(r'\[|\]',"", ribo_elts.organism_name.split('/')[0])
+
         name_file = f'ribosomes_{name}.fasta'
         out_path = os.path.join(ribo_db_dir, name_file)
+
         if name_file in os.listdir(ribo_db_dir):
             os.remove(out_path)
         
@@ -104,5 +110,5 @@ def prepare_ribo_db(ribo_db_dir : str):
     print("\n   Ribosome database completed\n")
     return n
             
-#prepare_ribo_db(r"C:\Subpbiotech_cours\BT5\BIM_BMC\GENOM\project\project_git\GENOM\db\ribo_db")
+prepare_ribo_db(r"C:\Subpbiotech_cours\BT5\BIM_BMC\GENOM\project\project_git\GENOM\input\ribosome_db\Brinkman")
 

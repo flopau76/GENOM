@@ -11,7 +11,7 @@ from Bio import SeqIO
 #                         When the database is available                        #
 #################################################################################
 
-def parse_ribo_position(path_ribo_file : str) -> Generator[Dict[str, List[Tuple[int, int]]], any, any]:
+def parse_ribo_position(path_ribo_file : str) -> List[Tuple[int, int]]:
     """
     Parses the ribosomes database for their position in the sequence.
     """

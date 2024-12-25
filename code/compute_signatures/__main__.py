@@ -73,6 +73,8 @@ if __name__ == "__main__":
         liste_dir = os.listdir(input_folder)
         ribo_genome_file_table = dict(zip(liste_dir, os.listdir(path_ribo_db))) # TODO: fix this
 
+        print(ribo_genome_file_table)
+
     pdf = bpdf.PdfPages(output_path_pdf)
 
     best_hits = {}

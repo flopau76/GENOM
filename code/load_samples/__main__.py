@@ -63,8 +63,6 @@ def main(taxon_file, db, ribo_dir, taxnames=True):
     else:
         taxon_dico = {sample:sample for sample in samples} # {id: id}
 
-    os.makedirs(out_dir)
-    os.makedirs(ribo_dir)
     n = 0
     e = 0
     failed = []
@@ -83,15 +81,20 @@ def main(taxon_file, db, ribo_dir, taxnames=True):
                 seq_id = taxon
             getter(seq_id, enddir, ribo_dir)
             progressbar(n, len(taxon_dico))
+
         except Exception:
             e+=1
             failed.append(index)
             os.rmdir(enddir)
+
     print(f"{n-e} taxa genomes download successful - {e} failed to download or unavailable\n")
     generate_report(db, failed)
 
     print("\n   Building Ribosomic sequence database\n")
-    n = prepare_ribo_db(ribo_dir)
+    if not taxnames:
+        n = prepare_ribo_db(ribo_dir, accession_id_flag = True)       
+    else:
+        n = prepare_ribo_db(ribo_dir, accession_id_flag = False)
 
     print(f"{n} Ribosomal informations gathered - {len(taxon_dico)-e-n} failed to parse.")
     return 0
@@ -130,6 +133,10 @@ if __name__ == '__main__':
                 shutil.rmtree(ribo_dir)
             os.makedirs(out_dir)
             os.makedirs(ribo_dir)
+    else:
+        os.makedirs(out_dir)
+        os.makedirs(ribo_dir)
+        
 
     main(taxon_file, out_dir, ribo_dir, taxnames)
 
