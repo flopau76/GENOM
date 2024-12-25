@@ -131,12 +131,9 @@ if __name__ == '__main__':
             shutil.rmtree(out_dir)
             if os.path.exists(ribo_dir):
                 shutil.rmtree(ribo_dir)
-            os.makedirs(out_dir)
-            os.makedirs(ribo_dir)
-    else:
-        os.makedirs(out_dir)
-        os.makedirs(ribo_dir)
-        
+
+    os.makedirs(out_dir)
+    os.makedirs(ribo_dir)
 
     main(taxon_file, out_dir, ribo_dir, taxnames)
 
