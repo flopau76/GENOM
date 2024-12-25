@@ -1,6 +1,7 @@
 import os
 import numpy as np
 from dataclasses import dataclass
+from typing import List
 
 from Bio import SeqIO
 
@@ -30,12 +31,17 @@ class HGT:
     iteration : int
 
 
-def selector(input_path : str) -> np.ndarray[str]:
+def selector(input_path : str, taken : List[str]) -> np.ndarray[str]:
     """ Randomly select two subdirectory in the input directory where all strain directories are kept. """
     subdirs = [name for name in os.listdir(input_path) if os.path.isdir(os.path.join(input_path, name))]
-    return np.random.choice(subdirs, size=2, replace=False)
+    subdirs = set(subdirs)-set(taken)
+    assert len(subdirs) >= 2, "Subdirs exhausted"
 
-def loader(input_path : str, iteration : int) -> HGT:
+    files_chosen = np.random.choice(list(subdirs), size=2, replace=False)
+    taken += list(files_chosen)
+    return files_chosen, taken
+
+def loader(input_path : str, iteration : int, taken : list[str]) -> HGT:
     """
     Load both files previously selected. One as the sender and the other as the receiver.
     Return an HGT (Horizontal Gene Transfer) object containing both Sender and Receiver objects.
@@ -43,7 +49,7 @@ def loader(input_path : str, iteration : int) -> HGT:
     Also randomly select the boundaries of the sequence transfered from the sender and the position 
     to which the sequence is transfered to the receiver.
     """
-    files = selector(input_path)
+    files, taken = selector(input_path, taken)
     sender = files[0]
     receiver = files[1]
 
@@ -82,4 +88,4 @@ def loader(input_path : str, iteration : int) -> HGT:
         sender_object=sender_obj,
         receiver_object=receiver_obj,
         iteration=iteration
-    )
+    ), taken

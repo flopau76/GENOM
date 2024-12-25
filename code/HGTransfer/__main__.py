@@ -36,7 +36,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate Horizontal Transfer from a provided database")
     parser.add_argument('-db', '--input_db', help="Input database with list of taxa", type=str, default ="db")
     parser.add_argument('-o', '--output_db', help="Name of the directory in `input/sequence_db` where generated data is stored in", type=str, default="generator_db")
-    parser.add_argument('-r', '--report', help='Name of the report file. Is found in output/output_generator/', type=str,default='HGT_report.txt')
+    parser.add_argument('-r', '--report', help='Name of the report file. Is found in input/sequence_db/<output_db>', type=str,default='HGT_report.txt')
     parser.add_argument('-i', '--iterations', help="Number of iterations of transfer trials", type=int, default=1000)
     parser.add_argument('-p', '--probability', help="Set horizontal transfer probability", type=float, default=0.01)
 
@@ -60,16 +60,21 @@ if __name__ == "__main__":
         shutil.rmtree(output_path_db)
         os.makedirs(output_path_db)
     
+    taken = []
     init_report(path_report)
     for iteration in range(0, iterations):
         progressbar(iteration=iteration+1, total=iterations)
         test = np.random.random(1)
         if test < transfer_proba:
-            selected = loader(input_path, iteration)
+            selected, new_taken = loader(input_path, iteration, taken)
             transfered = transferer(selected, iteration, iterations)
 
             write_report(path_report, transfered)
             write_output_db(output_path_db, transfered, iteration)
+
+            taken += new_taken
+            taken = list(set(taken)) #2 files cannot be taken twice for HGT
+            
     
     print(f"\nHGT database is Ready.\nRefer to the file {report_file} for the list of the transfers that occured.\nFiles can be found in the input/sequence_db/{out_dir}")
     

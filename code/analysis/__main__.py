@@ -92,8 +92,11 @@ if __name__ == "__main__":
     
         print(f"{round(TP_rate, 2)}% of the HGT from the reference file were found.")
 
-    eval_report_name = os.path.join(output_path, f"eval_{report_name}")
-    write_report(eval_report_name, valid_list)
+        eval_report_name = os.path.join(output_path, f"eval_{report_name}")
+        os.remove(eval_report_name)
+        write_report(eval_report_name, valid_list)
+
+
 """
     print("Starting graph computation")
     out_graph = graph.dumy_dataset(report_output_path)
