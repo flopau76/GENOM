@@ -41,39 +41,3 @@ def drop_ribo_position(hits_position : Dict[str, float],
 
     return new_hits_position
 
-
-################################################################################
-#                       To remove if no use case is found                      #
-################################################################################
-
-def stream_ribo(ribo_db_path : str):
-    """
-    Passes through all ribosomes files and sort them into their corresponding 
-    category.
-    Separates Eukaryotes, Prokaryotes and Archea.
-    """
-    for file in os.listdir(ribo_db_path):
-        file_path = os.path.join(ribo_db_path, file)
-        all_ribo = [ribo_record for ribo_record in SeqIO.parse(file_path, "fasta")]
-
-        yield all_ribo
-            
-def ribo_sorter(ribo_db_path : str) -> Dict:
-    sender = {
-        '5S': rb.ribo5S(kmer_count=Counter(), num=0),
-        '16S': rb.ribo16S(kmer_count=Counter(), num=0),
-        '23S': rb.ribo23S(kmer_count=Counter(), num=0),
-        'SSU': rb.riboSSU(kmer_count=Counter(), num=0),
-        'BSU': rb.riboBSU(kmer_count=Counter(), num=0)
-        }
-    
-    for ribo_record_list in stream_ribo(ribo_db_path):
-        for record in ribo_record_list:
-            kmer_list = [kmer for kmer in stream_kmers([record.seq], k=8)]
-            sender[record.id].num += len(kmer_list)
-            sender[record.id].kmer_count = sender[record.id].kmer_count + Counter(kmer_list)
-
-    print(sender)
-    return
-
-

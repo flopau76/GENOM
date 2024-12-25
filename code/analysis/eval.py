@@ -1,9 +1,9 @@
 import os
-from typing import List
+from typing import Tuple, List
 
 from analysis.origin_search import Conclusion
 
-def load_files(path_analysis_report : str, path_ref_report : str):
+def load_files(path_analysis_report : str, path_ref_report : str) -> Tuple[List[str], List[str]]:
     """
     Compare the analysis outputed file with the reference provided file.
     Verify only sending and receiving species, and the distance between 
@@ -21,7 +21,7 @@ def load_files(path_analysis_report : str, path_ref_report : str):
     return analysis[1:], report_list[1:]
 
 
-def compare_files(path_analysis_report : str, path_ref_report : str, window_size : int):
+def compare_files(path_analysis_report : str, path_ref_report : str, window_size : int) -> Tuple[float, List[Conclusion]]:
     """
     Compare the analysis report with the reference of HGT occurences provided.
     """
@@ -34,11 +34,10 @@ def compare_files(path_analysis_report : str, path_ref_report : str, window_size
         line_list = line.split('\t\t')
 
         liste_map = list(map(lambda x : x[0] == line_list[0] 
-                                        and (int(line_list[1]) > int(x[1].split('-')[0])-window_size and int(line_list[1]) < int(x[1].split('-')[1])+window_size) 
-                                        and (x[2] == line_list[2]) 
-                                        and (int(line_list[3]) > int(x[3])-window_size and int(line_list[3]) < int(x[3])+window_size),
+                                        and (int(line_list[1]) > int(x[1])-window_size and int(line_list[1]) < int(x[2])+window_size) 
+                                        and (x[3] == line_list[2]),
                                         report))
-        
+
         if True in liste_map:
             valid.append(
                 Conclusion(
@@ -50,8 +49,8 @@ def compare_files(path_analysis_report : str, path_ref_report : str, window_size
                 )
             successful_backtrack+=1
     
-    TP_rate = successful_backtrack/len(report)
-    return TP_rate, successful_backtrack, len(report), valid
+    TP_rate = (successful_backtrack/len(report))*100
+    return TP_rate, valid
 
 """    
 print(compare_files(r'C:\Subpbiotech_cours\BT5\BIM_BMC\GENOM\project\project_git\GENOM\output\analysis\analysis_report.txt',

@@ -34,34 +34,31 @@ if __name__ == "__main__":
     print("Starting HGTdb generation...")
     
     parser = argparse.ArgumentParser(description="Generate Horizontal Transfer from a provided database")
-    parser.add_argument('-db', '--database', help="Input database with list of taxa", type=str, default ="db")
-    parser.add_argument('-re', '--output_db', help="Path to the directory where generated data is stored in.", type=str, default="generator_db")
-    parser.add_argument('-r', '--report', help='Name of the report file', type=str,default='HGT_report.txt')
+    parser.add_argument('-db', '--input_db', help="Input database with list of taxa", type=str, default ="db")
+    parser.add_argument('-o', '--output_db', help="Name of the directory in `input/sequence_db` where generated data is stored in", type=str, default="generator_db")
+    parser.add_argument('-r', '--report', help='Name of the report file. Is found in output/output_generator/', type=str,default='HGT_report.txt')
     parser.add_argument('-i', '--iterations', help="Number of iterations of transfer trials", type=int, default=1000)
     parser.add_argument('-p', '--probability', help="Set horizontal transfer probability", type=float, default=0.01)
 
     args = parser.parse_args()
-    in_dir = args.input_db
-
     base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-    in_dir = args.database
+
+    in_dir = args.input_db
     out_dir = args.output_db
     report_file = args.report
     iterations = args.iterations
     transfer_proba = args.probability
 
     base_db = os.path.join(base_dir, "input", "sequence_db")
-    db_path = os.path.join(base_db, in_dir) #send to input generator
-    output_path_db = os.path.join(base_db, out_dir) #send to output receiver
+    input_path = os.path.join(base_db, in_dir) #send to input generator
+    output_path_db = os.path.join(base_db, out_dir) #send to input as modified database 
     
-    output_path = os.path.join(base_dir, "output", "output_generator")
-    path_report = os.path.join(output_path, report_file)
+    path_report = os.path.join(output_path_db, report_file)
 
-    if report_file in os.listdir(output_path):
+    if os.path.exists(output_path_db):
         print("  Cleaning output directory...")
-        ctrl_removal(base_db, out_dir, report_file)
-        os.remove(path_report)
-        print("  Output directory cleaned.\n")
+        shutil.rmtree(output_path_db)
+        os.makedirs(output_path_db)
     
     init_report(path_report)
     for iteration in range(0, iterations):
@@ -74,6 +71,6 @@ if __name__ == "__main__":
             write_report(path_report, transfered)
             write_output_db(output_path_db, transfered, iteration)
     
-    print(f"\nHGT database is Ready. Refer to the file {report_file} for the list of the transfers that occured.\n")
+    print(f"\nHGT database is Ready.\nRefer to the file {report_file} for the list of the transfers that occured.\nFiles can be found in the input/sequence_db/{out_dir}")
     
 

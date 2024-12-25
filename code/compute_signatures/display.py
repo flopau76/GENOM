@@ -20,9 +20,11 @@ def parse_HGT_report(file:str):
 def get_ground_truth(folder:str):
     """" Looks for a file called ground_truth.json or HGT_report.txt in the folder
     and transforms it into a dictionnary containing the ground truth """
+
     HGT_path = os.path.join(folder, "HGT_report.txt")
     if os.path.exists(HGT_path):
         return parse_HGT_report(HGT_path)
+    
     ground_truth_path = os.path.join(folder, "ground_truth.json")
     if os.path.exists(ground_truth_path):
         with open(ground_truth_path, 'r') as gt_file:

@@ -12,7 +12,7 @@ from typing import List, Dict, Tuple
 from collections import Counter
 from io import TextIOWrapper
 import numpy as np
-import os, time
+import os, time, regex
 from dataclasses import dataclass
 
 @dataclass
@@ -21,7 +21,6 @@ class Conclusion:
     position_sender: str
     receiver : str
     position_receiver: str
-
 
 def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', printEnd = "\r") -> None:
     """
@@ -35,6 +34,80 @@ def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', prin
 
     if iteration == total: 
         print()
+
+
+def select_kmers(transfer : HorizontalTransfer, len_search_kmer : int, number : int = 3):
+    """
+    Select the desired number of kmers of adequated length in the 
+    transfered sequence.
+    """
+    #assert len_search_kmer < len(transfer.seq), "Length of the search kmer is bigger than the sequence transfered"
+
+    indexes = np.random.randint(low=0, high=len(transfer.seq)-len_search_kmer, size=number)
+    
+    kmer_list = [str(transfer.seq[index:index+len_search_kmer]) for index in indexes]
+    return kmer_list
+
+
+def find_len_search_kmers(record : SeqIO.SeqRecord, probability : float = 0.1):
+    """
+    Returns the length of the ideal length of the search kmer.
+    Ideal length is determined based on the probability for this kmer to 
+    randomly appear in the sequence given equiprobability of each nucleotide
+    and the length of the sequence.
+    """
+    length_genome = len(record.seq)
+    return round(2*(np.log10(probability)-np.log10(length_genome)/-np.log10(4)))
+
+
+def find_kmer(path_db : str, 
+              transfer_summary : StrainHorizontalTransfer, 
+              probability : float = 0.1, 
+              number_kmer : int = 3, 
+              threshold : float = 0.6):
+    """
+    Find the n kmers throughout the sequence in the database, for 
+    each transfer in the summary.
+    """
+    hits = []
+    for transfer in transfer_summary.transfer_summary:
+        for strain_folder in os.listdir(path_db):
+            if strain_folder == transfer_summary.strain or strain_folder.endswith(".txt"):
+                continue
+            
+            strain_folder_path = os.path.join(path_db, strain_folder)
+            file = os.listdir(strain_folder_path)[0]
+            file_path = os.path.join(path_db, strain_folder, file)
+
+            for record in SeqIO.parse(file_path, "fasta"):
+                len_search_kmer = find_len_search_kmers(record, probability=probability)
+
+            kmer_selection = select_kmers(transfer, len_search_kmer, number=number_kmer)
+            mapped_kmer = [regex.search(rf"({kmer})", str(record.seq), concurrent=True) for kmer in kmer_selection]
+            prop = (number_kmer-mapped_kmer.count(None))/number_kmer
+
+            if prop > threshold:
+                for mapped in mapped_kmer:
+                    if mapped != None:
+                        pos = mapped.span()[0]
+                        break
+
+                hits.append(Conclusion(
+                    sender_found=strain_folder,
+                    position_sender=pos, #!! non-exact position
+                    receiver=transfer_summary.strain,
+                    position_receiver=transfer.start_position
+                ))
+            else:
+                continue
+    
+    return hits        
+                  
+
+
+#################################################################################
+#                                   Old                                         #
+#################################################################################
 
 
 def bootstrap_genome(seq : str, num_windows : int = 100, window_size : int = 2000, k_mer_length : int = 8) -> Dict[int, float]:

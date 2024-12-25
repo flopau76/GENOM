@@ -41,11 +41,11 @@ if __name__ == "__main__":
     metric_dict = {0:metrics.distance(), 1:metrics.chi_squared(), 2:metrics.KLdivergence(), 3:metrics.Convolution()}
 
     parser = argparse.ArgumentParser(description="Compute the signature of a genome and find potential HGT regions")
-    parser.add_argument("input_db", help="The name of the input database (must be in `input`)")
+    parser.add_argument("input_db", help="The name of the input database (must be in `input/sequence_db/`)")
     parser.add_argument('-k', '--kmer', help='The size of the kmer (default=5)', type=int, default=5)
     parser.add_argument('-w', '--window', help='The size of the sliding window (default=5000)', type=int, default=5000)
     parser.add_argument('-m', '--metric', help='Metric used for computation. Currently supports: ' + " ,".join([f"{metric.name} ({key})" for key, metric in metric_dict.items()]), type=int, default=1)
-    parser.add_argument('-b', '--ribo', help="Path to the ribosome database if you wish to filter them out", type=str, default=None)
+    parser.add_argument('-b', '--ribo', help="Path to the ribosome database if you wish to filter them out. Must be in `input/ribosome_db/`", type=str, default=None)
     
     args = parser.parse_args()
 
@@ -57,14 +57,18 @@ if __name__ == "__main__":
     output_name = os.path.basename(input_name) + '_' + metric.name
 
     base_dir =  os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-    input_folder = os.path.join(base_dir, "input", input_name)
+    input_folder = os.path.join(base_dir, "input", "sequence_db", input_name)
     output_path_json = os.path.join(base_dir, "output", f"transfer_summary", f"{output_name}.json")
     output_path_pdf = os.path.join(base_dir, "output", f"transfer_summary", f"{output_name}.pdf")
 
     ground_truth = display.get_ground_truth(input_folder)
+    for sender in os.listdir(input_folder):
+        if sender not in ground_truth.keys():
+            ground_truth[sender] = None
 
-    path_ribo_db = args.ribo
+    path_ribo_db = os.path.join(base_dir, "input", "ribosome_db", args.ribo)
     ribo_genome_file_table = None
+
     if path_ribo_db is not None:
         liste_dir = os.listdir(input_folder)
         ribo_genome_file_table = dict(zip(liste_dir, os.listdir(path_ribo_db))) # TODO: fix this

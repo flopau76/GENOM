@@ -43,10 +43,11 @@ if __name__ == "__main__":
     parser.add_argument("database_name", help="Path to the directory to analyze (whom signature have been computed). Must be in ./input/sequence_db/ or ./output/output_generator/")
     parser.add_argument("-o", '--output_file', help="Choose the name of the output file. Its destination is ./output/analysis/", type=str, default="analysis_report.txt")
     parser.add_argument('-r', '--reference_file', help="Path to the control file. Evaluate the results of the backtracking respect to it.", type=str, default=None)
-    parser.add_argument('-bi','--bootstrapp_iter', help="Choose boostrap parameters for signature backtracking, starting with the number of boostrap iterations (default : 100).", type=int, default=100)
-    parser.add_argument('-bk','--bootstrapp_kmer_size', help="Choose kmer size used for the bootstrapp. Default length is 8.", type=int, default=8)
-    parser.add_argument('-bw','--bootstrapp_window_size', help="Choose the window size used for the bootstrap. Default length is 5000 (same as for signature computation).", type=int, default=5000)
-
+    parser.add_argument('-w','--window_size', help="Choose the window size. Default length is 5000 (same as for signature computation).", type=int, default=10000)
+    parser.add_argument('-n', '--number_kmer', help="Choose number of search kmers for backtracking. Default 3.", type=int, default=3)
+    parser.add_argument('-t', '--threshold', help="Define the proportion of search kmer found in a genome to consider it as a hit. Default 60%", type = int, default=0.6)
+    parser.add_argument('-p', '--probability', help='Define the maximum probability of finding a kmer of length n in a genome of size L at random. Default 0.1.', type=float, default=0.1)
+    
     args = parser.parse_args()
 
     json_file = args.json_transfer_summary
@@ -54,9 +55,10 @@ if __name__ == "__main__":
     report_name = args.output_file
     eval_file_path = args.reference_file
 
-    bs_iter = args.bootstrapp_iter
-    bs_km_size = args.bootstrapp_kmer_size
-    bs_window_size = args.bootstrapp_window_size
+    window_size = args.window_size
+    number_search_kmer = args.number_kmer
+    hit_threshold = args.threshold
+    max_proba = args.probability
 
     time_ = []
 
@@ -67,34 +69,38 @@ if __name__ == "__main__":
     output_path = os.path.join(dir_path, "output", "analysis")
     report_output_path = os.path.join(output_path, report_name)
 
-
     print("Loading transfer summary")
     ctrl_removal(output_path, report_name)
+
     init_report(report_output_path)
 
-    print("Bootstrapping Database Signatures...\n")
-    Bootstrapped_signature = origin.load_bootstrapped_db(db_path, window_size=bs_window_size, kmer_size=bs_km_size, Boostrap_iter=bs_iter)
-    print("\nBootstrap finished. Starting backtrack analysis...\n")
-
+    print("Starting backtracking...")
+    all_transfer = {}
     for transfer_summary in load.serialize_files(db_path, json_path=json_path):
         st = time()
+        
+        list_transfer = origin.find_kmer(db_path, transfer_summary, probability=max_proba, number_kmer=number_search_kmer, threshold=hit_threshold)
+        write_report(report_output_path, list_transfer)
 
-        top_screen = {transfer_summary.strain : origin.screen_origins(transfer_summary, Bootstrapped_signature)}
-        best_hit_search = origin.sliding_window_search(top_screen, db_path, transfer_summary)
-
-        write_report(report_output_path, best_hit_search)
         time_.append(time()-st)
 
-    print("Average runtime per genome", round(np.average(time_)))
+    print("Average runtime per transfer summary", round(np.average(time_)))
     print("Total Runtime", round(sum(time_)))
     
     if eval_file_path is not None:
-        accuracy, n_true, num_rep, liste_TP = eval.compare_files(report_output_path, eval_file_path, window_size=bs_window_size)
-
-        eval_report = os.path.join(output_path, "eval_report.txt")
-
-        ctrl_removal(output_path, "eval_report.txt")
-        print(f"{accuracy}% ({n_true}/{num_rep}) of the HGT from the reference file have been found.")
-        write_report(eval_report, liste_TP)
+        TP_rate, valid_list = eval.compare_files(report_output_path, eval_file_path, window_size=window_size)
     
+        print(f"{round(TP_rate, 2)}% of the HGT from the reference file were found.")
+
+    eval_report_name = os.path.join(output_path, f"eval_{report_name}")
+    write_report(eval_report_name, valid_list)
+"""
     print("Starting graph computation")
+    out_graph = graph.dumy_dataset(report_output_path)
+
+
+    plot_file = os.path.join(output_path, "graph_plot.png")
+    graphml_file = os.path.join(output_path,"graph.graphml")
+    degree_dist_file = os.path.join(output_path, "degree_distribution.png")
+    graph.analyse_graph(out_graph, plot_file=plot_file, graphml_file=graphml_file, degree_dist_file=degree_dist_file)
+"""
