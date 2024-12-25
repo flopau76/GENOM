@@ -3,7 +3,7 @@ load_samples:
 - use same file name for ribosome_db and sequence_db (file extension) -> otherwise ribo parser in compute_signatures won't work ==> Fixed
 
 HGTransfer + compute_signatures:
-- ~better compatibility in file location between each other ?~ Fixed ==> output in same folder.
+- better compatibility in file location between each other ? Fixed ==> output in same folder.
 
 compute_signature:
 - why two args for ribo in find_potential_HGT ? -> see load_samples: pb in ribo parsing and file names ==> fixed
