@@ -6,6 +6,16 @@ from typing import Iterable, Callable
 import os
 
 
+def shorten(phrase: str) -> str:
+    """Split the phrase into words"""
+    words = phrase.split()
+
+    # Take the first 3 letters of each word and join them together
+    shortened = ''.join(word[:3] for word in words)
+
+    return shortened
+
+
 def make_graph(vertices: Iterable, is_edge: Callable) -> nx.Graph:
     """given a set a verticies and a decriptor function, construct a graph
     - vertices:Iterable, the set of vertices of the graph,
@@ -22,20 +32,20 @@ def make_graph(vertices: Iterable, is_edge: Callable) -> nx.Graph:
 
 
 def dumy_dataset(source: str) -> nx.Graph:
-    graph = nx.Graph()
+    graph = nx.DiGraph()
     source = pd.read_csv(source, delimiter='\t\t')
     graph.add_edges_from(
-        ((index.Sp_sending, index.Sp_receiving)
-            for index in graph.intertuples())
+        ((shorten(index.Sp_sending), shorten(index.Sp_receiving))
+            for index in source.itertuples())
     )
     return graph
 
 
 def analyse_graph(
     G: nx.Graph,
-    plot_file: str = "graph_plot.png",
+    plot_file: str = "graph_plot.svg",
     graphml_file: str = "graph.graphml",
-    degree_dist_file: str = "degree_distribution.png"
+    degree_dist_file: str = "degree_distribution.svg"
 ) -> None:
     """
     Analyze and visualize the graph `G`. This function performs these tasks:
@@ -64,10 +74,13 @@ def analyse_graph(
     fig, ax = plt.subplots(figsize=(8, 6))  # Create a figure and axis
     nx.draw(
         G,
+        pos=nx.spring_layout(G, k=.7),
         with_labels=True,
         node_color="skyblue",
-        font_weight="bold",
-        node_size=500,
+        font_size=7,
+        # font_weight="bold",
+        node_size=50,
+        edge_color="grey",
         ax=ax,
     )
     ax.set_title("Graph Visualization")
