@@ -34,6 +34,7 @@ def make_graph(vertices: Iterable, is_edge: Callable) -> nx.Graph:
 def dumy_dataset(source: str) -> nx.Graph:
     graph = nx.DiGraph()
     source = pd.read_csv(source, delimiter='\t\t')
+    assert source.shape[0] != 0, "The graph source file is empty"
     graph.add_edges_from(
         ((shorten(index.Sp_sending), shorten(index.Sp_receiving))
             for index in source.itertuples())
@@ -45,7 +46,7 @@ def analyse_graph(
     G: nx.Graph,
     plot_file: str = "graph_plot.svg",
     graphml_file: str = "graph.graphml",
-    degree_dist_file: str = "degree_distribution.svg"
+    degree_dist_file: str = "degree_distribution.svg",
 ) -> None:
     """
     Analyze and visualize the graph `G`. This function performs these tasks:
@@ -63,12 +64,6 @@ def analyse_graph(
     Returns:
     None
     """
-
-    # Ensure the result directory exists
-    os.makedirs("result", exist_ok=True)
-    plot_file = os.path.join("result", plot_file)
-    graphml_file = os.path.join("result", graphml_file)
-    degree_dist_file = os.path.join("result", degree_dist_file)
 
     # Plot the graph and save it to a file using the object-oriented API
     fig, ax = plt.subplots(figsize=(8, 6))  # Create a figure and axis
@@ -101,3 +96,5 @@ def analyse_graph(
     ax.set_ylabel("Frequency")
     fig.savefig(degree_dist_file)
     plt.close(fig)  # Close the figure to release memory
+
+

@@ -68,6 +68,12 @@ if __name__ == "__main__":
     db_path = os.path.join(dir_path, "input", "sequence_db", db_dir_name)
     output_path = os.path.join(dir_path, "output", "analysis")
     report_output_path = os.path.join(output_path, report_name)
+    
+    if os.path.exists(os.path.join(output_path, "graph")):
+        output_path_graph = os.path.join(output_path, "graph")
+    else:
+        output_path_graph = os.path.join(output_path, "graph")
+        os.makedirs(output_path_graph)
 
     print("Loading transfer summary")
     ctrl_removal(output_path, report_name)
@@ -96,14 +102,13 @@ if __name__ == "__main__":
         os.remove(eval_report_name)
         write_report(eval_report_name, valid_list)
 
-
-"""
     print("Starting graph computation")
     out_graph = graph.dumy_dataset(report_output_path)
 
-
-    plot_file = os.path.join(output_path, "graph_plot.png")
-    graphml_file = os.path.join(output_path,"graph.graphml")
-    degree_dist_file = os.path.join(output_path, "degree_distribution.png")
-    graph.analyse_graph(out_graph, plot_file=plot_file, graphml_file=graphml_file, degree_dist_file=degree_dist_file)
-"""
+    plot_file = os.path.join(output_path_graph, "graph_plot.png")
+    graphml_file = os.path.join(output_path_graph,"graph.graphml")
+    degree_dist_file = os.path.join(output_path_graph, "degree_distribution.png")
+    graph.analyse_graph(out_graph, 
+                        plot_file=plot_file, 
+                        graphml_file=graphml_file, 
+                        degree_dist_file=degree_dist_file)

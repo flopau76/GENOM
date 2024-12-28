@@ -57,7 +57,7 @@ def find_len_search_kmers(record : SeqIO.SeqRecord, probability : float = 0.1):
     and the length of the sequence.
     """
     length_genome = len(record.seq)
-    return round(2*(np.log10(probability)-np.log10(length_genome)/-np.log10(4)))
+    return round(2*(np.log10(probability)-np.log10(length_genome))/-np.log10(4))
 
 
 def find_kmer(path_db : str, 
@@ -106,7 +106,7 @@ def find_kmer(path_db : str,
 
 
 #################################################################################
-#                                   Old                                         #
+#                                   Old (keep)                                  #
 #################################################################################
 
 
