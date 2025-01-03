@@ -1,3 +1,15 @@
+======================== ONGOING =========================
+other:
+- what difference between reference.txt and yaml ? How to use them ?
+- update readme
+
+
+Display in compute signatures :
+- Fix the signal when a reference is given, it moves the entire graph and jeopardizes the detection of HGT + the visualization
+
+
+======================== Fixed =========================
+
 load_samples:
 - fix: ribo parser raises an error when using samples_list/Brinkman ==> Fixed
 - use same file name for ribosome_db and sequence_db (file extension) -> otherwise ribo parser in compute_signatures won't work ==> Fixed
@@ -10,7 +22,3 @@ compute_signature:
 
 analysis 
 - Implement properly graph generation and save.
-
-other:
-- what difference between reference.txt and yaml ? How to use them ?
-- update readme
