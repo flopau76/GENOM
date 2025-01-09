@@ -3,6 +3,8 @@ from taxoniq import Taxon
 
 from typing import Dict, List
 
+# NCBITaxa().update_taxonomy_database("taxdump.tar.gz")
+
 def load_taxname(path : str) -> List[str]:
     """
     Load the file containing species/strain name.

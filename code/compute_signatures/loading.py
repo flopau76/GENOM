@@ -57,7 +57,7 @@ def iter_directory(directory:str) -> List[Tuple[str, str]]:
     """ Iterates over all fasta files in a sequence directory.
     Return the name of the subdirectory and the full path to the file."""
     res = []
-    for name in listdir(directory):
+    for name in sorted(listdir(directory)):
         subpath = path.join(directory, name)
         if path.isdir(subpath):
             for filename in listdir(subpath):

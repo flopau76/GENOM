@@ -1,8 +1,17 @@
 **/__pycache__/
 .vscode/
+.vscode/
 
 **/taxdump.tar.gz
 
-input/sequence_db/*
-input/ribosome_db/*
+/code/compute_signatures/ribo_class.py
+/code/compute_signatures/unit_tests.py
+
+input/*
+!input/samples_list/
+input/Brinkman_supp_files/
 !input/sequence_db/toy*
+
+output/*
+
+profile.prof
