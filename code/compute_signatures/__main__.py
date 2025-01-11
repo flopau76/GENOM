@@ -5,7 +5,9 @@ import scipy.signal
 
 from collections import Counter
 import argparse
-import os, json, time
+import os
+import json
+import time
 from typing import Dict
 
 import compute_signatures.metrics as metrics
@@ -58,8 +60,8 @@ if __name__ == "__main__":
 
     base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
     input_folder = os.path.join(base_dir, "input", "sequence_db", input_name)
-    output_path_json = os.path.join(base_dir, "output", f"transfer_summary", f"{output_name}.json")
-    output_path_pdf = os.path.join(base_dir, "output", f"transfer_summary", f"{output_name}.pdf")
+    output_path_json = os.path.join(base_dir, "output", "transfer_summary", f"{output_name}.json")
+    output_path_pdf = os.path.join(base_dir, "output", "transfer_summary", f"{output_name}.pdf")
 
     ground_truth = display.get_ground_truth(input_folder)
     for sender in os.listdir(input_folder):

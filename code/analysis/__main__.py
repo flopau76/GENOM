@@ -1,4 +1,5 @@
-import os, argparse
+import os
+import argparse
 from typing import List
 from time import time
 import numpy as np
@@ -13,7 +14,7 @@ def init_report(path_report : str):
     Initialize report file with fields.
     """
     with open(path_report, 'a+') as file:
-        file.write(f"Sp_sending\t\tSending_position\t\tSp_receiving\t\tReceiving_position\n")
+        file.write("Sp_sending\t\tSending_position\t\tSp_receiving\t\tReceiving_position\n")
 
     return 0
 

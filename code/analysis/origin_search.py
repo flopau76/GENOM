@@ -88,7 +88,7 @@ def find_kmer(path_db : str,
 
             if prop > threshold:
                 for mapped in mapped_kmer:
-                    if mapped != None:
+                    if mapped is not  None:
                         pos = mapped.span()[0]
                         break
 
