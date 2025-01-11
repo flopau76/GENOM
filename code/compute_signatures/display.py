@@ -1,6 +1,7 @@
 from matplotlib import pyplot as plt
 
 from collections import defaultdict
+from matplotlib.patches import Rectangle
 
 from typing import List
 import numpy as np
@@ -40,12 +41,14 @@ def display_windows(window_value:List[float], hits=None, ground_truth=None,
     if hits is not None:
         ax.scatter(hits.keys(), hits.values(), color='red', marker='+')
     if ground_truth is not None:
-        y_pos = 1.2*max(window_value)
         ground_truth_pos, ground_truth_neg = ground_truth.get('pos', None), ground_truth.get('neg', None)
         if ground_truth_pos is not None:
-            ax.hlines([y_pos]*len(ground_truth_pos[0]), ground_truth_pos[0], ground_truth_pos[1], color='red', linewidth=40)
+            rect = Rectangle((ground_truth_pos[1][0], min(window_value)), width=(ground_truth_pos[0][0]-ground_truth_pos[1][0])*2, height=max(window_value)-min(window_value), edgecolor='red', facecolor="white", alpha = 1)
+            ax.add_patch(rect)
+
         if ground_truth_neg is not None:
-            ax.hlines([y_pos]*len(ground_truth_neg[0]), ground_truth_neg[0], ground_truth_neg[1], color='green', linewidth=40)
+            rect = Rectangle((ground_truth_neg[1][0], min(window_value)), width=(ground_truth_pos[0][0]-ground_truth_pos[1][0])*2, height=max(window_value)-min(window_value), edgecolor='red', facecolor="white", alpha = 1)
+            ax.add_patch(rect)
 
     ax.set_xlabel("Window start")
     if ylabel is not None:

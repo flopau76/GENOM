@@ -7,10 +7,14 @@
 /code/compute_signatures/ribo_class.py
 /code/compute_signatures/unit_tests.py
 
+/figures
+
 input/*
 !input/samples_list/
 input/Brinkman_supp_files/
 !input/sequence_db/toy*
+/input/samples_list/Brinkman_test.txt
+/input/samples_list/proca_test.txt
 
 output/*
 

@@ -56,7 +56,7 @@ if __name__ == "__main__":
     input_name = args.input_db
     output_name = os.path.basename(input_name) + '_' + metric.name
 
-    base_dir =  os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
     input_folder = os.path.join(base_dir, "input", "sequence_db", input_name)
     output_path_json = os.path.join(base_dir, "output", f"transfer_summary", f"{output_name}.json")
     output_path_pdf = os.path.join(base_dir, "output", f"transfer_summary", f"{output_name}.pdf")
@@ -66,14 +66,17 @@ if __name__ == "__main__":
         if sender not in ground_truth.keys():
             ground_truth[sender] = None
 
-    path_ribo_db = os.path.join(base_dir, "input", "ribosome_db", args.ribo)
     ribo_genome_file_table = None
 
-    if path_ribo_db is not None:
+    if args.ribo is not None:
+        path_ribo_db = os.path.join(base_dir, "input", "ribosome_db", args.ribo)
         liste_dir = os.listdir(input_folder)
         ribo_genome_file_table = dict(zip(liste_dir, os.listdir(path_ribo_db))) # TODO: fix this
 
         print(ribo_genome_file_table)
+    else:
+        path_ribo_db = None
+
 
     pdf = bpdf.PdfPages(output_path_pdf)
 
