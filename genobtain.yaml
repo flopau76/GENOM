@@ -1,4 +1,4 @@
-name: /home/tristan/micromamba/envs/genobtain
+name: genobtain
 channels:
   - anaconda
   - conda-forge
@@ -208,4 +208,4 @@ dependencies:
       - tqdm==4.67.1
       - urllib3==2.2.3
       - zstandard==0.23.0
-prefix: /home/tristan/micromamba/envs/genobtain
+prefix: genobtain
