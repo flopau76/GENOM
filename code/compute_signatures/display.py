@@ -43,11 +43,11 @@ def display_windows(window_value:List[float], hits=None, ground_truth=None,
     if ground_truth is not None:
         ground_truth_pos, ground_truth_neg = ground_truth.get('pos', None), ground_truth.get('neg', None)
         if ground_truth_pos is not None:
-            rect = Rectangle((ground_truth_pos[1][0], min(window_value)), width=(ground_truth_pos[0][0]-ground_truth_pos[1][0])*2, height=max(window_value)-min(window_value), edgecolor='red', facecolor="white", alpha = 1)
+            rect = Rectangle((ground_truth_pos[1][0], min(window_value)), width=(ground_truth_pos[0][0]-ground_truth_pos[1][0])*2, height=max(window_value)-min(window_value), edgecolor='red', facecolor="white", alpha = 1, label='Known HGT')
             ax.add_patch(rect)
 
         if ground_truth_neg is not None:
-            rect = Rectangle((ground_truth_neg[1][0], min(window_value)), width=(ground_truth_pos[0][0]-ground_truth_pos[1][0])*2, height=max(window_value)-min(window_value), edgecolor='red', facecolor="white", alpha = 1)
+            rect = Rectangle((ground_truth_neg[1][0], min(window_value)), width=(ground_truth_pos[0][0]-ground_truth_pos[1][0])*2, height=max(window_value)-min(window_value), edgecolor='red', facecolor="white", alpha = 1, label='Known HGT')
             ax.add_patch(rect)
 
     ax.set_xlabel("Window start")
@@ -55,6 +55,9 @@ def display_windows(window_value:List[float], hits=None, ground_truth=None,
         ax.set_ylabel(ylabel)
     if title is not None:
         ax.set_title(title)
+    if ground_truth is not None:
+        plt.legend()
+
     return fig
 
 def display_matrix(matrix, save_path, step=1, title='Matrix Heatmap', 
