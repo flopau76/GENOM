@@ -8,12 +8,10 @@ Candidatus Methanosphaerula palustris E1-9c
 Cenarchaeum symbiosum A
 Desulfurococcus kamchatkensis 1221n
 Haloarcula marismortui ATCC 43049
-Haloarcula marismortui ATCC 43049
 Halobacterium sp. NRC-1
 Halomicrobium mukohataei DSM 12286
 Haloquadratum walsbyi DSM 16790
 Halorhabdus utahensis DSM 12940
-Halorubrum lacusprofundi ATCC 49239
 Halorubrum lacusprofundi ATCC 49239
 Haloterrigena turkmenica DSM 5511
 Hyperthermus butylicus DSM 5456
@@ -66,7 +64,7 @@ Borrelia burgdorferi B31
 Campylobacter jejuni subsp. jejuni 81-176
 Candidatus Amoebophilus asiaticus 5a2
 Candidatus Cloacimonas acidaminovorans
-Candidatus Endomicrobium sp. Rs-D17
+Candidatus Endomicrobium sp. MdMp-027
 Carboxydothermus hydrogenoformans Z-2901
 Chlamydia trachomatis L2/434/Bu
 Chlorobium chlorochromatii CaD3
@@ -75,11 +73,8 @@ Clostridium acetobutylicum ATCC 824
 Corynebacterium glutamicum ATCC 13032
 Coxiella burnetii RSA 493
 Cupriavidus taiwanensis
-Cupriavidus taiwanensis
-Cyanothece sp. ATCC 51142
 Cyanothece sp. ATCC 51142
 Dehalococcoides ethenogenes 195
-Deinococcus radiodurans R1
 Deinococcus radiodurans R1
 Dictyoglomus thermophilum H-6-12
 Elusimicrobium minutum Pei191
@@ -89,7 +84,6 @@ Fusobacterium nucleatum subsp. nucleatum ATCC 25586
 Gemmata obscuriglobus UQM 2246
 Gemmatimonas aurantiaca T-27
 Gloeobacter violaceus PCC 7421
-Leptospira interrogans serovar Lai str. 56601
 Leptospira interrogans serovar Lai str. 56601
 Magnetococcus sp. MC-1
 Methylacidiphilum infernorum V4
@@ -109,7 +103,6 @@ Solibacter usitatus Ellin6076
 Synechococcus elongatus PCC 6301
 Thermanaerovibrio acidaminovorans DSM 6589
 Thermoanaerobacter tengcongensis MB4
-Thermobaculum terrenum ATCC BAA-798
 Thermobaculum terrenum ATCC BAA-798
 Thermodesulfovibrio yellowstonii DSM 11347
 Thermomicrobium roseum DSM 5159
