@@ -50,6 +50,7 @@ def compare_files(path_analysis_report : str, path_ref_report : str, window_size
             successful_backtrack+=1
     
     TP_rate = (successful_backtrack/len(report))*100
+    assert 0 <= TP_rate <= 100
     return TP_rate, valid
 
 """    
