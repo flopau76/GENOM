@@ -61,6 +61,8 @@ if __name__ == "__main__":
         print("  Cleaning output directory...")
         shutil.rmtree(output_path_db)
         os.makedirs(output_path_db)
+    else:
+        os.makedirs(output_path_db)
     
     taken = []
     init_report(path_report)
@@ -68,7 +70,11 @@ if __name__ == "__main__":
         progressbar(iteration=iteration+1, total=iterations)
         test = np.random.random(1)
         if test < transfer_proba:
-            selected, new_taken = loader(input_path, iteration, taken)
+            try :
+                selected, new_taken = loader(input_path, iteration, taken)
+            except AssertionError:
+                print("Exhausted strain to generate HGTs. Ending generation.")
+                break 
             transfered = transferer(selected, iteration, iterations, events)
 
             write_report(path_report, transfered)
