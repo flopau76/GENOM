@@ -45,7 +45,7 @@ if __name__ == "__main__":
     parser.add_argument('-r', '--reference_file', help="Path to the control file. Evaluate the results of the backtracking respect to it.", type=str, default=None)
     parser.add_argument('-w','--window_size', help="Choose the window size. Default length is 5000 (same as for signature computation).", type=int, default=10000)
     parser.add_argument('-n', '--number_kmer', help="Choose number of search kmers for backtracking. Default 3.", type=int, default=3)
-    parser.add_argument('-t', '--threshold', help="Define the proportion of search kmer found in a genome to consider it as a hit. Default 60%", type = int, default=0.6)
+    parser.add_argument('-t', '--threshold', help="Define the proportion of search kmer found in a genome to consider it as a hit. Default 60%%", type = int, default=0.6)
     parser.add_argument('-p', '--probability', help='Define the maximum probability of finding a kmer of length n in a genome of size L at random. Default 0.1.', type=float, default=0.1)
     
     args = parser.parse_args()

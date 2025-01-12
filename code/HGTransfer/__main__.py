@@ -25,7 +25,7 @@ def write_report(path_report : str, transfered : HGT):
     sender = transfered.sender_object
     receiver = transfered.receiver_object
     with open(path_report, 'a+') as report:
-        report.write(f"{transfered.iteration} {sender.strain}\t\t{sender.transfer_start}\t\t{sender.transfer_end}\t\t{transfered.iteration} {receiver.strain}\t\t{receiver.reception_position}\n")
+        report.write(f"{transfered.iteration} {sender.strain}\t\t{sender.transfer_start}\t\t{sender.transfer_end}\t\t{transfered.iteration} {receiver.strain}\t\t{receiver.reception_position+(sender.transfer_end-sender.transfer_start)}\n")
 
     return 0
 
@@ -39,6 +39,7 @@ if __name__ == "__main__":
     parser.add_argument('-r', '--report', help='Name of the report file. Is found in input/sequence_db/<output_db>', type=str,default='HGT_report.txt')
     parser.add_argument('-i', '--iterations', help="Number of iterations of transfer trials", type=int, default=1000)
     parser.add_argument('-p', '--probability', help="Set horizontal transfer probability", type=float, default=0.01)
+    parser.add_argument('-e', '--events', help="Determines whether mutational events are allowed to take place or not. Will significantly slow down the database generation", type=bool, default=False)
 
     args = parser.parse_args()
     base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
@@ -48,6 +49,7 @@ if __name__ == "__main__":
     report_file = args.report
     iterations = args.iterations
     transfer_proba = args.probability
+    events = args.events
 
     base_db = os.path.join(base_dir, "input", "sequence_db")
     input_path = os.path.join(base_db, in_dir) #send to input generator
@@ -67,7 +69,7 @@ if __name__ == "__main__":
         test = np.random.random(1)
         if test < transfer_proba:
             selected, new_taken = loader(input_path, iteration, taken)
-            transfered = transferer(selected, iteration, iterations)
+            transfered = transferer(selected, iteration, iterations, events)
 
             write_report(path_report, transfered)
             write_output_db(output_path_db, transfered, iteration)

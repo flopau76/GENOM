@@ -110,5 +110,5 @@ def prepare_ribo_db(ribo_db_dir : str, accession_id_flag : bool = False):
     print("\n   Ribosome database completed\n")
     return n
             
-prepare_ribo_db(r"C:\Subpbiotech_cours\BT5\BIM_BMC\GENOM\project\project_git\GENOM\input\ribosome_db\Brinkman")
+#prepare_ribo_db(r"C:\Subpbiotech_cours\BT5\BIM_BMC\GENOM\project\project_git\GENOM\input\ribosome_db\Brinkman")
 

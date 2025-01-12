@@ -5,7 +5,7 @@ from typing import Union
 from HGTransfer.load_input import HGT, Sender, Receiver
 import HGTransfer.events as events
 
-def transferer(selected : HGT, current_iter : int, total_iter : int) -> HGT:
+def transferer(selected : HGT, current_iter : int, total_iter : int, events : bool = False) -> HGT:
     """
     Transfers a randomly selected sequence of consequent size from the sender 
     to the receiver organism.
@@ -21,8 +21,9 @@ def transferer(selected : HGT, current_iter : int, total_iter : int) -> HGT:
         receiver_object=receiver,
         iteration=selected.iteration
     )
-    
-    #transfered = add_noise(transfered, current_iter, total_iter)
+
+    if events is not False:
+        transfered = add_noise(transfered, current_iter, total_iter)
 
     return transfered
 
@@ -31,7 +32,7 @@ def add_noise(transfered : HGT, current_iter : int, total_iter : int) -> HGT:
     Adds some noise to the transfered sequences for realism (and challenge).
     The statistical chances of every event occuring were taken from the RecombSimulator
     program developed by Raphaël CHAMPEIMONT during his PhD and which we studied in PHYG.
-    We consider an average of 2 events per iteration, with a standard deviation of k/5 with
+    We consider an average of 1 events every 10 iteration, with a standard deviation of k/50 with
     k the number of event left to occur.
 
     Citation :
@@ -39,16 +40,14 @@ def add_noise(transfered : HGT, current_iter : int, total_iter : int) -> HGT:
     Université Pierre et Marie Curie - Paris VI, 2014. English. ⟨NNT : 2014PA066636⟩. ⟨tel-01118660v2⟩
     """
     k = total_iter-current_iter
-    event_number = round(np.random.normal(k*2, k/5))
+    event_number = round(np.random.normal(k/10, k/50))
 
-    sender = transfered.sender_object
-    receiver = transfered.receiver_object
     while event_number != 0:
-        
         prop_SNP_sender, prop_SNP_receiver = np.random.random(1), np.random.random(1) 
-        sender, receiver = events.SNPs(sender, prop_SNP_sender), events.SNPs(receiver, prop_SNP_receiver)
+        transfered.sender_object, transfered.receiver_object = events.SNPs(transfered.sender_object, prop_SNP_sender), events.SNPs(transfered.receiver_object, prop_SNP_receiver)
 
         event_number -=1
+
     return transfered
 
 def noise_dispach(victim : Union[Sender, Receiver], roll : np.ndarray):

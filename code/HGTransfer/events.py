@@ -48,18 +48,21 @@ def insertion(seq : str, num : int) -> str:
     """
     Insert num elements in the sequence seq
     """
+    seq = str(seq)
     insert_list = np.random.choice(["A", 'T', 'C', 'G'], size = num, replace=True)
     insert_positions = np.random.randint(low=0, high=len(seq), size=num)
 
     for index, position in enumerate(insert_positions):
         pattern = re.escape(seq[position])
         seq = re.sub(pattern, f"{seq[position]}{insert_list[index]}", seq, count=1)
+
     return seq
 
 def deletion(seq : str, num : int) -> str:
     """
     Remove num elements from the sequence seq
     """
+    seq = str(seq)
     del_positions = np.random.randint(low=0, high=len(seq), size=num)
 
     for position in del_positions:
@@ -72,6 +75,7 @@ def substitution(seq : str, num : int) -> str:
     """
     Substitute num elements from the sequence seq
     """
+    seq = str(seq)
     insert_list = np.random.choice(["A", 'T', 'C', 'G'], size = num, replace=True)
     insert_positions = np.random.randint(low=0, high=len(seq), size=num)
 
