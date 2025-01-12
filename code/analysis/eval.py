@@ -1,4 +1,3 @@
-import os
 from typing import Tuple, List
 
 from analysis.origin_search import Conclusion
