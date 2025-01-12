@@ -3,6 +3,8 @@ channels:
   - anaconda
   - conda-forge
   - nodefaults
+  - https://repo.anaconda.com/pkgs/main
+  - https://repo.anaconda.com/pkgs/r
 dependencies:
   - _libgcc_mutex=0.1=conda_forge
   - _openmp_mutex=4.5=2_gnu
@@ -128,7 +130,7 @@ dependencies:
   - patsy=1.0.1=pyhd8ed1ab_1
   - pcre2=10.44=hba22ea6_2
   - pillow=11.0.0=py312h7b63e92_0
-  - pip==24.2=py312h06a4308_0
+  - pip=24.3.1=pyh145f28c_1
   - pixman=0.44.2=h29eaf8c_0
   - ply=3.11=pyhd8ed1ab_3
   - pthread-stubs=0.4=hb9d3cd8_1002
@@ -146,6 +148,7 @@ dependencies:
   - qt-main=5.15.15=h796de64_1
   - qt6-main=6.8.1=h9d28a51_0
   - readline=8.2=h8228510_1
+  - regex=2024.11.6=py312h66e93f0_0
   - scipy=1.14.1=py312h62794b6_2
   - seaborn=0.13.2=hd8ed1ab_3
   - seaborn-base=0.13.2=pyhd8ed1ab_3

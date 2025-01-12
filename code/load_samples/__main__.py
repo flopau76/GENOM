@@ -43,7 +43,9 @@ def parse_file(path : str) -> List[str]:
 
 def taxname2taxid(taxlist : List[str]) -> Dict[str, List[str]]:
     """ Create a dictionnary from a list of species names """
-    return NCBITaxa().get_name_translator(taxlist)
+    res = NCBITaxa().get_name_translator(taxlist)
+    assert len(taxlist) == len(res), f"lens are {len(taxlist),len(res)}"
+    return res
 
 def taxid2seqid(taxid : str) -> str:
     """ Return the genome accession ID for a given taxid. """
@@ -58,6 +60,7 @@ def generate_report(db_path : str, failed : list) -> None:
 
 def main(taxon_file, db, ribo_dir, taxnames=True):
     samples = parse_file(taxon_file)
+    assert len(samples) > 0, "got an empty sample list"
     if taxnames:
         taxon_dico = taxname2taxid(samples)   # {taxon name: taxon id}
     else:
@@ -122,7 +125,7 @@ if __name__ == '__main__':
     print(ribo_dir)
     
     if os.path.exists(out_dir):
-        print(f"Output directory already exists. If you continue, the content will be erased.")
+        print("Output directory already exists. If you continue, the content will be erased.")
         user_input = input("Do you want to continue? (Y/N): ")
         if user_input.strip().upper() != 'Y':
             print("Operation cancelled by user.")

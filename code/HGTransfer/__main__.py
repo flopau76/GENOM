@@ -16,8 +16,8 @@ def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', prin
 
 def init_report(path_report : str):
     """ Initialize report file with fields. """
-    with open(path_report, 'a+') as file:
-        file.write(f"Sp_sending\t\tSending_start\t\tSending_end\t\tSp_receiving\t\tReceiving_position\n")
+    with open(path_report, 'a') as file:
+        file.write("Sp_sending\t\tSending_start\t\tSending_end\t\tSp_receiving\t\tReceiving_position\n")
     return 0
 
 def write_report(path_report : str, transfered : HGT):
