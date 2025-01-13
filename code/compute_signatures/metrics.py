@@ -119,7 +119,7 @@ class Jaccard(Metric):
 
     def slide_window(self, kmers_list:List[int], window_size:int) -> np.array:
         ref_freq = self.ref_freq
-        assert ref_freq is not None, "Reference count was not provided"
+        assert ref_freq is not None, "Reference frequence was not provided"
 
         kmers_count = Counter(kmers_list[:window_size])
         current_inter = sum([min(count/window_size, ref_freq[kmer]) for kmer, count in kmers_count.items()])
@@ -137,12 +137,12 @@ class Jaccard(Metric):
         return np.array(all_res)
     
 class Convolution(Metric):
-    def __init__(self, ref_count:Dict[int, int]=None) -> None:
-        self.ref_count = ref_count
+    def __init__(self, ref_freq:Dict[int, int]=None) -> None:
+        self.ref_freq = ref_freq
         self.name = "average_frequency"
 
     def slide_window(self, kmers_list:list[int], window_size : int) -> np.array:
-        assert self.ref_count is not None, "Reference count was not provided"
-        kmers_list = [self.ref_count[i] for i in kmers_list]
+        assert self.ref_freq is not None, "Reference frequence was not provided"
+        kmers_list = [self.ref_freq[i] for i in kmers_list]
         all_avg = np.convolve(kmers_list, np.ones(window_size), 'valid')/window_size
         return -np.log10(all_avg)
