@@ -113,26 +113,26 @@ class KLdivergence(Metric):
         return np.array(all_res)
 
 class Jaccard(Metric):
-    def __init__(self, ref_count:Dict[int, int]=None) -> None:
-        self.ref_count = ref_count
+    def __init__(self, ref_freq:Dict[int, int]=None) -> None:
+        self.ref_freq = ref_freq
         self.name = "Jaccard_index"
 
     def slide_window(self, kmers_list:List[int], window_size:int) -> np.array:
-        ref_count = self.ref_count
-        assert ref_count is not None, "Reference count was not provided"
+        ref_freq = self.ref_freq
+        assert ref_freq is not None, "Reference count was not provided"
 
         kmers_count = Counter(kmers_list[:window_size])
-        current_inter = sum([min(count, ref_count[kmer]) for kmer, count in kmers_count.items()])
-        current_union = sum([max(count, ref_count[kmer]) for kmer, count in kmers_count.items()])
+        current_inter = sum([min(count/window_size, ref_freq[kmer]) for kmer, count in kmers_count.items()])
+        current_union = sum([max(count/window_size, ref_freq[kmer]) for kmer, count in kmers_count.items()])
         all_res = [current_inter/current_union]
         for i, new_kmer in  enumerate(kmers_list[window_size:]):
             old_kmer = kmers_list[i]
-            current_inter -= min(kmers_count[old_kmer], ref_count[old_kmer]) + min(kmers_count[new_kmer], ref_count[new_kmer])
-            current_union -= max(kmers_count[old_kmer], ref_count[old_kmer]) + max(kmers_count[new_kmer], ref_count[new_kmer])
+            current_inter -= min(kmers_count[old_kmer], ref_freq[old_kmer]) + min(kmers_count[new_kmer], ref_freq[new_kmer])
+            current_union -= max(kmers_count[old_kmer], ref_freq[old_kmer]) + max(kmers_count[new_kmer], ref_freq[new_kmer])
             kmers_count[new_kmer] += 1
             kmers_count[old_kmer] -= 1
-            current_inter += min(kmers_count[old_kmer], ref_count[old_kmer]) + min(kmers_count[new_kmer], ref_count[new_kmer])
-            current_union += max(kmers_count[old_kmer], ref_count[old_kmer]) + max(kmers_count[new_kmer], ref_count[new_kmer])
+            current_inter += min(kmers_count[old_kmer], ref_freq[old_kmer]) + min(kmers_count[new_kmer], ref_freq[new_kmer])
+            current_union += max(kmers_count[old_kmer], ref_freq[old_kmer]) + max(kmers_count[new_kmer], ref_freq[new_kmer])
             all_res.append(current_inter/current_union)
         return np.array(all_res)
     

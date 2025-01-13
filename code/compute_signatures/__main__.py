@@ -40,7 +40,7 @@ def find_potential_HGT(result:np.ndarray, min_height=None, min_prominence=None, 
 
 
 if __name__ == "__main__":
-    metric_dict = {0:metrics.distance(), 1:metrics.chi_squared(), 2:metrics.KLdivergence(), 3:metrics.Convolution()}
+    metric_dict = {0:metrics.distance(), 1:metrics.chi_squared(), 2:metrics.KLdivergence(), 3:metrics.Convolution(), 4:metrics.Jaccard}
 
     parser = argparse.ArgumentParser(description="Compute the signature of a genome and find potential HGT regions")
     parser.add_argument("input_db", help="The name of the input database (must be in `input/sequence_db/`)")
