@@ -1,6 +1,5 @@
 **/__pycache__/
 .vscode/
-.vscode/
 
 **/taxdump.tar.gz
 
@@ -11,11 +10,9 @@
 
 input/*
 !input/samples_list/
-input/Brinkman_supp_files/
-!input/sequence_db/toy*
-/input/samples_list/Brinkman_test.txt
-/input/samples_list/proca_test.txt
 
 output/*
+
+references/*
 
 profile.prof

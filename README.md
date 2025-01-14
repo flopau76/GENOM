@@ -15,32 +15,50 @@ cd GENOM
 
 Setup the conda environment:
 
-```
-conda env create -n genobtain -f genobtain.yaml
+```bash
+conda env create -f genobtain.yaml
 conda activate genobtain
+```
+
+Add it to your python path:
+
+```bash
+cd code
+export PYTHONPATH=$(pwd):$PYTHONPATH
 ```
 
 ### 2. Download the required data
 
-The module `load_samples` allows you to download sequences from a list of taxon names with the following command:
+The module `load_samples` allows you to download sequences from a list of taxon names or a list of NCBI sequence accesion IDs. For this, run the following command:
 
 ```bash
-python -m load_samples <samples_file>
+python3 -m load_samples test_samples.txt
 ```
-`<samples_file>` can either be an absolute path, or the name of a file located in `input/samples_list`.
-The sequences are donwloaded into `input/sequence_db/samples_file/`. Each taxa has a separate sub-directory with its fasta file. A report is also created describing the genomes who failed to download.
-The module also downloads the ribosomal DNA of the taxons into `input/ribosomes_db/samples_file/`
+The argument can either be an absolute path, or the name of a file located in `input/samples_list`. The command downloads the corresponding sequences into `input/sequence_db`. It further creates a report describing the genomes who failed to download. For downstream analysis, the module also downloads the ribosomal DNA of the taxons into `input/ribosomes_db/samples_file/`
+
+A few files are allready provided as an example.
 
 ### 3. Generating data with simulated horizontal transfers
 
-For testing purposes, it can be usefull to generate data with known horizontal gen transfers (HGT). This can be done by:
+For testing purposes, it can be usefull to generate databases with known horizontal gene transfers (HGT). This can be done by:
 
 ```bash
-python -m generate_HGT <database>
+python3 -m HGTransfer test_samples
 ```
 
-TODO: complete this. Add info about ground truth.
+By default, this command creates a new folder  `input/sequence_db/generator_db`, which contains the modified sequences and a file `HGT_report.txt` indicating which transfers have been made.
 
-### 4. Computing kmer-signatures and comparing them
+Further arguments allow to specify the probability of horizontal transfers and to enable or not other mutational events.
 
-TODO
+### 4. Detect potential HGTs with sliding windows
+
+The module `compute_signatures` aims to detect HGT. For this it performs a sliding window over the genomes and compares the signature of the window to the genome wide signature. Windows with an outsanding values are considered as potential HGT
+
+```bash
+python3 -m compute_signatures generator_db -k 6 -w 5000 -s 500 -m 1
+```
+
+The first, mandatory argument corresponds to the relative path of the sequence folder, starting from `input/sequence_db`.  
+`-k`, `-w` and `-s` are optional parameters of the sliding window, respectively the size of the kmers, the size of a window and the step between two windows.  
+`-m` indicates wich metrics to use to compare the windows to the genome. See help for which are currently available.  
+
