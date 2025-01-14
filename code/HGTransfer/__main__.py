@@ -34,7 +34,7 @@ if __name__ == "__main__":
     print("Starting HGTdb generation...")
     
     parser = argparse.ArgumentParser(description="Generate Horizontal Transfer from a provided database")
-    parser.add_argument('-db', '--input_db', help="Input database with list of taxa", type=str, default ="db")
+    parser.add_argument(help="Input database with list of taxa", type=str)
     parser.add_argument('-o', '--output_db', help="Name of the directory in `input/sequence_db` where generated data is stored in", type=str, default="generator_db")
     parser.add_argument('-r', '--report', help='Name of the report file. Is found in input/sequence_db/<output_db>', type=str,default='HGT_report.txt')
     parser.add_argument('-i', '--iterations', help="Number of iterations of transfer trials", type=int, default=1000)
