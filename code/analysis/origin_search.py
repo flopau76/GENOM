@@ -2,17 +2,115 @@ from Bio.Blast import NCBIWWW
 from Bio import SeqIO
 from analysis.loading import StrainHorizontalTransfer, HorizontalTransfer
 
-from compute_signatures.kmers import stream_kmers
-from compute_signatures.signatures import KLdivergence
+from compute_signatures.kmers import stream_kmers, stream_kmers_file
+import compute_signatures.metrics as metrics
 from compute_signatures.display import display_windows
+from compute_signatures.loading import open_genome
 
 from scipy.special import kl_div
 from typing import List, Dict, Tuple
 from collections import Counter
+from io import TextIOWrapper
 import numpy as np
-import os
+import os, time, regex
+from dataclasses import dataclass
 
-def bootstrap_genome(seq : str, num_windows : int = 100, window_size : int = 2000, k_mer_length : int = 8):
+@dataclass
+class Conclusion:
+    sender_found: str
+    position_sender: str
+    receiver : str
+    position_receiver: str
+
+def progressbar(iteration, total, prefix = '', suffix = '', filler = '█', printEnd = "\r") -> None:
+    """
+    Show a progress bar indicating downloading progress
+    """
+    percent = f'{round(100 * (iteration / float(total)), 1)}'
+
+    add = int(100 * iteration // total)
+    bar = filler * add + '-' * (100 - add)
+    print(f'\r{prefix} |{bar}| {percent}% {suffix}', end = printEnd)
+
+    if iteration == total: 
+        print()
+
+
+def select_kmers(transfer : HorizontalTransfer, len_search_kmer : int, number : int = 3):
+    """
+    Select the desired number of kmers of adequated length in the 
+    transfered sequence.
+    """
+    #assert len_search_kmer < len(transfer.seq), "Length of the search kmer is bigger than the sequence transfered"
+
+    indexes = np.random.randint(low=0, high=len(transfer.seq)-len_search_kmer, size=number)
+    
+    kmer_list = [str(transfer.seq[index:index+len_search_kmer]) for index in indexes]
+    return kmer_list
+
+
+def find_len_search_kmers(record : SeqIO.SeqRecord, probability : float = 0.1):
+    """
+    Returns the length of the ideal length of the search kmer.
+    Ideal length is determined based on the probability for this kmer to 
+    randomly appear in the sequence given equiprobability of each nucleotide
+    and the length of the sequence.
+    """
+    length_genome = len(record.seq)
+    return round(2*(np.log10(probability)-np.log10(length_genome))/-np.log10(4))
+
+
+def find_kmer(path_db : str, 
+              transfer_summary : StrainHorizontalTransfer, 
+              probability : float = 0.1, 
+              number_kmer : int = 3, 
+              threshold : float = 0.6):
+    """
+    Find the n kmers throughout the sequence in the database, for 
+    each transfer in the summary.
+    """
+    hits = []
+    for transfer in transfer_summary.transfer_summary:
+        for strain_folder in os.listdir(path_db):
+            if strain_folder == transfer_summary.strain or strain_folder.endswith(".txt"):
+                continue
+            
+            strain_folder_path = os.path.join(path_db, strain_folder)
+            file = os.listdir(strain_folder_path)[0]
+            file_path = os.path.join(path_db, strain_folder, file)
+
+            for record in SeqIO.parse(file_path, "fasta"):
+                len_search_kmer = find_len_search_kmers(record, probability=probability)
+
+            kmer_selection = select_kmers(transfer, len_search_kmer, number=number_kmer)
+            mapped_kmer = [regex.search(rf"({kmer})", str(record.seq), concurrent=True) for kmer in kmer_selection]
+            prop = (number_kmer-mapped_kmer.count(None))/number_kmer
+
+            if prop > threshold:
+                for mapped in mapped_kmer:
+                    if mapped is not  None:
+                        pos = mapped.span()[0]
+                        break
+
+                hits.append(Conclusion(
+                    sender_found=strain_folder,
+                    position_sender=pos, #!! non-exact position
+                    receiver=transfer_summary.strain,
+                    position_receiver=transfer.start_position
+                ))
+            else:
+                continue
+    
+    return hits        
+                  
+
+
+#################################################################################
+#                                   Old (keep)                                  #
+#################################################################################
+
+
+def bootstrap_genome(seq : str, num_windows : int = 100, window_size : int = 2000, k_mer_length : int = 8) -> Dict[int, float]:
     """
     Randomly select n overlapping-able windows of length w and computes
     an average signature of k-mer frequency of length k.
@@ -28,84 +126,104 @@ def bootstrap_genome(seq : str, num_windows : int = 100, window_size : int = 200
     BS_kmer_freq = {kmer: count/(len(kmers_list)) for kmer, count in Counter(kmers_list).items()}
     return BS_kmer_freq
 
-def screen_origins(path_db : str, 
-                   list_transfer : StrainHorizontalTransfer, 
-                   window_size : int = 2000, 
+def load_bootstrapped_db(path_db : str, window_size : int = 2000, kmer_size : int = 8, Boostrap_iter : int = 100) -> Dict[str, Dict[int, float]]:
+    """
+    Load the boostrapped version of all the genomes in a given directory.
+    Return their signature in a dictionnary
+    """
+    all_BS_db = {}
+    for index, strain_dir in enumerate(os.listdir(path_db)):
+        progressbar(index+1,len(os.listdir(path_db)))
+        if strain_dir.endswith('.txt'):
+            continue
+        strain_dir_path = os.path.join(path_db, strain_dir)
+        strain_file = os.listdir(strain_dir_path)[0]
+        strain_path = os.path.join(strain_dir_path, strain_file)
+
+        for strain_content in SeqIO.parse(strain_path, "fasta"):
+            BSed_signature = bootstrap_genome(strain_content.seq, 
+                                              num_windows=Boostrap_iter, 
+                                              window_size=window_size, 
+                                              k_mer_length=kmer_size)
+
+        all_BS_db[strain_dir] = BSed_signature
+    return all_BS_db
+
+def screen_origins(list_transfer : StrainHorizontalTransfer, 
+                   BSed_signature : Dict[str, Dict[int, float]],
                    kmer_size : int = 8) -> str:
     """
     Screens origin of a hit by computing the average signature over the whole genome
     for each strain in the database. Keeps closest one for window-analysis.
     """
     divergence_dico = {tr.start_position : (np.inf, 'NaN') for tr in list_transfer.transfer_summary}
-    for strain_dir in os.listdir(path_db):
-        
-        if strain_dir == list_transfer.strain or strain_dir.endswith('.txt') or strain_dir == 'ribo_db':
+
+    for strain_sender, dico_BS in BSed_signature.items():
+        if strain_sender == list_transfer.strain:
             continue
-
-        strain_dir_path = os.path.join(path_db, strain_dir)
-        strain_file = os.listdir(strain_dir_path)[0]
-        strain_path = os.path.join(strain_dir_path, strain_file)
-
-        for strain_content in SeqIO.parse(strain_path, "fasta"):
-            BSed_signature = bootstrap_genome(strain_content.seq, window_size=window_size, k_mer_length=kmer_size)
-
         for transfer in list_transfer.transfer_summary:
             kmers_list = [kmer for kmer in stream_kmers([transfer.seq], kmer_size)]
             kmers_count = Counter(kmers_list)
-            kmers_freq = {kmer: kmers_count[kmer]/len(kmers_list) for kmer in BSed_signature.keys()}
+            kmers_freq = {kmer: kmers_count[kmer]/len(kmers_list) for kmer in dico_BS.keys()}
 
-            array_ref_Bootstrapped = np.array(list(BSed_signature.values()))
+            array_ref_Bootstrapped = np.array(list(dico_BS.values()))
             array_hit_sequence = np.array(list(kmers_freq.values()))
             
-            kl = sum(kl_div(array_hit_sequence, array_ref_Bootstrapped))
-            if kl < divergence_dico[transfer.start_position][0]:
-                divergence_dico[transfer.start_position] = (kl, strain_dir)
+            l2dist = np.linalg.norm(array_hit_sequence-array_ref_Bootstrapped) #!! utilisation de la kl-div de scipy, à vérifier
+            if l2dist < divergence_dico[transfer.start_position][0]:
+                divergence_dico[transfer.start_position] = (l2dist, strain_sender)
         
     return divergence_dico
 
-def load_target_sequence(dir_name : str, db_path : str, kmer_size : int = 8) -> List[str]:
+def fixed_window_distance(fixed_window : List[int], file_pointer : TextIOWrapper, kmer_size : int = 8) -> np.ndarray:
     """
-    Load as a list of kmer of size k the possible origin of the transfer previously found.
-    Return it in as the reference to be the used for the sliding window comparison.
-    """
-    target_dir_path = os.path.join(db_path, dir_name)
-    target_file_path = os.path.join(target_dir_path, os.listdir(target_dir_path)[0])
-
-    for content in SeqIO.parse(target_file_path, "fasta"):
-        seq = content.seq
-    return [kmer for kmer in stream_kmers([seq], kmer_size)]
-
-def KL_fixed_window_distance(fixed_window : List[int], Target_kmers_list : List[int]) -> np.ndarray:
-    """
-    Computes Kullback-Leibler divergence over the target genome of the possible transfer sequence with
+    Computes Euclidian distance over the target genome of the possible transfer sequence with
     sequences of identical size. Idea is to find if there is a place in the genome with a similar profile.
-    """
-    fixed_window_count = Counter(fixed_window)
-    Target_count = Counter(Target_kmers_list)
-    Target_profile = {kmer : (1+count)/(len(Target_kmers_list)+len(Target_count)) for kmer, count in Target_count.items()}
-    Query_fixed_profile = {kmer: (1+fixed_window_count[kmer])/(len(fixed_window)+len(Target_count)) for kmer in Target_profile.keys()}
 
-    return KLdivergence(Target_kmers_list, Query_fixed_profile, window_size=len(fixed_window))
+    Query is the receiver's window .
+    Target is the sender's genome.
+    """
+    # iterate once over the file to compute the total kmer frequency
+    Target_list = list(stream_kmers_file(file_pointer, k=kmer_size))
+    Target_count = set(Target_list)
+
+    fixed_window_count = Counter(fixed_window)
+    Query_fixed_profile = {kmer: fixed_window_count[kmer]/len(fixed_window) for kmer in Target_count}
+
+    distances = metrics.distance(Query_fixed_profile).slide_window(kmers_list=Target_list, window_size=len(fixed_window))
+    return distances
 
 
 def sliding_window_search(top_screen : Dict[str, Dict[int,Tuple[float, str]]], 
                           db_path : str, 
                           transfer_summary : StrainHorizontalTransfer,
-                          kmer_size : int = 8):
+                          kmer_size : int = 8) -> List[Conclusion]:
     """
     Similarity measure between the transfered sequence found and a sliding window
     along the most likely strain to originate from after boostrapping.
     """
     target = top_screen[transfer_summary.strain]
-    for transfer in transfer_summary.transfer_summary:
+    all_conclusion = []
+    for index, transfer in enumerate(transfer_summary.transfer_summary):
         Query_sequence = [kmer for kmer in stream_kmers([transfer.seq], kmer_size)]
-        Target_sequence = load_target_sequence(target[transfer.start_position][1], db_path, kmer_size)
+        Target_file = os.listdir(os.path.join(db_path, target[transfer.start_position][1]))[0]
+        Target_pointer = os.path.join(db_path, target[transfer.start_position][1], Target_file)
+        
+        file_pointer = open_genome(Target_pointer)
+        all_div = fixed_window_distance(Query_sequence, file_pointer)
 
-        all_kl_div = KL_fixed_window_distance(Query_sequence, Target_sequence)
-        display_windows(all_kl_div, f"KL divergence between a sequence from {transfer_summary.strain} at position {transfer.start_position}\nand the full genome of {target[transfer.start_position][1]} whom may be the origin of a horizontal transfer")
-        return
+        ccl = Conclusion(
+            sender_found=target[transfer.start_position][1],
+            position_sender=all_div.argmin(),
+            receiver= transfer_summary.strain,
+            position_receiver= list(target.keys())[index]
+        )
 
+        all_conclusion.append(ccl)
 
+    return all_conclusion
+    
+###################################################################################
 
 def blast_seq(transfer_elt : HorizontalTransfer) -> str:
     """

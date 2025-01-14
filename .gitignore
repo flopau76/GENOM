@@ -3,6 +3,15 @@
 
 **/taxdump.tar.gz
 
-input/sequence_db/*
-input/ribosome_db/*
-!input/sequence_db/toy*
+/code/compute_signatures/ribo_class.py
+/code/compute_signatures/unit_tests.py
+
+figures
+
+input
+!input/samples_list/
+
+output
+references
+
+profile.prof
