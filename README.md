@@ -1,5 +1,5 @@
 # GENOM
-using kmers to investigate horizontal transfer
+This project investigates the use of klers to detect horizontal gene transfers.
 
 
 ## Utilisation:
