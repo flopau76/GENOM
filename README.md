@@ -61,4 +61,15 @@ python3 -m compute_signatures generator_db -k 6 -w 5000 -s 500 -m 1
 The first, mandatory argument corresponds to the relative path of the sequence folder, starting from `input/sequence_db`.  
 `-k`, `-w` and `-s` are optional parameters of the sliding window, respectively the size of the kmers, the size of a window and the step between two windows.  
 `-m` indicates wich metrics to use to compare the windows to the genome. See help for which are currently available.  
+This will create a pdf with the resuling graph and a json containing the potential HGT, both located in `output/transfer_summary`.
 
+### 5 Analyse the identified HGT and backtrack their origin
+Once we have identified horizontal gene transfer, we might be interested in their origin genome. This can be done via the module `analysis`
+
+```bash
+python3 -m analysis generator_db_Chi-squared_distance.json generator_db
+```
+
+This command takes as an input the previously generated json and the sequence database use to generate it. For each hit from the json, it will look for a potential donnor in among the possible genomes from the database.
+
+By default, the results will be created in `output/analysis`. They contain a text file describing precisely the position of each HGT in donnor and receiver genome, along with a graph summarizing the transfers between the species.

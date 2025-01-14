@@ -6,13 +6,12 @@
 /code/compute_signatures/ribo_class.py
 /code/compute_signatures/unit_tests.py
 
-/figures
+figures
 
-input/*
+input
 !input/samples_list/
 
-output/*
-
-references/*
+output
+references
 
 profile.prof
